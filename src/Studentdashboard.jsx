@@ -1547,7 +1547,7 @@ const HelpCenter = () => {
       image: imagePreview
     };
 
-    const res = await fetch("http://localhost:5000/chat", {
+    const res = await fetch("https://casback-production.up.railway.app/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

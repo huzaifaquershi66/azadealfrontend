@@ -368,7 +368,7 @@ function AdminDashboard() {
   });
   const approveTeacher = async (userId) => {
     try {
-      const response = await fetch("http://localhost:5000/users/approve", {
+      const response = await fetch("https://casback-production.up.railway.app/users/approve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -391,7 +391,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchTeacherRequests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users/getalluser"); // Adjust API URL
+        const response = await axios.get("https://casback-production.up.railway.app/users/getalluser"); // Adjust API URL
         const pendingRequests = response.data.filter(user => user.
           isApproved === false);
         setTeacherRequests(pendingRequests);
@@ -408,7 +408,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchApprovedUsers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/users/getallapproved");
+        const response = await fetch("https://casback-production.up.railway.app/users/getallapproved");
         const data = await response.json();
         setApprovedUsers(data.data); // ✅ Setting approved users in state
       } catch (error) {

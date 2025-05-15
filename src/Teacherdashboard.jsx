@@ -211,7 +211,7 @@ const TeacherDashboard = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/createcourse",
+        "https://casback-production.up.railway.app/users/createcourse",
         formDataToSubmit,
         {
           withCredentials: true,
@@ -236,7 +236,7 @@ const TeacherDashboard = () => {
     // Fetch all approved users
     const fetchUsers = async () => {
       try {
-        const res = await fetch('http://localhost:5000/users/getallapproved');
+        const res = await fetch('https://casback-production.up.railway.app/users/getallapproved');
         const data = await res.json();
         console.log("Fetched students:", data);
   
@@ -255,7 +255,7 @@ const TeacherDashboard = () => {
   
     // Initialize socket connection if not already created
     if (!socketRef.current) {
-      const newSocket = io('http://localhost:5000', {
+      const newSocket = io('https://casback-production.up.railway.app', {
         withCredentials: true,
       });
   
@@ -316,7 +316,7 @@ const TeacherDashboard = () => {
   
       try {
         setUploadProgress(0);
-        const response = await fetch("http://localhost:5000/users/file", {
+        const response = await fetch("https://casback-production.up.railway.app/users/file", {
           method: "POST",
           body: formData,
         });
@@ -414,7 +414,7 @@ const [courses, setCourses] = useState([]);
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users/getcourse"); // Replace with your API endpoint
+        const response = await axios.get("https://casback-production.up.railway.app/users/getcourse"); // Replace with your API endpoint
         setCourses(response.data.courses);
         console.log(response.data.courses)
         setLoading(false);

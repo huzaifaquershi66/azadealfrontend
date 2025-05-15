@@ -348,7 +348,7 @@ const Navbar = () => {
  useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users/getcourse"); // Replace with your API endpoint
+        const response = await axios.get("https://casback-production.up.railway.app/users/getcourse"); // Replace with your API endpoint
         setCourses(response.data.courses);
         console.log(response.data.courses)
       } catch (error) {
@@ -808,7 +808,7 @@ const CourseCard = () => {
     useEffect(() => {
       const fetchCourses = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/users/getcourse"); // Replace with your API endpoint
+          const response = await axios.get("https://casback-production.up.railway.app/users/getcourse"); // Replace with your API endpoint
           setCourses(response.data.courses);
           console.log(response.data.courses)
           setLoading(false);

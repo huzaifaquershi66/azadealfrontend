@@ -133,7 +133,7 @@ const CourseDetailPage = () => {
             return;
           }
         
-          const newSocket = io("http://localhost:5000", { withCredentials: true });
+          const newSocket = io("https://casback-production.up.railway.app", { withCredentials: true });
           newSocket.emit("register", userId);
           socketRef.current = newSocket;
         
@@ -158,7 +158,7 @@ const CourseDetailPage = () => {
 
       try {
         setUploadProgress(0);
-        const response = await fetch("http://localhost:5000/users/file", {
+        const response = await fetch("https://casback-production.up.railway.app/users/file", {
           method: "POST",
           body: formData,
         });
@@ -206,7 +206,7 @@ const CourseDetailPage = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/getsinglecourse/${slug}`);
+        const response = await axios.get(`https://casback-production.up.railway.app/users/getsinglecourse/${slug}`);
         setCourse(response.data.course);
         console.log(response.data)
       } catch (err) {
