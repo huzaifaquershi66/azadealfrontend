@@ -691,7 +691,7 @@ const CourseDetailPage = () => {
                   </div>
                 </div>
 
-  <div className="space-y-4">
+ <div className="space-y-4">
   <motion.button
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
@@ -732,7 +732,13 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-green-600 hover:to-green-700 transition-all duration-300"
             >
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-dPX9Y2ij5UziCuRmY8dSCTr6lLFV6akZRg&s" alt="Easypaisa" className="w-8 h-8 object-contain" />
+              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/en/e/e8/Easypaisa_logo.png" 
+                  alt="Easypaisa" 
+                  className="w-10 h-10 object-contain" 
+                />
+              </div>
               <span className="text-sm">Easypaisa</span>
             </button>
 
@@ -743,7 +749,13 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-red-600 hover:to-red-700 transition-all duration-300"
             >
-              <img src="https://crystalpng.com/wp-content/uploads/2024/12/new-Jazzcash-logo.png" alt="JazzCash" className="w-8 h-8 object-contain" />
+              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
+                <img 
+                  src="https://www.jazzcash.com.pk/assets/uploads/2016/05/jazzcash-logo.png" 
+                  alt="JazzCash" 
+                  className="w-10 h-10 object-contain" 
+                />
+              </div>
               <span className="text-sm">JazzCash</span>
             </button>
 
@@ -754,7 +766,13 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-purple-600 hover:to-purple-700 transition-all duration-300"
             >
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu0WqWND19oxUmwaDPcI0DCVnWUpo_ryX4aw&s" alt="NayaPay" className="w-8 h-8 object-contain" />
+              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
+                <img 
+                  src="https://play-lh.googleusercontent.com/Tje_q5UccoNWgX8TLQyW_mKYt_uKPkVpKtIl_6ExTpJjBYmHGBgTrX_MTBxGEIK39us" 
+                  alt="NayaPay" 
+                  className="w-10 h-10 object-contain" 
+                />
+              </div>
               <span className="text-sm">NayaPay</span>
             </button>
 
@@ -765,7 +783,9 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
             >
-              <FiDollarSign className="w-8 h-8" />
+              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
+                <FiDollarSign className="w-8 h-8 text-blue-600" />
+              </div>
               <span className="text-sm">Bank Transfer</span>
             </button>
           </div>
@@ -786,10 +806,7 @@ const CourseDetailPage = () => {
       </motion.div>
     </div>
   )}
-
-  {/* ... rest of your code remains same ... */}
 </div>
-
                 <div className="mt-10">
                   <h3 className="font-bold text-xl mb-6 text-gray-800">Course Includes:</h3>
                   <div className="space-y-5">
