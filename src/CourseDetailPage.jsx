@@ -21,7 +21,8 @@ const CourseDetailPage = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
- 
+ const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+
 
    const [isMenuOpen, setIsMenuOpen] = useState(false);
       const [showSearch, setShowSearch] = useState(false);
@@ -690,33 +691,63 @@ const CourseDetailPage = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      launchConfetti();
-                      window.location.href = `mailto:${contact}`;
-                    }}
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3"
-                  >
-                    <FiPlay className="w-6 h-6" />
-                    <span>Start Learning Now</span>
-                  </motion.button>
+  <motion.button
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    onClick={() => setShowPurchaseModal(true)}
+    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3"
+  >
+    <FiPlay className="w-6 h-6" />
+    <span>Start Learning Now</span>
+  </motion.button>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setIsBookmarked(!isBookmarked)}
-                    className={`w-full border-2 py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center space-x-3 ${
-                      isBookmarked 
-                        ? 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100' 
-                        : 'border-gray-200 text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <FiBookmark className={`w-6 h-6 ${isBookmarked ? 'text-blue-600' : ''}`} />
-                    <span>{isBookmarked ? 'Saved to Wishlist' : 'Add to Wishlist'}</span>
-                  </motion.button>
-                </div>
+  {/* Purchase Modal */}
+  {showPurchaseModal && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Purchase Course</h2>
+        <div className="mb-6">
+          <p className="text-gray-600 mb-4">Choose your payment method to access the course:</p>
+          <div className="space-y-3">
+            <button 
+              onClick={() => {
+                // Add your payment processing logic here
+                window.location.href = `mailto:${contact}?subject=Course%20Purchase%20Request&body=I%20would%20like%20to%20purchase%20the%20course.%20Please%20provide%20payment%20details.`;
+              }}
+              className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-green-600 hover:to-green-700"
+            >
+              <FiCreditCard className="w-5 h-5" />
+              <span>Pay with Card</span>
+            </button>
+            
+            <button 
+              onClick={() => {
+                // Add your bank transfer logic here
+                window.location.href = `mailto:${contact}?subject=Bank%20Transfer%20Request&body=I%20would%20like%20to%20purchase%20the%20course%20via%20bank%20transfer.%20Please%20share%20the%20bank%20details.`;
+              }}
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-blue-600 hover:to-blue-700"
+            >
+              <FiDollarSign className="w-5 h-5" />
+              <span>Bank Transfer</span>
+            </button>
+          </div>
+        </div>
+        
+
+        
+        <div className="border-t border-gray-200 pt-4">
+          <p className="text-sm text-gray-500 mb-4">Course Price: PKR {price}</p>
+          <button
+            onClick={() => setShowPurchaseModal(false)}
+            className="w-full border-2 border-gray-300 text-gray-700 py-2 px-4 rounded-xl font-semibold hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+      )}
+</div>
 
                 <div className="mt-10">
                   <h3 className="font-bold text-xl mb-6 text-gray-800">Course Includes:</h3>
