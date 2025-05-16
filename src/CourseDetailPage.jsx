@@ -734,7 +734,7 @@ const CourseDetailPage = () => {
             >
               <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
                 <img 
-                  src="https://upload.wikimedia.org/wikipedia/en/e/e8/Easypaisa_logo.png" 
+                  src="https://crystalpng.com/wp-content/uploads/2024/10/Easypaisa-logo.png" 
                   alt="Easypaisa" 
                   className="w-10 h-10 object-contain" 
                 />
@@ -751,7 +751,7 @@ const CourseDetailPage = () => {
             >
               <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
                 <img 
-                  src="https://www.jazzcash.com.pk/assets/uploads/2016/05/jazzcash-logo.png" 
+                  src="https://crystalpng.com/wp-content/uploads/2024/12/new-Jazzcash-logo.png" 
                   alt="JazzCash" 
                   className="w-10 h-10 object-contain" 
                 />
@@ -768,7 +768,7 @@ const CourseDetailPage = () => {
             >
               <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
                 <img 
-                  src="https://play-lh.googleusercontent.com/Tje_q5UccoNWgX8TLQyW_mKYt_uKPkVpKtIl_6ExTpJjBYmHGBgTrX_MTBxGEIK39us" 
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu0WqWND19oxUmwaDPcI0DCVnWUpo_ryX4aw&s" 
                   alt="NayaPay" 
                   className="w-10 h-10 object-contain" 
                 />
