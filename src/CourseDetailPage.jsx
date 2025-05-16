@@ -1,6 +1,7 @@
 import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine} from "react-icons/ri";
 import { FiClock, FiBook, FiAward, FiUser, FiUsers, FiBookmark, FiCheck, FiPlay, FiGlobe, FiStar, FiBarChart,FiCreditCard,FiDollarSign  } from 'react-icons/fi';
 import confetti from 'canvas-confetti';
@@ -690,7 +691,7 @@ const CourseDetailPage = () => {
                   </div>
                 </div>
 
-                <div className="space-y-4">
+  <div className="space-y-4">
   <motion.button
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
@@ -703,50 +704,90 @@ const CourseDetailPage = () => {
 
   {/* Purchase Modal */}
   {showPurchaseModal && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Purchase Course</h2>
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', backdropFilter: 'blur(4px)' }}>
+      <motion.div 
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Purchase Course</h2>
+          <button 
+            onClick={() => setShowPurchaseModal(false)}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
         <div className="mb-6">
-          <p className="text-gray-600 mb-4">Choose your payment method to access the course:</p>
-          <div className="space-y-3">
+          <p className="text-gray-600 mb-4">Choose your payment method:</p>
+          <div className="grid grid-cols-2 gap-3">
+            {/* Easypaisa */}
             <button 
               onClick={() => {
-                // Add your payment processing logic here
-                window.location.href = `mailto:${contact}?subject=Course%20Purchase%20Request&body=I%20would%20like%20to%20purchase%20the%20course.%20Please%20provide%20payment%20details.`;
+                window.location.href = `mailto:${contact}?subject=Easypaisa%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20Easypaisa.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-green-600 hover:to-green-700"
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-green-600 hover:to-green-700 transition-all duration-300"
             >
-              <FiCreditCard className="w-5 h-5" />
-              <span>Pay with Card</span>
+              <img src="/easypaisa-logo.png" alt="Easypaisa" className="w-8 h-8 object-contain" />
+              <span className="text-sm">Easypaisa</span>
             </button>
-            
+
+            {/* JazzCash */}
             <button 
               onClick={() => {
-                // Add your bank transfer logic here
-                window.location.href = `mailto:${contact}?subject=Bank%20Transfer%20Request&body=I%20would%20like%20to%20purchase%20the%20course%20via%20bank%20transfer.%20Please%20share%20the%20bank%20details.`;
+                window.location.href = `mailto:${contact}?subject=JazzCash%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20JazzCash.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-blue-600 hover:to-blue-700"
+              className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-red-600 hover:to-red-700 transition-all duration-300"
             >
-              <FiDollarSign className="w-5 h-5" />
-              <span>Bank Transfer</span>
+              <img src="/jazzcash-logo.png" alt="JazzCash" className="w-8 h-8 object-contain" />
+              <span className="text-sm">JazzCash</span>
+            </button>
+
+            {/* NayaPay */}
+            <button 
+              onClick={() => {
+                window.location.href = `mailto:${contact}?subject=NayaPay%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20NayaPay.%20Please%20provide%20the%20account%20details.`;
+              }}
+              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-purple-600 hover:to-purple-700 transition-all duration-300"
+            >
+              <img src="/nayapay-logo.png" alt="NayaPay" className="w-8 h-8 object-contain" />
+              <span className="text-sm">NayaPay</span>
+            </button>
+
+            {/* Bank Transfer */}
+            <button 
+              onClick={() => {
+                window.location.href = `mailto:${contact}?subject=Bank%20Transfer%20Request&body=I%20would%20like%20to%20pay%20via%20bank%20transfer.%20Please%20provide%20the%20account%20details.`;
+              }}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+            >
+              <FiDollarSign className="w-8 h-8" />
+              <span className="text-sm">Bank Transfer</span>
             </button>
           </div>
         </div>
         
-
-        
         <div className="border-t border-gray-200 pt-4">
-          <p className="text-sm text-gray-500 mb-4">Course Price: PKR {price}</p>
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-gray-500">Course Price:</p>
+            <p className="text-xl font-bold text-gray-800">PKR {price}</p>
+          </div>
           <button
             onClick={() => setShowPurchaseModal(false)}
-            className="w-full border-2 border-gray-300 text-gray-700 py-2 px-4 rounded-xl font-semibold hover:bg-gray-50"
+            className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300"
           >
             Cancel
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
-      )}
+  )}
+
+  {/* ... rest of your code remains same ... */}
 </div>
 
                 <div className="mt-10">
