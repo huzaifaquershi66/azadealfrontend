@@ -2,7 +2,7 @@ import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine} from "react-icons/ri";
-import { FiClock, FiBook, FiAward, FiUser, FiUsers, FiBookmark, FiCheck, FiPlay, FiGlobe, FiStar, FiBarChart } from 'react-icons/fi';
+import { FiClock, FiBook, FiAward, FiUser, FiUsers, FiBookmark, FiCheck, FiPlay, FiGlobe, FiStar, FiBarChart,FiCreditCard,FiDollarSign  } from 'react-icons/fi';
 import confetti from 'canvas-confetti';
 import io from 'socket.io-client';
 
