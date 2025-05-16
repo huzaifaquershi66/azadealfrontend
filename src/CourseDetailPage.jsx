@@ -732,7 +732,7 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-green-600 hover:to-green-700 transition-all duration-300"
             >
-              <img src="/easypaisa-logo.png" alt="Easypaisa" className="w-8 h-8 object-contain" />
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-dPX9Y2ij5UziCuRmY8dSCTr6lLFV6akZRg&s" alt="Easypaisa" className="w-8 h-8 object-contain" />
               <span className="text-sm">Easypaisa</span>
             </button>
 
@@ -743,7 +743,7 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-red-600 hover:to-red-700 transition-all duration-300"
             >
-              <img src="/jazzcash-logo.png" alt="JazzCash" className="w-8 h-8 object-contain" />
+              <img src="https://crystalpng.com/wp-content/uploads/2024/12/new-Jazzcash-logo.png" alt="JazzCash" className="w-8 h-8 object-contain" />
               <span className="text-sm">JazzCash</span>
             </button>
 
@@ -754,7 +754,7 @@ const CourseDetailPage = () => {
               }}
               className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-purple-600 hover:to-purple-700 transition-all duration-300"
             >
-              <img src="/nayapay-logo.png" alt="NayaPay" className="w-8 h-8 object-contain" />
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu0WqWND19oxUmwaDPcI0DCVnWUpo_ryX4aw&s" alt="NayaPay" className="w-8 h-8 object-contain" />
               <span className="text-sm">NayaPay</span>
             </button>
 
