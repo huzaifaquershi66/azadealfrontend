@@ -55,7 +55,7 @@ const navigate = useNavigate()
       <div className="absolute top-6 right-6">
         <button 
           onClick={() => navigate('/login')} 
-          className="bg-gray-900 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-800 transition"
+          className="bg-gray-900 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-800 transition"
         >
           Login
         </button>

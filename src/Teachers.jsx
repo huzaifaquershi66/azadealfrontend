@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSearch, FiFilter, FiStar, FiMapPin, FiBook, FiUser, FiGlobe, FiClock, FiAward, FiHeart, FiDollarSign, FiCheckCircle,FiBarChart2,FiCode,FiPenTool,FiMusic ,FiCamera,FiFeather,FiTrendingUp} from 'react-icons/fi';
+import { FiSearch, FiFilter, FiStar, FiMapPin, FiBook, FiUser, FiGlobe, FiClock, FiAward, FiHeart, FiDollarSign, FiCheckCircle,FiBarChart2,FiCode,FiPenTool,FiMusic ,FiCamera,FiFeather,FiTrendingUp,FiBookOpen} from 'react-icons/fi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine } from "react-icons/ri";
@@ -19,125 +19,36 @@ function Teachers() {
 const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+    const [featuredTeachers, setFeaturedTeachers] = useState([]);
+      const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
   
 
+  // if (loading) return <p className="text-center">Loading teachers...</p>;
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const featuredTeachers = [
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      subject: "Mathematics",
-      rating: 4.9,
-      students: 1234,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      isOnline: true,
-      price: "$50/hr",
-      expertise: ["Calculus", "Algebra", "Statistics"],
-      badges: ["Top Rated", "Verified"],
-      availability: "Mon-Fri",
-      responseTime: "< 2 hours",
-      totalHours: 1500,
-      completionRate: 98,
-      languages: ["English", "Spanish"],
-      description: "Experienced mathematics professor with over 10 years of teaching excellence..."
-    },
-    {
-      id: 2,
-      name: "Prof. James Chen",
-      subject: "Computer Science",
-      rating: 4.8,
-      students: 956,
-      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79",
-      isOnline: true,
-      price: "$65/hr",
-      expertise: ["Python", "Machine Learning", "Web Development"],
-      badges: ["Expert", "Most Popular"],
-      availability: "Weekends",
-      responseTime: "< 1 hour",
-      totalHours: 2100,
-      completionRate: 96,
-      languages: ["English", "Mandarin"],
-      description: "Expert in computer science with specialization in AI and machine learning..."
-    },
-    {
-      id: 3,
-      name: "Dr. Emily Rodriguez",
-      subject: "Physics",
-      rating: 4.9,
-      students: 789,
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
-      isOnline: false,
-      price: "$55/hr",
-      expertise: ["Quantum Physics", "Mechanics", "Electromagnetism"],
-      badges: ["PhD", "Research Expert"],
-      availability: "Flexible",
-      responseTime: "< 3 hours",
-      totalHours: 1200,
-      completionRate: 95,
-      languages: ["English", "Portuguese"],
-      description: "Quantum physics researcher with a passion for teaching complex concepts..."
-    },
-    // Academy entries
-    {
-      id: 4,
-      name: "Excellence Academy",
-      subject: "Multi-Disciplinary",
-      rating: 4.7,
-      students: 5000,
-      image: "https://images.unsplash.com/photo-1607237138185-eedd9c632b0b",
-      isOnline: true,
-      price: "$299/month",
-      expertise: ["STEM", "Languages", "Test Prep"],
-      badges: ["Accredited", "Featured"],
-      availability: "24/7",
-      responseTime: "Instant",
-      totalHours: 50000,
-      completionRate: 94,
-      languages: ["Multiple Languages"],
-      description: "Leading online academy offering comprehensive courses across multiple disciplines..."
-    },
-    {
-      id: 5,
-      name: "Global Tech Institute",
-      subject: "Technology & Programming",
-      rating: 4.8,
-      students: 3500,
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
-      isOnline: true,
-      price: "$199/month",
-      expertise: ["Coding", "Data Science", "Cybersecurity"],
-      badges: ["Industry Partner", "Career Support"],
-      availability: "24/7",
-      responseTime: "< 4 hours",
-      totalHours: 35000,
-      completionRate: 92,
-      languages: ["English", "Spanish", "German"],
-      description: "Premier technology institute focusing on practical skills and industry readiness..."
-    },
-    {
-      id: 6,
-      name: "Creative Arts Academy",
-      subject: "Arts & Design",
-      rating: 4.6,
-      students: 2800,
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c",
-      isOnline: true,
-      price: "$179/month",
-      expertise: ["Digital Art", "Graphic Design", "Animation"],
-      badges: ["Creative Excellence", "Industry Recognition"],
-      availability: "Flexible",
-      responseTime: "< 5 hours",
-      totalHours: 25000,
-      completionRate: 90,
-      languages: ["English", "French", "Italian"],
-      description: "Nurturing creativity through comprehensive arts and design education..."
-    }
-  ];
+ useEffect(() => {
+     const fetchApprovedUsers = async () => {
+       try {
+         const response = await fetch("https://casback-production.up.railway.app/users/getallapproved");
+         const data = await response.json();
+         setFeaturedTeachers(data.data); // ✅ Setting approved users in state
+         console.log(data.data)
+       } catch (error) {
+         console.error("Error fetching approved users:", error);
+       }
+     };
+ 
+    fetchApprovedUsers()
+   }, []); // ✅ Fetch only when tab changes to 'completed'
+ 
+   
+
+
 
   const categories = [
     {
@@ -206,6 +117,33 @@ const [isScrolled, setIsScrolled] = useState(false);
     },
   ];
   
+  const subjects = [
+  { name: "Mathematics" },
+  { name: "Physics" },
+  { name: "Chemistry" },
+  { name: "Biology" },
+  { name: "English Language" },
+  { name: "Urdu Literature" },
+  { name: "Islamic Studies" },
+  { name: "Pakistan Studies" },
+  { name: "Computer Science" },
+  { name: "Web Development" },
+  { name: "App Development" },
+  { name: "Cyber Security" },
+  { name: "Graphic Designing" },
+  { name: "Digital Marketing" },
+  { name: "Freelancing" },
+  { name: "Data Science & AI" },
+  { name: "Accounting & Finance" },
+  { name: "Economics" },
+  { name: "Business & Entrepreneurship" },
+  { name: "Medical Entrance Test Prep" },
+  { name: "Engineering Entry Test Prep" },
+  { name: "CSS & Government Exam Prep" },
+  { name: "Public Speaking & Communication" },
+  { name: "Quran & Tajweed" },
+  { name: "Foreign Languages" }
+];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -300,15 +238,14 @@ const [isScrolled, setIsScrolled] = useState(false);
    
          {/* Desktop Menu - Updated hover colors */}
          <div className="hidden md:flex items-center space-x-8">
-           {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
-             <a
-               key={item}
-               onClick={() => navigate(`/${item.toLowerCase()}`)}
-               className="text-white hover:text-emerald-200 transition-colors font-semibold text-lg"
-             >
-               {item}
-             </a>
-           ))}
+           {['Mathematics', 'Science', 'Languages', 'Programming', 'Arts'].map((tag, index) => (
+              <span
+                key={index}
+                className="bg-white/10 backdrop-blur-lg text-blue-100 px-4 py-2 rounded-full text-sm hover:bg-white/20 transition-all duration-300 cursor-pointer"
+              >
+                {tag}
+              </span>
+            ))}
    
            {/* Search Button */}
            <button
@@ -528,12 +465,12 @@ const [isScrolled, setIsScrolled] = useState(false);
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-wrap justify-center gap-3 mt-8"
           >
-            {['Mathematics', 'Science', 'Languages', 'Programming', 'Arts'].map((tag, index) => (
+            {subjects.map((tag, index) => (
               <span
                 key={index}
                 className="bg-white/10 backdrop-blur-lg text-blue-100 px-4 py-2 rounded-full text-sm hover:bg-white/20 transition-all duration-300 cursor-pointer"
               >
-                {tag}
+                {tag.name}
               </span>
             ))}
           </motion.div>
@@ -769,108 +706,149 @@ const [isScrolled, setIsScrolled] = useState(false);
 
     {/* Teachers Grid */}
     <Link to="/teacherprofile">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {featuredTeachers.map((teacher, index) => (
-        <motion.div
-          key={teacher.id}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: index * 0.1 }}
-          whileHover={{ y: -10, transition: { duration: 0.3 } }}
-          className="bg-white rounded-3xl shadow-xl overflow-hidden transform hover:shadow-2xl transition-all duration-300"
-        >
-          {/* Teacher Image Section */}
-          <div className="relative group">
-            <img
-              src={teacher.image}
-              alt={teacher.name}
-              className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
-            {/* Status Badges */}
-            <div className="absolute top-4 right-4 space-y-2">
-              {teacher.isOnline && (
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm flex items-center backdrop-blur-sm bg-opacity-90"
-                >
-                  <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse" />
-                  Online
-                </motion.div>
-              )}
-              {teacher.badges.map((badge, index) => (
-                <div
-                  key={index}
-                  className="bg-yellow-400 text-white px-4 py-1.5 rounded-full text-sm backdrop-blur-sm bg-opacity-90"
-                >
-                  {badge}
+     <div className="container mx-auto px-4 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredTeachers.map((teacher, index) => (
+          <motion.div
+            key={teacher._id}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            whileHover={{ y: -10, transition: { duration: 0.3 } }}
+            className="bg-white rounded-3xl shadow-xl overflow-hidden transform hover:shadow-2xl transition-all duration-300"
+          >
+            {/* Teacher Image Section */}
+            <div className="relative group">
+              <img
+                src={teacher.profilePicture || 'https://via.placeholder.com/400x300?text=No+Image'}
+                alt={teacher.fullName}
+                className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Status Badges */}
+              <div className="absolute top-4 right-4 space-y-2">
+                {teacher.isApproved && (
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm flex items-center backdrop-blur-sm bg-opacity-90"
+                  >
+                    <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse" />
+                    Verified
+                  </motion.div>
+                )}
+              </div>
+            </div>
+
+            {/* Teacher Info Section */}
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold mb-2 text-gray-800">{teacher.fullName}</h3>
+                  <p className="text-gray-600 font-medium">{teacher.specialization}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Teacher Info Section */}
-          <div className="p-8">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h3 className="text-2xl font-bold mb-2 text-gray-800">{teacher.name}</h3>
-                <p className="text-gray-600 font-medium">{teacher.subject}</p>
-              </div>
-              <div className="flex items-center bg-blue-50 px-4 py-2 rounded-full">
-                <FiStar className="text-yellow-400 mr-2 text-lg" />
-                <span className="font-bold text-blue-600">{teacher.rating}</span>
-              </div>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-6 mb-8">
-              <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FiUser className="mr-3 text-lg" />
-                <span className="font-medium">{teacher.students} Students</span>
-              </div>
-              <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FiClock className="mr-3 text-lg" />
-                <span className="font-medium">{teacher.responseTime}</span>
-              </div>
-              <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FiGlobe className="mr-3 text-lg" />
-                <span className="font-medium">{teacher.languages.join(', ')}</span>
-              </div>
-              <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FiCheckCircle className="mr-3 text-lg" />
-                <span className="font-medium">{teacher.completionRate}% Completion</span>
-              </div>
-            </div>
-
-            {/* Expertise Tags */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {teacher.expertise.map((exp, index) => (
-                <span
-                  key={index}
-                  className="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors duration-300"
-                >
-                  {exp}
-                </span>
-              ))}
-            </div>
-
-            {/* Footer Section */}
-            <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-              <div>
-                <span className="text-gray-400 text-sm font-medium">Starting from</span>
-                <div className="text-3xl font-bold text-blue-600">
-                  {teacher.price}
+                <div className="flex items-center bg-blue-50 px-4 py-2 rounded-full">
+                  <FiStar className="text-yellow-400 mr-2 text-lg" />
+                  <span className="font-bold text-blue-600">{teacher.experience} Years</span>
                 </div>
               </div>
-              <button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg font-medium">
-                Book Trial
-              </button>
+
+              {/* Achievements Section */}
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4">Achievements & Qualifications</h4>
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Education Achievement */}
+                  <div className="flex items-start space-x-3 p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors duration-300">
+                    <FiAward className="text-blue-600 text-xl flex-shrink-0 mt-1" />
+                    <div>
+                      <h5 className="font-medium text-gray-800">{teacher.qualification}</h5>
+                      <p className="text-sm text-gray-600">from {teacher.university} ({teacher.graduationYear})</p>
+                    </div>
+                  </div>
+
+                  {/* Specialization */}
+                  <div className="flex items-start space-x-3 p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors duration-300">
+                    <FiBookOpen className="text-indigo-600 text-xl flex-shrink-0 mt-1" />
+                    <div>
+                      <h5 className="font-medium text-gray-800">Specialized in {teacher.specialization}</h5>
+                      <p className="text-sm text-gray-600">
+                        Teaching {teacher.teachingLevel.map(level => JSON.parse(level)).flat().join(', ')}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Experience */}
+                  <div className="flex items-start space-x-3 p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors duration-300">
+                    <FiClock className="text-green-600 text-xl flex-shrink-0 mt-1" />
+                    <div>
+                      <h5 className="font-medium text-gray-800">{teacher.experience} Years Experience</h5>
+                      <p className="text-sm text-gray-600">
+                        Previous Institution: {teacher.previousInstitutions.map(inst => JSON.parse(inst)).flat().join(', ')}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Subjects */}
+                  <div className="flex items-start space-x-3 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors duration-300">
+                    <FiBook className="text-purple-600 text-xl flex-shrink-0 mt-1" />
+                    <div>
+                      <h5 className="font-medium text-gray-800">Subject Expertise</h5>
+                      <p className="text-sm text-gray-600">
+                        {teacher.subjects.map(subject => JSON.parse(subject)).flat().join(', ')}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Available Timings */}
+                  <div className="flex items-start space-x-3 p-4 bg-yellow-50 rounded-xl hover:bg-yellow-100 transition-colors duration-300">
+                    <FiClock className="text-yellow-600 text-xl flex-shrink-0 mt-1" />
+                    <div>
+                      <h5 className="font-medium text-gray-800">Availability</h5>
+                      <p className="text-sm text-gray-600">
+                        {teacher.availableTimings.map(timing => JSON.parse(timing)).flat().join(', ')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                  <FiUser className="mr-3 text-lg" />
+                  <span className="font-medium">Active Teacher</span>
+                </div>
+                <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                  <FiGlobe className="mr-3 text-lg" />
+                  <span className="font-medium">{teacher.address}</span>
+                </div>
+                <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                  <FiCheckCircle className="mr-3 text-lg" />
+                  <span className="font-medium">Verified Profile</span>
+                </div>
+                <div className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                  <FiUser className="mr-3 text-lg" />
+                  <span className="font-medium">{teacher.gender}</span>
+                </div>
+              </div>
+
+              {/* Footer Section */}
+              <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                <div>
+                  <span className="text-gray-400 text-sm font-medium">Expected Salary</span>
+                  <div className="text-3xl font-bold text-blue-600">
+                    Rs. {teacher.expectedSalary}
+                  </div>
+                </div>
+                <button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg font-medium">
+                  Contact Now
+                </button>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      ))}
+          </motion.div>
+        ))}
+      </div>
     </div>
     </Link>
   </div>
