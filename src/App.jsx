@@ -847,7 +847,7 @@ function App() {
   useEffect(() => {
        const fetchApprovedUsers = async () => {
          try {
-           const response = await fetch("http://localhost:5000/users/getallapproved");
+           const response = await fetch("https://casback-production.up.railway.app/users/getallapproved");
            const data = await response.json();
            setFeaturedTeachers(data.data); // ✅ Setting approved users in state
            console.log(data.data)
