@@ -809,7 +809,7 @@ const { id } = useParams();
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
-                    {['Expert Educator', teacher.bio].map((tag, idx) => (
+                    {['Expert Educator', teacher?.bio].map((tag, idx) => (
                       <span 
                         key={idx} 
                         className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20"
