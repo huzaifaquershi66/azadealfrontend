@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiUploadCloud,FiBriefcase, FiBook, FiLayers, FiBookOpen, FiUsers,FiClock, FiMonitor, FiDollarSign,FiUpload, FiFile, FiCheckCircle, FiX ,FiMail,FiPhone, FiCalendar, FiMapPin,FiUser} from 'react-icons/fi';
+import { FiUploadCloud,FiBriefcase, FiBook,FiEye,FiEyeOff, FiLayers, FiBookOpen, FiUsers,FiClock, FiMonitor, FiDollarSign,FiUpload, FiFile, FiCheckCircle, FiX ,FiMail,FiPhone, FiCalendar, FiMapPin,FiUser} from 'react-icons/fi';
 import Select from 'react-select';
 
 const TeacherForm = () => {
@@ -9,10 +9,13 @@ const TeacherForm = () => {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
   const [loading, setLoading] = useState(false);  // 🔹 Loading state added
 
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  const togglePassword = () => setShowPassword(prev => !prev);
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -585,21 +588,27 @@ const TeacherForm = () => {
                     placeholder="your@email.com"
                   />
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.02 }} className="form-group">
-                  <label className={labelClasses}>
-                    <FiUser className="text-violet-500" />
-                    password
-                  </label>
-                  <input
-                    type="text"
-                    name="password"
-                    required
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={inputClasses}
-                    placeholder="Enter your Username"
-                  />
-                </motion.div>
+                <motion.div whileHover={{ scale: 1.02 }} className="form-group relative">
+      <label className={labelClasses}>
+        <FiUser className="text-violet-500" />
+        Password
+      </label>
+      <input
+        type={showPassword ? "text" : "password"}
+        name="password"
+        required
+        value={formData.password}
+        onChange={handleInputChange}
+        className={inputClasses}
+        placeholder="Enter your password"
+      />
+      <div
+        onClick={togglePassword}
+        className="absolute right-3 top-[52px] cursor-pointer text-gray-500"
+      >
+        {showPassword ? <FiEyeOff /> : <FiEye />}
+      </div>
+    </motion.div>
               </div>
             </div>
           </motion.div>
@@ -624,7 +633,7 @@ const TeacherForm = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   className={inputClasses}
-                  placeholder="+1 (234) 567-8900"
+                  placeholder="+92 3438976543"
                 />
               </div>
             </motion.div>

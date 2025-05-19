@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine } from "react-icons/ri";
-
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   FaGraduationCap, FaUsers, FaStar, FaCertificate, 
   FaCalendarAlt, FaEnvelope, FaMapMarkerAlt, FaLinkedinIn,FaUniversity,FaQuoteLeft,FaRegThumbsUp,FaRegComment,FaShare,
@@ -15,9 +16,9 @@ const teacherData = {
   specialization: "AI & Machine Learning Expert",
   rating: 4.8,
   totalReviews: 127,
-  experience: "15+ Years",
-  students: "5,000+",
-  activeCourses: 25,
+  experience: "6 Years",
+  students: "0",
+  activeCourses: 1,
   location: "Stanford University, California",
   email: "dr.sarah@stanford.edu",
   phone: "+1 (650) 123-4567",
@@ -179,15 +180,45 @@ const TeacherProfile = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [teacher, setTeacher] = useState(null);
+    
     const [showSearch, setShowSearch] = useState(false);
     const navigate = useNavigate();
-  
+const { id } = useParams();
+ const [user, setUser] = useState(null);
+          useEffect(() => {
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+              setUser(JSON.parse(storedUser));
+            }
+          }, [])
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  // useEffect(() => {
+  useEffect(() => {
+  const fetchApprovedUsers = async () => {
+    try {
+      const response = await fetch(`https://casback-production.up.railway.app/users/getsingleuser/${id}`);
+      const data = await response.json();
+
+      if (data) {
+        setTeacher(data.data); // set state
+        console.log(data.data)
+      } else {
+        console.log("User not found or bad response:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching approved user:", error);
+    }
+  };
+
+  fetchApprovedUsers();
+}, [id]);
+
 
   useEffect(() => {
     setIsLoaded(true);
@@ -242,198 +273,232 @@ const TeacherProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
-     <nav className={`fixed w-full z-50 transition-all duration-300 ${
-     isScrolled 
-       ? "bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md shadow-lg" 
-       : "bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md"
-   }`}>
-     {/* Rest of your navbar code remains the same, just updating the color-related classes */}
-     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-       <div className="flex justify-between items-center h-20">
-         {/* Logo */}
-         <div className="flex items-center">
-     <div className="relative group">
-       <div className="flex items-center space-x-3">
-         {/* Main Logo Container */}
-         <div className="relative group cursor-pointer">
-           {/* Background glow effect */}
-           <div className="absolute inset-[-4px] bg-gradient-to-r from-rose-600/50 via-orange-500/50 to-amber-500/50 rounded-xl blur-md group-hover:blur-lg transition-all duration-500"></div>
-           
-           <div className="relative">
-             {/* Main logo shape - Made wider than height */}
-             <div className="relative w-16 h-12 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 rounded-xl transform transition-all duration-500 group-hover:scale-105 shadow-lg group-hover:shadow-orange-500/50">
-               {/* Animated gradient overlay */}
-               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-xl animate-shine"></div>
-               
-               {/* Glass effect */}
-               <div className="absolute inset-[1px] bg-gradient-to-br from-white/20 to-transparent rounded-xl backdrop-blur-sm">
-                 {/* Diagonal lines pattern */}
-                 <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,white_2px,white_3px)]"></div>
-               </div>
-               
-               {/* Center content with 3D effect */}
-               <div className="absolute inset-0 flex items-center justify-center transform transition-transform duration-500">
-                 <span className="relative text-white text-2xl font-bold font-sans tracking-wider group-hover:scale-110">
-                   {/* Text shadow for 3D effect */}
-                   <span className="absolute -top-[1px] -left-[1px] text-orange-200/50">A</span>
-                   <span className="relative">A</span>
-                   <span className="absolute -bottom-[1px] -right-[1px] text-rose-700/50">A</span>
-                 </span>
-               </div>
-   
-               {/* Animated border with gradient */}
-               <div className="absolute inset-0 rounded-xl border border-white/20 overflow-hidden">
-                 <div className="absolute inset-0 animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100">
-                   <div className="w-full h-full rounded-xl border border-transparent border-t-white/40"></div>
-                 </div>
-               </div>
-             </div>
-   
-             {/* Enhanced particles */}
-             <div className="absolute -top-1 -right-1 w-3 h-3">
-               <div className="absolute inset-0 bg-amber-400 rounded-full animate-ping opacity-75"></div>
-               <div className="absolute inset-0 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full animate-pulse"></div>
-             </div>
-             <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5">
-               <div className="absolute inset-0 bg-rose-400 rounded-full animate-pulse"></div>
-               <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping opacity-75 delay-300"></div>
-             </div>
-   
-             {/* Sparkle effects */}
-             <div className="absolute -top-2 left-1/2 w-1 h-1 bg-white rounded-full animate-twinkle"></div>
-             <div className="absolute top-1/2 -right-2 w-1 h-1 bg-white rounded-full animate-twinkle delay-150"></div>
-           </div>
-         </div>
-   
-         {/* Text container with enhanced styling */}
-         <div className="relative">
-           <h1 className="text-3xl font-bold mb-0">
-             <span className="relative inline-block">
-               {/* Main text with vibrant gradient */}
-               <span className="bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 bg-clip-text text-transparent font-sans">
-                 Azad
-               </span>
-               {/* Enhanced glow effect */}
-               <span className="absolute inset-0 bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 blur-md opacity-50 bg-clip-text text-transparent animate-pulse">
-                 Azad
-               </span>
-               {/* Animated underline with gradient */}
-               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 group-hover:w-full transition-all duration-700"></span>
-             </span>
-           </h1>
-           <p className="text-sm font-medium tracking-wide">
-             <span className="bg-gradient-to-r from-rose-200 via-orange-200 to-amber-200 bg-clip-text text-transparent">
-               Education
-             </span>
-           </p>
-         </div>
-       </div>
-     </div>
-   </div>
-   
-         {/* Desktop Menu - Updated hover colors */}
-         <div className="hidden md:flex items-center space-x-8">
-           {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
-             <a
-               key={item}
-               onClick={() => navigate(`/${item.toLowerCase()}`)}
-               className="text-white hover:text-emerald-200 transition-colors font-semibold text-lg"
-             >
-               {item}
-             </a>
-           ))}
-   
-           {/* Search Button */}
-           <button
-             onClick={() => setShowSearch(!showSearch)}
-             className="text-white hover:text-emerald-200 transition-colors"
-           >
-             <RiSearchLine className="h-6 w-6" />
-           </button>
-   
-           {/* Notification Button */}
-           <div className="relative">
-             <button className="text-white hover:text-emerald-200 transition-colors">
-               <RiNotificationLine className="h-6 w-6" />
-             </button>
-             <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-               3
-             </span>
-           </div>
-   
-           {/* Get Started Button - Updated gradient */}
-           <button
-             onClick={() => setShowLoginModal(true)}
-             className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-2 rounded-full hover:from-emerald-600 hover:to-blue-600 transition-colors font-semibold shadow-lg hover:shadow-xl"
-           >
-             Get Started
-           </button>
-         </div>
-   
-         {/* Mobile Menu Toggle */}
-         <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-           {isMenuOpen ? <RiCloseLine className="h-6 w-6" /> : <RiMenuLine className="h-6 w-6" />}
-         </button>
-       </div>
-   
-       {/* Mobile Menu - Updated gradient */}
-       <AnimatePresence>
-         {isMenuOpen && (
-           <motion.div
-             initial={{ opacity: 0, height: 0 }}
-             animate={{ opacity: 1, height: "auto" }}
-             exit={{ opacity: 0, height: 0 }}
-             className="md:hidden bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md border-t border-emerald-500"
-           >
-             <div className="flex flex-col space-y-4 p-4">
-               {["Courses", "Teachers", "Resources", "About"].map((item) => (
-                 <a
-                   key={item}
-                   href={`#${item.toLowerCase()}`}
-                   className="text-white hover:text-emerald-200 font-medium text-lg"
-                 >
-                   {item}
-                 </a>
-               ))}
-               <button
-                 onClick={() => setShowLoginModal(true)}
-                 className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-2 rounded-full font-medium shadow-lg hover:shadow-xl"
-               >
-                 Get Started
-               </button>
-             </div>
-           </motion.div>
-         )}
-       </AnimatePresence>
-     </div>
-   
-     {/* Search Overlay - No color changes needed */}
-     <AnimatePresence>
-       {showSearch && (
-         <motion.div
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           exit={{ opacity: 0 }}
-           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-         >
-           <div className="bg-white p-6 rounded-lg w-full max-w-2xl mx-4 shadow-2xl">
-             <div className="flex items-center">
-               <RiSearchLine className="text-gray-400 mr-3 h-6 w-6" />
-               <input
-                 type="text"
-                 placeholder="Search courses, teachers, or topics..."
-                 className="flex-1 outline-none text-lg"
-                 autoFocus
-               />
-               <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-gray-600">
-                 <RiCloseLine className="h-6 w-6" />
-               </button>
-             </div>
-           </div>
-         </motion.div>
-       )}
-     </AnimatePresence>
-   </nav>
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${
+          isScrolled 
+            ? "bg-gradient-to-r from-sky-900/95 via-cyan-900/95 to-teal-900/95 shadow-[0_8px_32px_0_rgba(0,201,255,0.2)] backdrop-blur-xl" 
+            : "bg-transparent backdrop-blur-sm bg-gradient-to-r from-sky-900/50 via-cyan-900/50 to-teal-900/50"
+        }`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-20">
+              {/* Logo */}
+              <div className="flex items-center">
+                <div className="relative group">
+                  <div className="flex items-center space-x-4">
+                    {/* Main Logo Container */}
+                    <div className="relative group cursor-pointer">
+                      {/* Animated background rings */}
+                      <div className="absolute inset-[-8px] bg-gradient-to-r from-sky-400 via-cyan-300 to-teal-400 rounded-full animate-spin-slow opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-700"></div>
+                      <div className="absolute inset-[-4px] bg-gradient-to-r from-teal-400 via-cyan-300 to-sky-400 rounded-full animate-reverse-spin opacity-70 blur-sm group-hover:opacity-100 transition-opacity duration-700"></div>
+                      
+                      <div className="relative">
+                        {/* Main logo shape */}
+                        <div className="relative w-14 h-14 bg-gradient-to-br from-sky-500 via-cyan-400 to-teal-500 rounded-full transform transition-all duration-500 group-hover:scale-110 hover:rotate-180">
+                          {/* Glass effect overlay */}
+                          <div className="absolute inset-[2px] bg-gradient-to-br from-white/30 to-white/10 rounded-full backdrop-blur-sm">
+                            {/* Logo content */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-white text-2xl font-bold font-sans tracking-wider transform transition-transform duration-500 group-hover:scale-110">
+                                A
+                              </span>
+                            </div>
+                            
+                            {/* Animated border */}
+                            <div className="absolute inset-0 rounded-full border-2 border-white/20 overflow-hidden">
+                              <div className="w-full h-full animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100">
+                                <div className="w-full h-full rounded-full border-2 border-transparent border-t-white/40"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+        
+                        {/* Floating particles */}
+                        <div className="absolute -top-1 -right-1 w-3 h-3">
+                          <div className="absolute inset-0 bg-cyan-300 rounded-full animate-float opacity-75"></div>
+                        </div>
+                        <div className="absolute bottom-0 -left-2 w-2 h-2">
+                          <div className="absolute inset-0 bg-teal-300 rounded-full animate-float-delayed opacity-75"></div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    {/* Brand Text */}
+                    <div className="relative group">
+                      <h1 className="text-4xl font-bold">
+                        <span className="relative inline-block">
+                          {/* Main text */}
+                          <span className="relative z-10 bg-gradient-to-r from-sky-200 via-cyan-300 to-teal-200 bg-clip-text text-transparent font-sans">
+                            Azad
+                          </span>
+                          
+                          {/* Text glow effect */}
+                          <span className="absolute inset-0 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 blur-md opacity-50 bg-clip-text text-transparent animate-pulse"></span>
+                          
+                          {/* Animated underline */}
+                          <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 group-hover:w-full transition-all duration-700 ease-out"></span>
+                        </span>
+                      </h1>
+                      <p className="text-sm font-medium mt-1">
+                        <span className="bg-gradient-to-r from-sky-200 via-cyan-200 to-teal-200 bg-clip-text text-transparent tracking-wider">
+                          Education Platform
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              {/* Desktop Menu */}
+              <div className="hidden md:flex items-center space-x-8">
+                {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
+                  <a
+                    key={item}
+                    onClick={() => navigate(`/${item.toLowerCase()}`)}
+                    className="relative group"
+                  >
+                    <span className="relative z-10 text-white hover:text-cyan-200 transition-colors duration-300 font-medium text-lg">
+                      {item}
+                    </span>
+                    {/* Animated hover effect */}
+                    <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                  </a>
+                ))}
+        
+                {/* Enhanced Action Buttons */}
+                <div className="flex items-center space-x-6">
+                  {/* Search Button */}
+                  <button
+                    onClick={() => setShowSearch(!showSearch)}
+                    className="relative group p-2 hover:bg-white/10 rounded-full transition-all duration-300"
+                  >
+                    <RiSearchLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
+                  </button>
+        
+                  {/* Notification Button */}
+                  <div className="relative group">
+                    <button className="p-2 hover:bg-white/10 rounded-full transition-all duration-300">
+                      <RiNotificationLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
+                    </button>
+                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-sky-500 to-teal-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-bounce">
+                      3
+                    </span>
+                  </div>
+        
+                  {/* Get Started Button */}
+                  {user ? (
+                    <Link to="/teacherdashboard" className="flex items-center gap-3 group">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 rounded-full animate-pulse opacity-75"></div>
+                        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-300/30 transform transition-transform duration-300 group-hover:scale-110">
+                          {user.profilePicture ? (
+                            <img
+                              src={user.profilePicture}
+                              alt="Profile"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-500 flex items-center justify-center text-white font-bold text-xl">
+                              {user.fullName?.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-white font-medium text-lg group-hover:text-cyan-200 transition-colors capitalize">
+                        {user.fullName}
+                      </span>
+                    </Link>
+                  ) : (
+                    <Link to="/signup">
+                      <button
+                        onClick={() => setShowLoginModal(true)}
+                        className="relative group"
+                      >
+                        <span className="absolute inset-0 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full blur group-hover:blur-md transition-all duration-300"></span>
+                        <span className="relative block px-8 py-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full text-white font-semibold group-hover:bg-gradient-to-r group-hover:from-sky-400 group-hover:via-cyan-400 group-hover:to-teal-400 transform transition-all duration-300 group-hover:scale-105">
+                          Get Started
+                        </span>
+                      </button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+        
+              {/* Mobile Menu Button */}
+              <button 
+                className="md:hidden relative group p-2 hover:bg-white/10 rounded-full transition-all duration-300"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? (
+                  <RiCloseLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
+                ) : (
+                  <RiMenuLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
+                )}
+              </button>
+            </div>
+        
+            {/* Mobile Menu */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="md:hidden bg-gradient-to-r from-sky-900/95 via-cyan-900/95 to-teal-900/95 backdrop-blur-xl border-t border-cyan-800/30"
+                >
+                  <div className="flex flex-col space-y-4 p-6">
+                    {["Courses", "Teachers", "Resources", "About"].map((item) => (
+                      <a
+                        key={item}
+                        href={`#${item.toLowerCase()}`}
+                        className="text-white hover:text-cyan-200 font-medium text-lg transition-colors"
+                      >
+                        {item}
+                      </a>
+                    ))}
+                    <button
+                      onClick={() => setShowLoginModal(true)}
+                      className="relative group w-full mt-4"
+                    >
+                      <span className="absolute inset-0 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full blur-sm"></span>
+                      <span className="relative block py-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full text-white font-semibold text-center">
+                        Get Started
+                      </span>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        
+          {/* Search Overlay */}
+          <AnimatePresence>
+            {showSearch && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-sky-950/80 backdrop-blur-md flex items-center justify-center"
+              >
+                <div className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl w-full max-w-2xl mx-4 border border-cyan-500/20 shadow-[0_8px_32px_0_rgba(0,201,255,0.2)]">
+                  <div className="flex items-center">
+                    <RiSearchLine className="text-cyan-300 mr-4 h-6 w-6" />
+                    <input
+                      type="text"
+                      placeholder="Search courses, teachers, or topics..."
+                      className="flex-1 bg-transparent border-none outline-none text-lg text-white placeholder-cyan-300/50"
+                      autoFocus
+                    />
+                    <button 
+                      onClick={() => setShowSearch(false)}
+                      className="text-cyan-300 hover:text-white transition-colors"
+                    >
+                      <RiCloseLine className="h-6 w-6" />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
       {/* Hero Section */}
       <header className="relative min-h-screen overflow-hidden bg-[#0A0F1C]">
       {/* Dynamic Background */}
@@ -485,45 +550,45 @@ const TeacherProfile = () => {
                 <h1 className="text-7xl font-bold tracking-tight leading-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r 
                                from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">
-                    {teacherData.name}
+        {teacher?.fullName || "Loading..."}
                   </span>
                 </h1>
                 <p className="text-3xl font-light bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
-                  {teacherData.title}
+                  {teacher?.bio}
                 </p>
               </motion.div>
             </div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-3 gap-8">
-              {[
-                { label: "Students", value: teacherData.students, icon: FaUsers },
-                { label: "Rating", value: teacherData.rating, icon: FaStar },
-                { label: "Experience", value: teacherData.experience, icon: FaClock }
-              ].map((stat, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 
-                              rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300" />
-                  <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10 
-                              backdrop-blur-xl hover:border-white/20 transition-all duration-300">
-                    <div className="flex flex-col items-center">
-                      <stat.icon className="text-3xl text-blue-400 mb-4 group-hover:text-blue-300 
-                                        transition-colors duration-300" />
-                      <div className="text-4xl font-bold text-white mb-2 tracking-tight">
-                        {stat.value}
-                      </div>
-                      <div className="text-blue-200 text-sm font-medium uppercase tracking-wider">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+           <motion.div variants={itemVariants} className="grid grid-cols-3 gap-8">
+  {[
+    { label: "Students", value: 0, icon: FaUsers },            // student review 0
+    { label: "Rating", value: 5, icon: FaStar },              // fixed rating 5
+    { label: "Experience", value: teacher?.experience, icon: FaClock } // teacher.experience
+  ].map((stat, idx) => (
+    <motion.div
+      key={idx}
+      whileHover={{ y: -8, scale: 1.02 }}
+      className="relative group"
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 
+                  rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+      <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10 
+                  backdrop-blur-xl hover:border-white/20 transition-all duration-300">
+        <div className="flex flex-col items-center">
+          <stat.icon className="text-3xl text-blue-400 mb-4 group-hover:text-blue-300 
+                            transition-colors duration-300" />
+          <div className="text-4xl font-bold text-white mb-2 tracking-tight">
+            {stat.value}
+          </div>
+          <div className="text-blue-200 text-sm font-medium uppercase tracking-wider">
+            {stat.label}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</motion.div>
 
             {/* CTA Section */}
             <motion.div variants={itemVariants} className="flex items-center gap-8">
@@ -583,8 +648,8 @@ const TeacherProfile = () => {
                            group-hover:border-white/20 transition-all duration-300"
                 >
                   <img
-                    src="https://media.istockphoto.com/id/157400344/photo/happy-forties.jpg?s=612x612&w=0&k=20&c=hVK0eBwnrzWFS2inwHJHHRLTDzaKpqOZqzSaQWf85lc="
-                    alt={teacherData.name}
+                    src={teacher?.profilePicture}
+                    alt={teacher?.fullName}
                     className="w-[540px] h-[640px] object-cover transition-transform duration-500 
                              group-hover:scale-105"
                   />
@@ -610,7 +675,7 @@ const TeacherProfile = () => {
                          bg-white/5 backdrop-blur-xl border border-white/10"
               >
                 <div className="text-3xl font-bold text-white mb-1">
-                  {teacherData.experience}
+                  {teacher?.experience}
                 </div>
                 <div className="text-blue-200 font-medium">Years Teaching</div>
               </motion.div>
@@ -685,7 +750,7 @@ const TeacherProfile = () => {
     <div className="relative group">
       <div className="w-40 h-40 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden shadow-2xl ring-4 ring-indigo-600/30">
         <img 
-          src="https://media.istockphoto.com/id/157400344/photo/happy-forties.jpg?s=612x612&w=0&k=20&c=hVK0eBwnrzWFS2inwHJHHRLTDzaKpqOZqzSaQWf85lc="
+          src={teacher?.profilePicture}
           alt="Teacher Name"
           className="w-full h-full object-cover transform transition-transform group-hover:scale-110"
         />
@@ -735,7 +800,7 @@ const TeacherProfile = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
-                    {teacherData.name}
+                    {teacher?.fullName}
                   </motion.h2>
                   
                   <motion.div 
@@ -744,7 +809,7 @@ const TeacherProfile = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
-                    {['Expert Educator', teacherData.title].map((tag, idx) => (
+                    {['Expert Educator', teacher.bio].map((tag, idx) => (
                       <span 
                         key={idx} 
                         className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20"
@@ -762,9 +827,9 @@ const TeacherProfile = () => {
                     transition={{ delay: 0.4 }}
                   >
                     {[
-                      { icon: FaUsers, label: 'Students', value: '2.3k+', color: 'from-blue-500 to-indigo-500' },
-                      { icon: FaStar, label: 'Rating', value: '4.9', color: 'from-yellow-500 to-orange-500' },
-                      { icon: FaAward, label: 'Courses', value: '15+', color: 'from-purple-500 to-pink-500' }
+                      { icon: FaUsers, label: 'Students', value: '0', color: 'from-blue-500 to-indigo-500' },
+                      { icon: FaStar, label: 'Rating', value: '5', color: 'from-yellow-500 to-orange-500' },
+                      { icon: FaAward, label: 'Courses', value: '1', color: 'from-purple-500 to-pink-500' }
                     ].map((stat, idx) => (
                       <motion.div
                         key={idx}
@@ -828,9 +893,11 @@ const TeacherProfile = () => {
               
               <div className="space-y-6">
                 {[
-                  { icon: FaEnvelope, label: 'Email', value: teacherData.email },
-                  { icon: FaMapMarkerAlt, label: 'Location', value: teacherData.location },
-                  { icon: FaCalendarAlt, label: 'Available', value: teacherData.availability }
+                  { icon: FaEnvelope, label: 'Email', value: teacher.email },
+                  { icon: FaMapMarkerAlt, label: 'Location', value: teacher.
+address
+ },
+                  { icon: FaCalendarAlt, label: 'Available', value: teacher.availableTimings.join(", ")  }
                 ].map(({ icon: Icon, label, value }, i) => (
                   <motion.div
                     key={i}
