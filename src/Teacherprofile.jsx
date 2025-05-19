@@ -893,11 +893,11 @@ const { id } = useParams();
               
               <div className="space-y-6">
                 {[
-                  { icon: FaEnvelope, label: 'Email', value: teacher.email },
-                  { icon: FaMapMarkerAlt, label: 'Location', value: teacher.
+                  { icon: FaEnvelope, label: 'Email', value: teacher?.email },
+                  { icon: FaMapMarkerAlt, label: 'Location', value: teacher?.
 address
  },
-                  { icon: FaCalendarAlt, label: 'Available', value: teacher.availableTimings.join(", ")  }
+                  { icon: FaCalendarAlt, label: 'Available', value: teacher?.availableTimings.join(", ")  }
                 ].map(({ icon: Icon, label, value }, i) => (
                   <motion.div
                     key={i}
