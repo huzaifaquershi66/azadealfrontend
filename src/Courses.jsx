@@ -1,9 +1,9 @@
 import React, { useState, useEffect,useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiSearch, FiBook, FiUser, FiMapPin, FiClock, FiCalendar, FiUserPlus, FiAward, FiPlay, FiTrendingUp, FiGrid,FiUsers,FiBookOpen,FiGlobe,FiFilter,  FiBarChart, FiX, FiRefreshCw,FiDollarSign, FiStar, FiVideo,FiDownload, FiArrowRight,FiBarChart2 ,FiCpu,FiHeart ,FiCheck,FiChevronDown,FiCode  } from "react-icons/fi";
-import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine } from "react-icons/ri";
+import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine,RiArrowRightLine } from "react-icons/ri";
 // import { motion, AnimatePresence } from "framer-motion";
-import { FaUserGraduate, FaChalkboardTeacher, FaChalkboard,FaBookOpen,FaLinkedin,FaTwitter,FaEnvelope ,FaCalendarAlt,FaClock,FaUser,FaDollarSign, FaCode,FaBookmark,FaQuoteLeft,FaGraduationCap,FaCheckCircle,FaClipboardList,FaArrowRight } from 'react-icons/fa';
+import { FaUserGraduate, FaChalkboardTeacher, FaChalkboard,FaBookOpen,FaLinkedin,FaTwitter,FaEnvelope ,FaCalendarAlt,FaClock,FaUser,FaDollarSign, FaCode,FaBookmark,FaQuoteLeft,FaGraduationCap,FaCheckCircle,FaClipboardList,FaArrowRight,FaStar,FaRegHeart, FaCheck} from 'react-icons/fa';
 import { BsLightningCharge, BsStars,BsPeopleFill, BsBookFill } from "react-icons/bs";
 import { IoSchoolOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
@@ -24,174 +24,137 @@ const getLevelColor = (level) => {
   return colors[level] || '#6b7280'; // gray-500 as default
 };
   const currentUser = "huzaifa8883";
- const filterOptions = {
-  categories: [
+const filterOptions = {
+  category: [
     {
-      name: 'Academic Courses',
-      icon: <FiBook className="w-8 h-8" />,
-      count: 150,
-      color: 'from-blue-500 via-blue-600 to-indigo-600',
-      bgLight: 'bg-blue-50/80',
-      description: 'Matric, Inter, O/A Levels, Engineering & Medical'
+      group: "Academic Courses",
+      options: [
+        { value: "matric_inter", label: "Matric & Intermediate" },
+        { value: "o_a_level", label: "O-Level & A-Level" },
+        { value: "engineering_entrance", label: "Engineering Entrance Exams" },
+        { value: "medical_entrance", label: "Medical Entrance Exams" },
+        { value: "css_fpsc", label: "CSS & FPSC Preparation" },
+        { value: "bachelors_masters", label: "Bachelors & Masters" }
+      ]
     },
     {
-      name: 'Professional Skills',
-      icon: <FiCode className="w-8 h-8" />,
-      count: 120,
-      color: 'from-violet-500 via-purple-500 to-purple-600',
-      bgLight: 'bg-purple-50/80',
-      description: 'Web Development, Digital Marketing, Graphic Design'
+      group: "Professional & Skill-Based",
+      options: [
+        { value: "freelancing", label: "Freelancing" },
+        { value: "graphic_design", label: "Graphic Designing" },
+        { value: "digital_marketing", label: "Digital Marketing" },
+        { value: "ecommerce", label: "E-commerce" },
+        { value: "web_development", label: "Web Development" },
+        { value: "app_development", label: "App Development" },
+        { value: "cyber_security", label: "Cyber Security" },
+        { value: "data_science_ai", label: "Data Science & AI" }
+      ]
     },
     {
-      name: 'Languages',
-      icon: <FiGlobe className="w-8 h-8" />,
-      count: 85,
-      color: 'from-emerald-400 via-emerald-500 to-green-600',
-      bgLight: 'bg-emerald-50/80',
-      description: 'English, IELTS, TOEFL, Urdu, Chinese'
+      group: "Language & Communication",
+      options: [
+        { value: "english", label: "English Language" },
+        { value: "urdu_pashto", label: "Urdu & Pashto Writing" },
+        { value: "foreign_languages", label: "Foreign Languages" }
+      ]
     },
     {
-      name: 'Competitive Exams',
-      icon: <FiAward className="w-8 h-8" />,
-      count: 95,
-      color: 'from-rose-400 via-pink-500 to-pink-600',
-      bgLight: 'bg-rose-50/80',
-      description: 'CSS, FPSC, Military Tests, Entry Tests'
+      group: "Government & Competitive",
+      options: [
+        { value: "govt_exams", label: "Government Exams" },
+        { value: "military_test", label: "Military Test Prep" },
+        { value: "police_agencies", label: "Police & Agencies Prep" },
+        { value: "university_tests", label: "University Entry Tests" }
+      ]
     },
     {
-      name: 'Business & Finance',
-      icon: <FiBarChart2 className="w-8 h-8" />,
-      count: 70,
-      color: 'from-amber-400 via-amber-500 to-yellow-600',
-      bgLight: 'bg-amber-50/80',
-      description: 'Accounting, Stock Trading, Entrepreneurship'
+      group: "Business & Finance",
+      options: [
+        { value: "accounting_finance", label: "Accounting & Finance" },
+        { value: "stock_crypto", label: "Stock & Crypto Trading" },
+        { value: "entrepreneurship", label: "Entrepreneurship" }
+      ]
     },
     {
-      name: 'Personal Development',
-      icon: <FiUser className="w-8 h-8" />,
-      count: 60,
-      color: 'from-cyan-400 via-cyan-500 to-blue-600',
-      bgLight: 'bg-cyan-50/80',
-      description: 'Leadership, Public Speaking, Career Counseling'
+      group: "Personal Development",
+      options: [
+        { value: "time_management", label: "Time Management" },
+        { value: "public_speaking", label: "Public Speaking" },
+        { value: "leadership", label: "Leadership" },
+        { value: "career_counseling", label: "Career Counseling" }
+      ]
     },
     {
-      name: 'Technology & AI',
-      icon: <FiCpu className="w-8 h-8" />,
-      count: 80,
-      color: 'from-teal-400 via-teal-500 to-emerald-600',
-      bgLight: 'bg-teal-50/80',
-      description: 'Data Science, AI, Cyber Security'
-    },
-    {
-      name: 'Islamic Studies',
-      icon: <FiHeart className="w-8 h-8" />,
-      count: 45,
-      color: 'from-green-400 via-green-500 to-emerald-600',
-      bgLight: 'bg-green-50/80',
-      description: 'Quran, Hadith, Islamic Finance'
+      group: "Islamic & Religious",
+      options: [
+        { value: "quran_tajweed", label: "Quran & Tajweed" },
+        { value: "hadith_fiqh", label: "Hadith & Fiqh" },
+        { value: "islamic_finance", label: "Islamic Finance" }
+      ]
     }
   ],
-  
   level: [
-    { value: "", label: "All Levels" },
-    { value: "Beginner", label: "Beginner" },
-    { value: "Intermediate", label: "Intermediate" },
-    { value: "Advanced", label: "Advanced" },
-    { value: "Expert", label: "Expert" }
+    {
+      group: "Difficulty Levels",
+      options: [
+        { value: "beginner", label: "Beginner" },
+        { value: "intermediate", label: "Intermediate" },
+        { value: "advanced", label: "Advanced" },
+        { value: "expert", label: "Expert" }
+      ]
+    }
   ],
-
-  province: [
-    { value: "", label: "Select Province" },
-    { value: "Punjab", label: "Punjab" },
-    { value: "Sindh", label: "Sindh" },
-    { value: "KPK", label: "Khyber Pakhtunkhwa" },
-    { value: "Balochistan", label: "Balochistan" },
-    { value: "GB", label: "Gilgit Baltistan" },
-    { value: "AJK", label: "Azad Kashmir" },
-    { value: "ICT", label: "Islamabad Capital Territory" }
-  ],
-
-  cityByProvince: {
-    Punjab: [
-      { value: "", label: "Select City" },
-      { value: "Lahore", label: "Lahore" },
-      { value: "Faisalabad", label: "Faisalabad" },
-      { value: "Rawalpindi", label: "Rawalpindi" },
-      { value: "Multan", label: "Multan" },
-      { value: "Gujranwala", label: "Gujranwala" },
-      { value: "Sialkot", label: "Sialkot" },
-      { value: "Bahawalpur", label: "Bahawalpur" }
-    ],
-    Sindh: [
-      { value: "", label: "Select City" },
-      { value: "Karachi", label: "Karachi" },
-      { value: "Hyderabad", label: "Hyderabad" },
-      { value: "Sukkur", label: "Sukkur" },
-      { value: "Larkana", label: "Larkana" }
-    ],
-    KPK: [
-      { value: "", label: "Select City" },
-      { value: "Peshawar", label: "Peshawar" },
-      { value: "Mardan", label: "Mardan" },
-      { value: "Swat", label: "Swat" },
-      { value: "Abbottabad", label: "Abbottabad" }
-    ],
-    Balochistan: [
-      { value: "", label: "Select City" },
-      { value: "Quetta", label: "Quetta" },
-      { value: "Gawadar", label: "Gawadar" },
-      { value: "Turbat", label: "Turbat" },
-      { value: "Khuzdar", label: "Khuzdar" }
-    ],
-    GB: [
-      { value: "", label: "Select City" },
-      { value: "Gilgit", label: "Gilgit" },
-      { value: "Skardu", label: "Skardu" },
-      { value: "Hunza", label: "Hunza" }
-    ],
-    AJK: [
-      { value: "", label: "Select City" },
-      { value: "Muzaffarabad", label: "Muzaffarabad" },
-      { value: "Mirpur", label: "Mirpur" },
-      { value: "Kotli", label: "Kotli" }
-    ],
-    ICT: [
-      { value: "", label: "Select City" },
-      { value: "Islamabad", label: "Islamabad" }
-    ]
-  },
-
   ageGroup: [
-    { value: "", label: "All Age Groups" },
-    { value: "Kids", label: "Kids (7-12)" },
-    { value: "Teens", label: "Teens (13-17)" },
-    { value: "Young Adults", label: "Young Adults (18-25)" },
-    { value: "Adults", label: "Adults (26+)" }
+    {
+      group: "Age Ranges",
+      options: [
+        { value: "kids", label: "Kids (7-12 years)" },
+        { value: "teens", label: "Teens (13-17 years)" },
+        { value: "young-adults", label: "Young Adults (18-25 years)" },
+        { value: "adults", label: "Adults (26+ years)" }
+      ]
+    }
   ],
-
   duration: [
-    { value: "", label: "Any Duration" },
-    { value: "0-1 Month", label: "0-1 Month" },
-    { value: "1-3 Months", label: "1-3 Months" },
-    { value: "3-6 Months", label: "3-6 Months" },
-    { value: "6+ Months", label: "6+ Months" }
+    {
+      group: "Course Length",
+      options: [
+        { value: "short", label: "Short (0-4 weeks)" },
+        { value: "medium", label: "Medium (1-3 months)" },
+        { value: "long", label: "Long (3-6 months)" },
+        { value: "extended", label: "Extended (6+ months)" }
+      ]
+    }
   ],
-
   price: [
-    { value: "", label: "Any Price" },
-    { value: "Free", label: "Free" },
-    { value: "Under $50", label: "Under $50" },
-    { value: "$50-$100", label: "$50-$100" },
-    { value: "$100-$200", label: "$100-$200" },
-    { value: "$200+", label: "$200+" }
+    {
+      group: "Price Ranges",
+      options: [
+        { value: "free", label: "Free" },
+        { value: "low", label: "Low (Under $50)" },
+        { value: "medium", label: "Medium ($50-$200)" },
+        { value: "high", label: "High ($200+)" }
+      ]
+    }
   ],
-
   schedule: [
-    { value: "", label: "Any Schedule" },
-    { value: "Weekdays", label: "Weekdays (10:00 AM - 12:00 PM)" },
-    { value: "Weekends", label: "Weekends (2:00 PM - 4:00 PM)" },
-    { value: "Evening", label: "Evening (6:00 PM - 8:00 PM)" },
-    { value: "Self-Paced", label: "Self-Paced (Study at Your Own Time)" }
+    {
+      group: "Class Timings",
+      options: [
+        { value: "morning", label: "Morning (6 AM - 12 PM)" },
+        { value: "afternoon", label: "Afternoon (12 PM - 4 PM)" },
+        { value: "evening", label: "Evening (4 PM - 8 PM)" },
+        { value: "night", label: "Night (8 PM - 12 AM)" }
+      ]
+    },
+    {
+      group: "Days",
+      options: [
+        { value: "weekdays", label: "Weekdays" },
+        { value: "weekends", label: "Weekends" },
+        { value: "flexible", label: "Flexible" }
+      ]
+    }
   ]
 };
 
@@ -359,6 +322,7 @@ const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
   
        const [user, setUser] = useState(null);
+
         useEffect(() => {
           const storedUser = localStorage.getItem("user");
           if (storedUser) {
@@ -386,234 +350,266 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
+     const getMenuItemDescription = (item) => {
+  const descriptions = {
+    Home: "Back to main page",
+    Courses: "Browse all available courses",
+    Teachers: "Meet our expert instructors",
+    Resources: "Learning materials & tools",
+    About: "Learn more about us"
+  };
+  return descriptions[item] || "";
+};
   return (
-  <nav className={`fixed w-full z-50 transition-all duration-500 ${
-   isScrolled 
-     ? "bg-gradient-to-r from-sky-900/95 via-cyan-900/95 to-teal-900/95 shadow-[0_8px_32px_0_rgba(0,201,255,0.2)] backdrop-blur-xl" 
-     : "bg-transparent backdrop-blur-sm bg-gradient-to-r from-sky-900/50 via-cyan-900/50 to-teal-900/50"
- }`}>
-   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div className="flex justify-between items-center h-20">
-       {/* Logo */}
-       <div className="flex items-center">
-         <div className="relative group">
-           <div className="flex items-center space-x-4">
-             {/* Main Logo Container */}
-             <div className="relative group cursor-pointer">
-               {/* Animated background rings */}
-               <div className="absolute inset-[-8px] bg-gradient-to-r from-sky-400 via-cyan-300 to-teal-400 rounded-full animate-spin-slow opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-700"></div>
-               <div className="absolute inset-[-4px] bg-gradient-to-r from-teal-400 via-cyan-300 to-sky-400 rounded-full animate-reverse-spin opacity-70 blur-sm group-hover:opacity-100 transition-opacity duration-700"></div>
-               
-               <div className="relative">
-                 {/* Main logo shape */}
-                 <div className="relative w-14 h-14 bg-gradient-to-br from-sky-500 via-cyan-400 to-teal-500 rounded-full transform transition-all duration-500 group-hover:scale-110 hover:rotate-180">
-                   {/* Glass effect overlay */}
-                   <div className="absolute inset-[2px] bg-gradient-to-br from-white/30 to-white/10 rounded-full backdrop-blur-sm">
-                     {/* Logo content */}
-                     <div className="absolute inset-0 flex items-center justify-center">
-                       <span className="text-white text-2xl font-bold font-sans tracking-wider transform transition-transform duration-500 group-hover:scale-110">
-                         A
-                       </span>
-                     </div>
-                     
-                     {/* Animated border */}
-                     <div className="absolute inset-0 rounded-full border-2 border-white/20 overflow-hidden">
-                       <div className="w-full h-full animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100">
-                         <div className="w-full h-full rounded-full border-2 border-transparent border-t-white/40"></div>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
- 
-                 {/* Floating particles */}
-                 <div className="absolute -top-1 -right-1 w-3 h-3">
-                   <div className="absolute inset-0 bg-cyan-300 rounded-full animate-float opacity-75"></div>
-                 </div>
-                 <div className="absolute bottom-0 -left-2 w-2 h-2">
-                   <div className="absolute inset-0 bg-teal-300 rounded-full animate-float-delayed opacity-75"></div>
-                 </div>
-               </div>
-             </div>
- 
-             {/* Brand Text */}
-             <div className="relative group">
-               <h1 className="text-4xl font-bold">
-                 <span className="relative inline-block">
-                   {/* Main text */}
-                   <span className="relative z-10 bg-gradient-to-r from-sky-200 via-cyan-300 to-teal-200 bg-clip-text text-transparent font-sans">
-                     Azad
-                   </span>
-                   
-                   {/* Text glow effect */}
-                   <span className="absolute inset-0 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 blur-md opacity-50 bg-clip-text text-transparent animate-pulse"></span>
-                   
-                   {/* Animated underline */}
-                   <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 group-hover:w-full transition-all duration-700 ease-out"></span>
-                 </span>
-               </h1>
-               <p className="text-sm font-medium mt-1">
-                 <span className="bg-gradient-to-r from-sky-200 via-cyan-200 to-teal-200 bg-clip-text text-transparent tracking-wider">
-                   Education Platform
-                 </span>
-               </p>
-             </div>
-           </div>
-         </div>
-       </div>
- 
-       {/* Desktop Menu */}
-       <div className="hidden md:flex items-center space-x-8">
-         {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
-           <a
-             key={item}
-             onClick={() => navigate(`/${item.toLowerCase()}`)}
-             className="relative group"
-           >
-             <span className="relative z-10 text-white hover:text-cyan-200 transition-colors duration-300 font-medium text-lg">
-               {item}
-             </span>
-             {/* Animated hover effect */}
-             <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-           </a>
-         ))}
- 
-         {/* Enhanced Action Buttons */}
-         <div className="flex items-center space-x-6">
-           {/* Search Button */}
-           <button
-             onClick={() => setShowSearch(!showSearch)}
-             className="relative group p-2 hover:bg-white/10 rounded-full transition-all duration-300"
-           >
-             <RiSearchLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
-           </button>
- 
-           {/* Notification Button */}
-           <div className="relative group">
-             <button className="p-2 hover:bg-white/10 rounded-full transition-all duration-300">
-               <RiNotificationLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
-             </button>
-             <span className="absolute -top-1 -right-1 bg-gradient-to-r from-sky-500 to-teal-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-bounce">
-               3
-             </span>
-           </div>
- 
-           {/* Get Started Button */}
-           {user ? (
-             <Link to="/teacherdashboard" className="flex items-center gap-3 group">
-               <div className="relative">
-                 <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 rounded-full animate-pulse opacity-75"></div>
-                 <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-300/30 transform transition-transform duration-300 group-hover:scale-110">
-                   {user.profilePicture ? (
-                     <img
-                       src={user.profilePicture}
-                       alt="Profile"
-                       className="w-full h-full object-cover"
-                     />
-                   ) : (
-                     <div className="w-full h-full bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-500 flex items-center justify-center text-white font-bold text-xl">
-                       {user.fullName?.charAt(0).toUpperCase()}
-                     </div>
-                   )}
-                 </div>
-               </div>
-               <span className="text-white font-medium text-lg group-hover:text-cyan-200 transition-colors capitalize">
-                 {user.fullName}
-               </span>
-             </Link>
-           ) : (
-             <Link to="/signup">
-               <button
-                 onClick={() => setShowLoginModal(true)}
-                 className="relative group"
-               >
-                 <span className="absolute inset-0 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full blur group-hover:blur-md transition-all duration-300"></span>
-                 <span className="relative block px-8 py-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full text-white font-semibold group-hover:bg-gradient-to-r group-hover:from-sky-400 group-hover:via-cyan-400 group-hover:to-teal-400 transform transition-all duration-300 group-hover:scale-105">
-                   Get Started
-                 </span>
-               </button>
-             </Link>
-           )}
-         </div>
-       </div>
- 
-       {/* Mobile Menu Button */}
-       <button 
-         className="md:hidden relative group p-2 hover:bg-white/10 rounded-full transition-all duration-300"
-         onClick={() => setIsMenuOpen(!isMenuOpen)}
-       >
-         {isMenuOpen ? (
-           <RiCloseLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
-         ) : (
-           <RiMenuLine className="h-6 w-6 text-white group-hover:text-cyan-300 transition-colors duration-300" />
-         )}
-       </button>
-     </div>
- 
-     {/* Mobile Menu */}
-     <AnimatePresence>
-       {isMenuOpen && (
-         <motion.div
-           initial={{ opacity: 0, height: 0 }}
-           animate={{ opacity: 1, height: "auto" }}
-           exit={{ opacity: 0, height: 0 }}
-           className="md:hidden bg-gradient-to-r from-sky-900/95 via-cyan-900/95 to-teal-900/95 backdrop-blur-xl border-t border-cyan-800/30"
-         >
-           <div className="flex flex-col space-y-4 p-6">
-             {["Courses", "Teachers", "Resources", "About"].map((item) => (
-               <a
-                 key={item}
-                 href={`#${item.toLowerCase()}`}
-                 className="text-white hover:text-cyan-200 font-medium text-lg transition-colors"
-               >
-                 {item}
-               </a>
-             ))}
-             <button
-               onClick={() => setShowLoginModal(true)}
-               className="relative group w-full mt-4"
-             >
-               <span className="absolute inset-0 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full blur-sm"></span>
-               <span className="relative block py-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 rounded-full text-white font-semibold text-center">
-                 Get Started
-               </span>
-             </button>
-           </div>
-         </motion.div>
-       )}
-     </AnimatePresence>
-   </div>
- 
-   {/* Search Overlay */}
-   <AnimatePresence>
-     {showSearch && (
-       <motion.div
-         initial={{ opacity: 0 }}
-         animate={{ opacity: 1 }}
-         exit={{ opacity: 0 }}
-         className="fixed inset-0 bg-sky-950/80 backdrop-blur-md flex items-center justify-center"
-       >
-         <div className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl w-full max-w-2xl mx-4 border border-cyan-500/20 shadow-[0_8px_32px_0_rgba(0,201,255,0.2)]">
-           <div className="flex items-center">
-             <RiSearchLine className="text-cyan-300 mr-4 h-6 w-6" />
-             <input
-               type="text"
-               placeholder="Search courses, teachers, or topics..."
-               className="flex-1 bg-transparent border-none outline-none text-lg text-white placeholder-cyan-300/50"
-               autoFocus
-             />
-             <button 
-               onClick={() => setShowSearch(false)}
-               className="text-cyan-300 hover:text-white transition-colors"
-             >
-               <RiCloseLine className="h-6 w-6" />
-             </button>
-           </div>
-         </div>
-       </motion.div>
-     )}
-   </AnimatePresence>
- </nav>
+<nav className={`fixed w-full z-50 transition-all duration-500 ${
+  isScrolled 
+    ? "bg-gradient-to-r from-indigo-900/95 via-blue-900/95 to-purple-900/95 shadow-[0_8px_32px_0_rgba(99,102,241,0.15)] backdrop-blur-xl" 
+    : "bg-transparent backdrop-blur-sm bg-gradient-to-r from-indigo-900/50 via-blue-900/50 to-purple-900/50"
+}`}>
+  <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+    <div className="flex justify-between items-center h-16 sm:h-20">
+      {/* Logo */}
+      <div className="flex items-center">
+        <div className="relative group">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Main Logo Container */}
+            <div className="relative group cursor-pointer">
+              {/* Animated background rings */}
+              <div className="absolute inset-[-8px] bg-gradient-to-r from-indigo-400 via-blue-300 to-purple-400 rounded-full animate-spin-slow opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-700"></div>
+              <div className="absolute inset-[-4px] bg-gradient-to-r from-purple-400 via-blue-300 to-indigo-400 rounded-full animate-reverse-spin opacity-60 blur-sm group-hover:opacity-90 transition-opacity duration-700"></div>
+              
+              <div className="relative">
+                {/* Main logo shape */}
+                <div className="relative w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 via-blue-400 to-purple-500 rounded-full transform transition-all duration-500 group-hover:scale-110 hover:rotate-180">
+                  {/* Glass effect overlay */}
+                  <div className="absolute inset-[2px] bg-gradient-to-br from-white/40 to-white/20 rounded-full backdrop-blur-sm">
+                    {/* Logo content */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-white text-xl sm:text-2xl font-bold font-sans tracking-wider transform transition-transform duration-500 group-hover:scale-110">
+                        A
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Brand Text */}
+            <div className="relative group">
+              <h1 className="text-2xl sm:text-4xl font-bold">
+                <span className="relative inline-block">
+                  <span className="relative z-10 bg-gradient-to-r from-indigo-200 via-blue-200 to-purple-200 bg-clip-text text-transparent font-sans">
+                    Azad
+                  </span>
+                </span>
+              </h1>
+              <p className="hidden sm:block text-sm font-medium mt-1">
+                <span className="bg-gradient-to-r from-indigo-100 via-blue-100 to-purple-100 bg-clip-text text-transparent tracking-wider">
+                  Education Platform
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+        {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
+          <a
+            key={item}
+            onClick={() => navigate(`/${item.toLowerCase()}`)}
+            className="relative group"
+          >
+            <span className="relative z-10 text-white hover:text-indigo-200 transition-colors duration-300 font-medium text-base lg:text-lg">
+              {item}
+            </span>
+            <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </a>
+        ))}
+
+        {/* Enhanced Action Buttons */}
+        <div className="flex items-center space-x-4 lg:space-x-6">
+          {/* Search Button */}
+          <button
+            onClick={() => setShowSearch(!showSearch)}
+            className="relative group p-2 hover:bg-white/5 rounded-full transition-all duration-300"
+          >
+            <RiSearchLine className="h-5 w-5 sm:h-6 sm:w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
+          </button>
+
+          {/* Get Started Button */}
+          {user ? (
+            <Link to="/teacherdashboard" className="flex items-center gap-2 sm:gap-3 group">
+              <div className="relative">
+                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-indigo-300/30 transform transition-transform duration-300 group-hover:scale-110">
+                  {user.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                      {user.fullName?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <span className="text-white font-medium text-sm sm:text-lg group-hover:text-indigo-200 transition-colors capitalize">
+                {user.fullName}
+              </span>
+            </Link>
+          ) : (
+            <Link to="/signup">
+              <button
+                onClick={() => setShowLoginModal(true)}
+                className="relative group"
+              >
+                <span className="relative block px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-full text-white font-semibold text-sm sm:text-base group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:via-blue-400 group-hover:to-purple-400 transform transition-all duration-300 group-hover:scale-105">
+                  Get Started
+                </span>
+              </button>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Menu Button */}
+      <button 
+        className="md:hidden relative group p-2 hover:bg-white/5 rounded-full transition-all duration-300"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        {isMenuOpen ? (
+          <RiCloseLine className="h-6 w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
+        ) : (
+          <RiMenuLine className="h-6 w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
+        )}
+      </button>
+    </div>
+
+    {/* Mobile Menu */}
+  <AnimatePresence>
+  {isMenuOpen && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      className="md:hidden fixed top-16 sm:top-20 left-0 right-0 bg-gradient-to-b from-indigo-900/98 to-purple-900/98 backdrop-blur-xl border-t border-indigo-500/20 shadow-2xl"
+    >
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="max-w-7xl mx-auto"
+      >
+        <div className="p-6 space-y-6">
+          {/* Menu Items */}
+          <div className="grid gap-4">
+            {[
+              { name: "Home", icon: "🏠", path: "/" },
+              { name: "Courses", icon: "📚", path: "/courses" },
+              { name: "Teachers", icon: "👩‍🏫", path: "/academies" },
+              { name: "Resources", icon: "📑", path: "/resources" },
+              { name: "About", icon: "ℹ️", path: "/about" }
+            ].map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => {
+                  navigate(item.path);
+                  setIsMenuOpen(false); // Close menu after navigation
+                }}
+                className="group flex items-center space-x-4 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 cursor-pointer"
+              >
+                <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 group-hover:from-indigo-500/30 group-hover:to-purple-500/30 backdrop-blur-sm transition-all duration-300">
+                  <span className="text-2xl">{item.icon}</span>
+                </span>
+                <div className="flex flex-col">
+                  <span className="text-white font-medium text-lg group-hover:text-indigo-200 transition-colors">
+                    {item.name}
+                  </span>
+                  <span className="text-indigo-300/60 text-sm">
+                    {getMenuItemDescription(item.name)}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-4 pt-4 border-t border-indigo-500/20">
+            {/* Search Bar */}
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center">
+                <RiSearchLine className="h-5 w-5 text-indigo-300/60 group-hover:text-indigo-200 transition-colors" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search courses, teachers..."
+                className="w-full pl-12 pr-4 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 focus:bg-indigo-500/20 rounded-xl border border-indigo-500/20 hover:border-indigo-500/30 focus:border-indigo-500/40 text-white placeholder-indigo-300/60 outline-none transition-all duration-300"
+              />
+            </div>
+
+            {/* Get Started Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setShowLoginModal(true);
+                setIsMenuOpen(false); // Close menu when opening login modal
+              }}
+              className="relative w-full group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative flex items-center justify-center space-x-3 py-4 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-xl text-white font-semibold text-lg">
+                <span>Get Started</span>
+                <RiArrowRightLine className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+            </motion.button>
+
+            {/* Additional Links */}
+            <div className="flex items-center justify-between pt-4 text-sm">
+              <div
+                onClick={() => {
+                  navigate('/help');
+                  setIsMenuOpen(false);
+                }}
+                className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+              >
+                Need Help?
+              </div>
+              <span className="text-indigo-500/40">•</span>
+              <div
+                onClick={() => {
+                  navigate('/contact');
+                  setIsMenuOpen(false);
+                }}
+                className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+              >
+                Contact Us
+              </div>
+              <span className="text-indigo-500/40">•</span>
+              <div
+                onClick={() => {
+                  navigate('/faq');
+                  setIsMenuOpen(false);
+                }}
+                className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+              >
+                FAQ
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+  </div>
+</nav>
   );
 };
 
@@ -862,6 +858,7 @@ const Hero = () => (
 const CourseCard = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  
     useEffect(() => {
       const fetchCourses = async () => {
         try {
@@ -876,258 +873,350 @@ const CourseCard = () => {
       };
       fetchCourses();
     }, []);
+    const getLevelBadgeColor = (level) => {
+  const colors = {
+    beginner: 'bg-green-100/90 text-green-800',
+    intermediate: 'bg-yellow-100/90 text-yellow-800',
+    advanced: 'bg-red-100/90 text-red-800',
+    expert: 'bg-purple-100/90 text-purple-800'
+  };
+  return colors[level.toLowerCase()] || colors.beginner;
+};
   return (
     <>
- {courses.map((course, index) => (
+{courses.map((course, index) => (
   <motion.div
     key={course._id}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     whileHover={{ 
       y: -12,
-      scale: 1.02,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { duration: 0.3, ease: "easeOut" }
     }}
-    className="relative bg-gradient-to-br from-white via-white to-blue-50/30 rounded-[2.8rem] overflow-hidden
-      shadow-[0_15px_60px_rgba(8,_112,_184,_0.18)] hover:shadow-[0_25px_80px_rgba(8,_112,_184,_0.28)]
-      transform transition-all duration-700 border border-blue-100/50
-      backdrop-blur-3xl"
+    className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl 
+      transition-all duration-500 border border-gray-100 backdrop-blur-lg"
   >
-    {/* Premium Image Section with Enhanced Overlay */}
-    <div className="relative group">
-      <div className="absolute inset-0 bg-gradient-to-t 
-        from-[#000B1D]/98 via-[#000B1D]/75 to-transparent z-10 
-        opacity-90 group-hover:opacity-80 transition-all duration-700" />
+    {/* Course Image & Header Section - Enhanced */}
+    <div className="relative h-[300px] overflow-hidden">
+      {/* Improved gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent 
+        group-hover:from-black/95 transition-all duration-500" />
       
-      {/* Course Image with Premium Animation */}
-      <img 
+      <motion.img 
         src={course.thumbnail}
         alt={course.title}
-        className="w-full h-[22rem] object-cover transform group-hover:scale-110 
-          transition-all duration-1200 ease-out filter brightness-110 contrast-105"
+        className="w-full h-full object-cover"
+        whileHover={{ scale: 1.08 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
       />
 
-      {/* Premium Glass Effect Top Bar */}
-      <div className="absolute top-6 left-0 right-0 px-8 z-20 flex justify-between items-center">
-        {/* Enhanced Level Indicator */}
-        <div className="flex items-center space-x-3 bg-white/95 backdrop-blur-2xl 
-          px-7 py-3.5 rounded-full shadow-2xl border border-white/60
-          hover:bg-white/98 hover:border-blue-200/60 transition-all duration-500">
-          <div className="relative">
-            <div className="w-3.5 h-3.5 rounded-full animate-pulse"
-              style={{ backgroundColor: getLevelColor(course.level) }} />
-            <div className="absolute inset-0 w-3.5 h-3.5 rounded-full animate-ping opacity-50"
-              style={{ backgroundColor: getLevelColor(course.level) }} />
-          </div>
-          <span className="text-sm font-extrabold bg-gradient-to-r 
-            from-blue-900 to-blue-700 text-transparent bg-clip-text tracking-wider">
-            {course.level.toUpperCase()}
-          </span>
-        </div>
-
-        {/* Premium Price Tag with Glow Effect */}
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600
-          px-8 py-3.5 rounded-full font-bold shadow-2xl 
-          flex items-center space-x-2.5 border border-white/20
-          hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 
-          transition-all duration-500 group/price
-          hover:shadow-[0_0_30px_rgba(37,_99,_235,_0.3)]">
-          <FaDollarSign className="text-blue-200 text-sm group-hover/price:scale-110 
-            transition-transform duration-300" />
-          <span className="text-2xl text-white font-black tracking-wider">
-            {course.price}
-          </span>
-        </div>
-      </div>
-
-      {/* Enhanced Language Badge with Glowing Effect */}
-      <div className="absolute top-36 left-8 z-20">
-        <div className="flex items-center space-x-3.5 bg-black/35 backdrop-blur-2xl 
-          px-7 py-3.5 rounded-full border border-white/15 group/lang
-          hover:bg-black/45 hover:border-white/25 transition-all duration-500
-          hover:shadow-[0_0_25px_rgba(59,_130,_246,_0.2)]">
-          <FaCode className="text-blue-300 text-lg group-hover/lang:rotate-12 
-            transition-transform duration-300" />
-          <span className="text-sm font-bold text-white tracking-wider">
-            {course.language}
-          </span>
-        </div>
-      </div>
-
-      {/* Premium Title Section with Enhanced Typography */}
-      <div className="absolute bottom-0 left-0 right-0 p-9 z-20">
-        <h3 className="text-3xl font-extrabold text-white leading-tight
-          group-hover:text-blue-100 transition-colors duration-500
-          tracking-tight drop-shadow-2xl">
-          {course.title}
-        </h3>
-      </div>
-    </div>
-
-    {/* Enhanced Content Section with More Elegant Spacing */}
-    <div className="p-9 space-y-9">
-      {/* Modern Category Tags with Hover Effects */}
-      <div className="flex flex-wrap gap-3">
-        {course.category.split(',').map((cat, i) => (
-          <span key={i} className="px-7 py-3 bg-gradient-to-r from-blue-50 via-indigo-50/70 to-purple-50/50
-            text-blue-700 rounded-full text-sm font-bold border border-blue-100/80
-            hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center space-x-2.5
-            hover:border-blue-200/80 group/tag">
-            <FaBookmark className="text-blue-500 text-sm group-hover/tag:rotate-12 
-              transition-transform duration-300" />
-            <span className="tracking-wide">{cat.trim()}</span>
-          </span>
-        ))}
-      </div>
-
-      {/* Premium Description Box with Enhanced Glass Effect */}
-      <div className="bg-gradient-to-br from-blue-50/60 via-white to-purple-50/40 p-8 
-        rounded-2xl border border-blue-100/90 hover:shadow-xl transition-all duration-500
-        group/desc hover:border-blue-200/90">
-        <div className="flex items-start space-x-4">
-          <FaQuoteLeft className="text-blue-400 text-xl group-hover/desc:rotate-12 
-            transition-transform duration-300" />
-          <p className="text-gray-700 text-sm leading-relaxed font-medium">
-            {course.description}
-          </p>
-        </div>
-      </div>
-
-      {/* Learning Outcomes with Enhanced Visual Hierarchy */}
-      <div className="bg-gradient-to-r from-blue-50/90 to-indigo-50/60 p-8 rounded-2xl 
-        border border-blue-200/60 hover:shadow-xl transition-all duration-500 group/learn
-        hover:border-blue-300/60">
-        <div className="flex items-center space-x-4 mb-5">
-          <div className="p-2.5 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl
-            shadow-lg group-hover/learn:shadow-blue-500/30 transition-all duration-500">
-            <FaGraduationCap className="text-white text-xl group-hover/learn:rotate-12 
-              transition-transform duration-300" />
-          </div>
-          <h4 className="text-lg font-extrabold text-blue-900 tracking-wide">
-            What you'll learn
-          </h4>
-        </div>
-        <ul className="space-y-3.5">
-          {course.whatYouWillLearn.filter(Boolean).map((item, i) => (
-            <li key={i} className="flex items-start space-x-3.5 group/item">
-              <FaCheckCircle className="text-blue-500 text-lg mt-0.5 flex-shrink-0 
-                group-hover/item:scale-110 transition-transform duration-300" />
-              <span className="text-blue-800/90 text-sm font-medium">{item.trim()}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Requirements Section with Modern Design */}
-      <div className="bg-gradient-to-r from-indigo-50/60 to-purple-50/40 p-8 rounded-2xl 
-        border border-indigo-200/60 hover:shadow-xl transition-all duration-500 group/req
-        hover:border-indigo-300/60">
-        <div className="flex items-center space-x-4 mb-5">
-          <div className="p-2.5 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl
-            shadow-lg group-hover/req:shadow-indigo-500/30 transition-all duration-500">
-            <FaClipboardList className="text-white text-xl group-hover/req:rotate-12 
-              transition-transform duration-300" />
-          </div>
-          <h4 className="text-lg font-extrabold text-indigo-900 tracking-wide">
-            Requirements
-          </h4>
-        </div>
-        <ul className="space-y-3.5">
-          {course.requirements.filter(Boolean).map((req, i) => (
-            <li key={i} className="flex items-start space-x-3.5 group/item">
-              <FaArrowRight className="text-indigo-500 text-lg mt-0.5 flex-shrink-0
-                group-hover/item:translate-x-1 transition-transform duration-300" />
-              <span className="text-indigo-800/90 text-sm font-medium">{req.trim()}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Premium Enroll Button with Enhanced Animation */}
-      <Link to={`/courses/${course._id}`} className="block">
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600
-            hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700
-            text-white font-extrabold py-7 rounded-2xl shadow-2xl
-            hover:shadow-[0_15px_45px_-5px_rgba(37,_99,_235,_0.35)] transition-all duration-500
-            flex items-center justify-center space-x-4 group/btn
-            border border-white/10 hover:border-white/20"
+      {/* Enhanced Course Meta Information */}
+      <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+        {/* Improved Level Badge */}
+        <motion.span 
+          whileHover={{ scale: 1.05 }}
+          className={`px-4 py-2 rounded-full text-sm font-semibold 
+            ${getLevelBadgeColor(course.level)} backdrop-blur-md shadow-lg
+            border border-white/10`}
         >
-          <span className="text-lg tracking-wider">Enroll Now</span>
-          <FaArrowRight className="text-lg group-hover/btn:translate-x-2.5 
-            transition-transform duration-500" />
-        </motion.button>
-      </Link>
+          {course.level}
+        </motion.span>
+
+        {/* Enhanced Price Tag */}
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          className="flex items-center bg-white/95 px-4 py-2 rounded-full shadow-lg
+            border border-blue-100"
+        >
+          <FaDollarSign className="text-blue-600 mr-1" />
+          <span className="font-bold bg-gradient-to-r from-blue-600 to-blue-800 
+            bg-clip-text text-transparent">{course.price}</span>
+        </motion.div>
+      </div>
+
+      {/* Enhanced Course Title Section */}
+      <div className="absolute bottom-4 left-4 right-4 transform group-hover:translate-y-0 
+        transition-transform duration-300">
+        <h3 className="text-2xl font-bold text-white mb-3 leading-tight
+          group-hover:text-blue-400 transition-colors duration-300">{course.title}</h3>
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-md 
+            rounded-full px-3 py-1">
+            <FaClock className="text-blue-400" />
+            <span className="text-sm text-gray-100">{course.duration}</span>
+          </div>
+          <div className="flex items-center space-x-1 bg-white/10 backdrop-blur-md 
+            rounded-full px-3 py-1">
+            <FaStar className="text-yellow-400" />
+            <span className="text-sm text-gray-100">4.8</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    {/* Enhanced Course Content Section */}
+    <div className="p-8">
+      {/* Improved Categories */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        <motion.span
+          whileHover={{ scale: 1.05 }}
+          className="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 
+            text-blue-600 rounded-full text-sm font-medium border border-blue-200
+            hover:shadow-md transition-all duration-300"
+        >
+          {course.category}
+        </motion.span>
+      </div>
+
+      {/* Enhanced Description */}
+      <p className="text-gray-600 text-base mb-6 line-clamp-2 leading-relaxed">
+        {course.description}
+      </p>
+
+      {/* Improved Key Features */}
+      <div className="space-y-4 mb-8">
+        <motion.div 
+          whileHover={{ x: 4 }}
+          className="flex items-start space-x-3 group/item"
+        >
+          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 
+            flex items-center justify-center">
+            <FaCheck className="text-green-500 text-sm" />
+          </div>
+          <span className="text-gray-700 group-hover/item:text-gray-900 
+            transition-colors duration-300">{course.whatYouWillLearn}</span>
+        </motion.div>
+      </div>
+
+      {/* Enhanced Instructor Info */}
+      <div className="flex items-center justify-between pb-6 border-b border-gray-100">
+        <motion.div 
+          whileHover={{ x: 4 }}
+          className="flex items-center space-x-4"
+        >
+          <div className="relative">
+            <img 
+              src={"http://res.cloudinary.com/duovmhekc/image/upload/v1741728230/muslrmcbyrsfum9p8mxn.png"}
+              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg"
+            />
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 
+              rounded-full border-2 border-white" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900">Top Instructor</h4>
+            <p className="text-sm text-gray-500">Expert Level</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Enhanced Action Buttons */}
+      <div className="pt-8 flex items-center justify-between">
+        <Link 
+          to={`/courses/${course._id}`}
+          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white 
+            px-8 py-4 rounded-2xl font-bold tracking-wide
+            hover:from-blue-700 hover:to-blue-800 transition-all duration-300 
+            transform hover:-translate-y-1 shadow-lg hover:shadow-xl
+            text-center uppercase text-sm"
+        >
+          Enroll Now
+        </Link>
+        <motion.button 
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="ml-4 p-4 rounded-2xl border border-gray-200 hover:bg-gray-50
+            transition-colors duration-300 shadow-md hover:shadow-lg"
+        >
+          <FaRegHeart className="text-gray-600 text-xl" />
+        </motion.button>
+      </div>
+    </div>
+
+    {/* Enhanced Progress Badge */}
+    {course.progress && (
+      <div className="absolute top-4 right-4">
+        <motion.div 
+          className="relative"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className="w-16 h-16 bg-white rounded-full shadow-lg p-2">
+            <CircularProgressbar 
+              value={course.progress} 
+              text={`${course.progress}%`}
+              styles={buildStyles({
+                pathColor: `#2563EB`,
+                textColor: '#1E40AF',
+                trailColor: '#EFF6FF',
+                pathTransitionDuration: 0.5,
+              })}
+            />
+          </div>
+        </motion.div>
+      </div>
+    )}
   </motion.div>
 ))}
   </>
 )
 }
-  
+  // In your parent component:
+
+
+// Search and Filter Component
+const SearchFilters = ( ) => {
+  // States
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showTimeMenu, setShowTimeMenu] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const currentUser = "huzaifaquershi66";
+const [filters, setFilters] = useState({
+  search: '',
+  category: '',
+  level: '',
+  ageGroup: '',
+  duration: '',
+  price: '',
+  schedule: ''
+});
+
 const resetFilters = () => {
-    setFilters({
-      search: "",
-      category: "",
-      level: "",
-      city: "",
-      ageGroup: "",
-      duration: "",
-      price: "",
-      schedule: ""
+  setFilters({
+    search: '',
+    category: '',
+    level: '',
+    ageGroup: '',
+    duration: '',
+    price: '',
+    schedule: ''
+  });
+};
+
+// Then in your JSX:
+<SearchFilters 
+  filters={filters}
+  setFilters={setFilters}
+  resetFilters={resetFilters}
+/>
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format time functions
+  const formatDateTime = (date) => {
+    return date.toISOString().replace('T', ' ').slice(0, 19);
+  };
+
+  const formatDisplayTime = (date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: true 
     });
   };
-// Search and Filter Component
-const SearchFilters = ({ filters, setFilters, currentUser, currentTime, resetFilters }) => {
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [availableCities, setAvailableCities] = useState([]);
-  const selectRef = useRef(null);
+
+  const formatDisplayDate = (date) => {
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // FilterCategory Component
+  const FilterCategory = ({ category, isActive, onClick, selectedValue, onOptionSelect, options, openCategory,
+  setOpenCategory }) => {
+  const showOptions = openCategory === category;
+    const categoryRef = useRef(null);
+    const isOpen = openCategory === category;
+const handleToggle = () => {
+    setOpenCategory(isOpen ? null : category);
+  };
+
+  const handleSelect = (value) => {
+    onOptionSelect(value);
+  };
 
   useEffect(() => {
-    if (activeCategory && selectRef.current) {
-      selectRef.current.focus();
-    }
-  }, [activeCategory]);
+    const handleClickOutside = (e) => {
+      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+        setOpenCategory(null);
+      }
+    };
 
-  useEffect(() => {
-    if (filters.province) {
-      setAvailableCities(filterOptions.cityByProvince[filters.province] || []);
-      setFilters((prev) => ({ ...prev, city: "" }));
-    } else {
-      setAvailableCities([]);
+    if (isOpen) {
+      window.addEventListener('click', handleClickOutside);
     }
-  }, [filters.province, setFilters]);
 
-  const SelectField = ({ label, icon: Icon, value, onChange, options }) => {
-    const isDisabled = label.toLowerCase() === "city" && !filters.province;
+    return () => window.removeEventListener('click', handleClickOutside);
+  }, [isOpen, setOpenCategory]);
+
 
     return (
-      <div className="relative">
-        <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
-        <div className="relative">
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-            <Icon className="text-gray-400" />
+    <div className="relative" ref={categoryRef}>
+      <div
+        className={`p-4 rounded-2xl cursor-pointer transition-all duration-200
+          ${isActive 
+            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleToggle();
+        }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <FiFilter className={`text-xl ${isActive ? 'text-white' : 'text-blue-500'}`} />
+            <span className="font-medium">
+              {category === 'ageGroup' ? 'Age Group' : category.charAt(0).toUpperCase() + category.slice(1)}
+            </span>
           </div>
-          <select
-            ref={label.toLowerCase() === activeCategory?.toLowerCase() ? selectRef : null}
-            value={value}
-            onChange={onChange}
-            disabled={isDisabled}
-            className={`w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl
-              focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10
-              text-gray-700 appearance-none cursor-pointer transition-all duration-200
-              ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
-          >
-            {options.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          {selectedValue && (
+            <span className={`text-sm ${isActive ? 'text-white/80' : 'text-gray-500'}`}>
+              {selectedValue}
+            </span>
+          )}
         </div>
       </div>
+
+      {isOpen && (
+        <div
+          className="absolute bottom-full left-0 right-0 mb-2 z-50 bg-white rounded-xl shadow-xl border border-gray-100 p-3 max-h-[300px] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {options.map((groupObj, groupIndex) => (
+            <div key={groupIndex} className="mb-3 last:mb-0">
+              <div className="text-sm font-semibold text-gray-500 mb-2 px-2">
+                {groupObj.group}
+              </div>
+              {groupObj.options.map((option, index) => (
+                <div
+                  key={index}
+                  className="w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                  onClick={() => handleSelect(option.value)}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>{option.label}</span>
+                    {selectedValue === option.value && (
+                      <FiCheck className="text-blue-500" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
     );
   };
 
@@ -1138,43 +1227,107 @@ const SearchFilters = ({ filters, setFilters, currentUser, currentTime, resetFil
       exit={{ opacity: 0, y: -20 }}
       className="bg-white rounded-3xl shadow-2xl p-8 mb-8 mt-12"
     >
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-6 border-b border-gray-100">
-        <div className="flex items-center space-x-4 mb-4 md:mb-0">
-          <div className="p-3 bg-blue-50 rounded-2xl">
-            <FiFilter className="text-2xl text-blue-600" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">Search Filters</h2>
-            <p className="text-gray-500 text-sm mt-1">Find your perfect match</p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-4">
-          {/* User Info */}
-          <div className="flex items-center bg-gray-50 rounded-xl px-4 py-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-semibold">
-              {currentUser?.[0]?.toUpperCase()}
+      {/* Header Section */}
+      <div className="relative mb-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 via-indigo-50/50 to-purple-50/50 rounded-2xl"></div>
+        <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center p-6 rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-xl shadow-lg shadow-blue-500/5">
+          {/* Left Section - Title */}
+          <div className="flex items-center space-x-6 mb-6 md:mb-0">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="relative p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl transform transition-transform duration-300 group-hover:scale-105">
+                <FiFilter className="text-2xl text-white" />
+              </div>
             </div>
-            <span className="ml-3 text-gray-700 font-medium">{"huzaifa8883"}</span>
+            <div className="relative group">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                Search Filters
+              </h2>
+              <p className="text-gray-500 text-sm mt-1 group-hover:text-gray-600 transition-colors duration-300">
+                Find your perfect match
+              </p>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 group-hover:w-full transition-all duration-500"></div>
+            </div>
           </div>
 
-          {/* Time */}
-          <div className="flex items-center bg-gray-50 rounded-xl px-4 py-2">
-            <FiClock className="text-gray-400" />
-            <span className="ml-2 text-gray-600 text-sm">{currentTime}</span>
-          </div>
+          {/* Right Section - User Info & Actions */}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* User Profile */}
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center space-x-3 px-4 py-2.5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300 cursor-pointer"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg animate-pulse opacity-50 blur"></div>
+                  <div className="relative w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm border-2 border-white">
+                    {currentUser[0].toUpperCase()}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-gray-800 font-medium">{currentUser}</span>
+                  <span className="text-gray-400 text-xs">Active Now</span>
+                </div>
+              </motion.div>
 
-          {/* Reset Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={resetFilters}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-700 font-medium transition-all duration-200"
-          >
-            <FiRefreshCw className="text-blue-500" />
-            <span>Reset</span>
-          </motion.button>
+              <AnimatePresence>
+                {showUserMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                  >
+                    {/* User Menu Content */}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Time Display */}
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center space-x-3 px-4 py-2.5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300 cursor-pointer"
+                onClick={() => setShowTimeMenu(!showTimeMenu)}
+              >
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
+                    <FiClock className="text-blue-500 text-lg" />
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-gray-800 font-medium">{formatDisplayTime(currentDateTime)}</span>
+                  <span className="text-gray-400 text-xs">Today</span>
+                </div>
+              </motion.div>
+
+              <AnimatePresence>
+                {showTimeMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                  >
+                    {/* Time Menu Content */}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Reset Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={resetFilters}
+              className="group flex items-center space-x-3 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl text-white font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300"
+            >
+              <FiRefreshCw className="text-lg group-hover:rotate-180 transition-transform duration-500" />
+              <span>Reset Filters</span>
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -1195,258 +1348,28 @@ const SearchFilters = ({ filters, setFilters, currentUser, currentTime, resetFil
       </div>
 
       {/* Filter Categories */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-        {['category', 'level', 'ageGroup', 'duration', 'price', 'schedule'].map((category, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className={`p-4 rounded-2xl cursor-pointer transition-all duration-200
-              ${activeCategory === category 
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-gray-50 text-gray-600 hover:bg-gray-100'}`}
-            onClick={() => setActiveCategory(category)}
-          >
-            <div className="flex items-center space-x-3">
-              <FiFilter className={`text-xl ${activeCategory === category ? 'text-white' : 'text-blue-500'}`} />
-              <span className="font-medium">
-                {category === 'ageGroup' ? 'Age Group' : category.charAt(0).toUpperCase() + category.slice(1)}
-              </span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Province and City Selection */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <SelectField
-          label="Province"
-          icon={FiFilter}
-          value={filters.province}
-          onChange={(e) => setFilters({ ...filters, province: e.target.value })}
-          options={filterOptions.province}
-        />
-
-        <SelectField
-          label="City"
-          icon={FiFilter}
-          value={filters.city}
-          onChange={(e) => setFilters({ ...filters, city: e.target.value })}
-          options={availableCities}
-        />
-      </div>
-
-      {/* Active Category Options */}
-   {activeCategory && (
-  <AnimatePresence>
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="mb-10 relative"
-    >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-50 via-indigo-50/50 to-blue-50 
-        rounded-xl -m-2 blur-xl opacity-70"></div>
-
-      {/* Main Filter Container */}
-      <div className="relative bg-white/90 backdrop-blur-xl rounded-xl p-6
-        shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-purple-100/50">
-
-        {/* Filter Header */}
-        <div className="flex items-center mb-4">
-          <FiFilter className="w-5 h-5 text-purple-600 mr-3" />
-          <h3 className="text-lg font-bold bg-gradient-to-r from-purple-900 to-indigo-800 
-            bg-clip-text text-transparent">
-            {activeCategory === 'ageGroup' 
-              ? 'Age Group' 
-              : activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)} Filter
-          </h3>
-        </div>
-
-        {/* Enhanced Select Field */}
-        <div className="relative">
-          <select
-            value={filters[activeCategory]}
-            onChange={(e) => setFilters({ ...filters, [activeCategory]: e.target.value })}
-            className="w-full bg-gray-50/50 border border-purple-100 text-gray-700 
-              py-3.5 px-4 pr-10 rounded-lg appearance-none cursor-pointer
-              focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400
-              transition-all duration-300 hover:border-purple-300"
-          >
-            <option value="">Select {activeCategory === 'ageGroup' ? 'an age group' : `a ${activeCategory}`}</option>
-
-            {/* Grouped Options */}
-            {[
-              {
-                group: "Academic Courses (School & College)",
-                options: [
-                  { value: "Matric & Intermediate", label: "Matric & Intermediate (Science, Arts, Commerce)" },
-                  { value: "O-Level & A-Level", label: "O-Level & A-Level (Cambridge & Federal Board)" },
-                  { value: "Engineering Entrance Exams", label: "Engineering Entrance Exams (ECAT, NUST, PIEAS, GIKI)" },
-                  { value: "Medical Entrance Exams", label: "Medical Entrance Exams (MDCAT, NUMS, AKU)" },
-                  { value: "CSS & FPSC Preparation", label: "CSS & FPSC Preparation" },
-                  { value: "Bachelors & Masters", label: "Bachelors & Masters (BS, MS, MBA, MPhil, PhD)" },
-                ]
-              },
-              {
-                group: "Professional & Skill-Based Courses",
-                options: [
-                  { value: "Freelancing", label: "Freelancing (Fiverr, Upwork, PeoplePerHour)" },
-                  { value: "Graphic Designing", label: "Graphic Designing (Photoshop, Illustrator, Canva)" },
-                  { value: "Digital Marketing", label: "Digital Marketing (SEO, FB Ads, Google Ads, SMM)" },
-                  { value: "E-commerce", label: "E-commerce (Daraz, Amazon, Shopify, eBay, Etsy)" },
-                  { value: "Web Development", label: "Web Development (HTML, CSS, JS, React, Laravel, WP)" },
-                  { value: "App Development", label: "App Development (Flutter, React Native, Android, iOS)" },
-                  { value: "Cyber Security", label: "Cyber Security & Ethical Hacking" },
-                  { value: "Data Science & AI", label: "Data Science & AI (Python, ML, DL, ChatGPT Tools)" },
-                ]
-              },
-              {
-                group: "Language & Communication Courses",
-                options: [
-                  { value: "English Language", label: "English Language (IELTS, TOEFL, Spoken)" },
-                  { value: "Urdu & Pashto Writing", label: "Urdu & Pashto Writing" },
-                  { value: "Foreign Languages", label: "Chinese, German, French Language Courses" },
-                ]
-              },
-              {
-                group: "Government & Competitive Exam Preparation",
-                options: [
-                  { value: "Government Exams", label: "CSS, PMS, FPSC, PPSC, SPSC, KPPSC, BPSC" },
-                  { value: "Military Test Prep", label: "Pak Army, Navy, Air Force (ISSB, Initial Tests)" },
-                  { value: "Police & Agencies Prep", label: "Police, FIA, ASF, NAB Exam Preparation" },
-                  { value: "University Entry Tests", label: "LUMS, IBA, FAST, GIKI Entry Tests" },
-                ]
-              },
-              {
-                group: "Business & Finance",
-                options: [
-                  { value: "Accounting & Finance", label: "Accounting & Finance (QuickBooks, Excel, Tally, SAP)" },
-                  { value: "Stock & Crypto Trading", label: "Stock Market & Crypto Trading" },
-                  { value: "Entrepreneurship", label: "Entrepreneurship & Business Startup Guide" },
-                ]
-              },
-              {
-                group: "Personal Development",
-                options: [
-                  { value: "Time Management", label: "Time Management & Productivity" },
-                  { value: "Public Speaking", label: "Public Speaking & Communication Skills" },
-                  { value: "Leadership", label: "Leadership & Team Management" },
-                  { value: "Career Counseling", label: "Career Counseling & Job Interview Preparation" },
-                ]
-              },
-              {
-                group: "Islamic & Religious Students",
-                options: [
-                  { value: "Quran & Tajweed", label: "Quran Tafseer & Tajweed" },
-                  { value: "Hadith & Fiqh", label: "Hadith & Fiqh Courses" },
-                  { value: "Islamic Finance", label: "Islamic Banking & Finance" },
-                ]
-              }
-            ].map((groupObj) => (
-              <optgroup key={groupObj.group} label={groupObj.group}>
-                {groupObj.options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-
-          {/* Custom Select Arrow */}
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none
-            text-purple-600 transition-transform duration-300
-            transform group-hover:translate-x-1">
-            <FiChevronDown className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Active Filter Tags */}
-        {filters[activeCategory] && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 flex items-center gap-2 flex-wrap"
-          >
-            <motion.span
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="inline-flex items-center px-4 py-2 rounded-full
-                bg-purple-100/70 text-purple-700 text-sm font-medium
-                border border-purple-200/50"
-            >
-              {[
-                ...[].concat(
-                  ...[
-                    // flatten all group options for lookup
-                    {
-                      options: [
-                        { value: "Matric & Intermediate", label: "Matric & Intermediate (Science, Arts, Commerce)" },
-                        { value: "O-Level & A-Level", label: "O-Level & A-Level (Cambridge & Federal Board)" },
-                        { value: "Engineering Entrance Exams", label: "Engineering Entrance Exams (ECAT, NUST, PIEAS, GIKI)" },
-                        { value: "Medical Entrance Exams", label: "Medical Entrance Exams (MDCAT, NUMS, AKU)" },
-                        { value: "CSS & FPSC Preparation", label: "CSS & FPSC Preparation" },
-                        { value: "Bachelors & Masters", label: "Bachelors & Masters (BS, MS, MBA, MPhil, PhD)" },
-                        { value: "Freelancing", label: "Freelancing (Fiverr, Upwork, PeoplePerHour)" },
-                        { value: "Graphic Designing", label: "Graphic Designing (Photoshop, Illustrator, Canva)" },
-                        { value: "Digital Marketing", label: "Digital Marketing (SEO, FB Ads, Google Ads, SMM)" },
-                        { value: "E-commerce", label: "E-commerce (Daraz, Amazon, Shopify, eBay, Etsy)" },
-                        { value: "Web Development", label: "Web Development (HTML, CSS, JS, React, Laravel, WP)" },
-                        { value: "App Development", label: "App Development (Flutter, React Native, Android, iOS)" },
-                        { value: "Cyber Security", label: "Cyber Security & Ethical Hacking" },
-                        { value: "Data Science & AI", label: "Data Science & AI (Python, ML, DL, ChatGPT Tools)" },
-                        { value: "English Language", label: "English Language (IELTS, TOEFL, Spoken)" },
-                        { value: "Urdu & Pashto Writing", label: "Urdu & Pashto Writing" },
-                        { value: "Foreign Languages", label: "Chinese, German, French Language Courses" },
-                        { value: "Government Exams", label: "CSS, PMS, FPSC, PPSC, SPSC, KPPSC, BPSC" },
-                        { value: "Military Test Prep", label: "Pak Army, Navy, Air Force (ISSB, Initial Tests)" },
-                        { value: "Police & Agencies Prep", label: "Police, FIA, ASF, NAB Exam Preparation" },
-                        { value: "University Entry Tests", label: "LUMS, IBA, FAST, GIKI Entry Tests" },
-                        { value: "Accounting & Finance", label: "Accounting & Finance (QuickBooks, Excel, Tally, SAP)" },
-                        { value: "Stock & Crypto Trading", label: "Stock Market & Crypto Trading" },
-                        { value: "Entrepreneurship", label: "Entrepreneurship & Business Startup Guide" },
-                        { value: "Time Management", label: "Time Management & Productivity" },
-                        { value: "Public Speaking", label: "Public Speaking & Communication Skills" },
-                        { value: "Leadership", label: "Leadership & Team Management" },
-                        { value: "Career Counseling", label: "Career Counseling & Job Interview Preparation" },
-                        { value: "Quran & Tajweed", label: "Quran Tafseer & Tajweed" },
-                        { value: "Hadith & Fiqh", label: "Hadith & Fiqh Courses" },
-                        { value: "Islamic Finance", label: "Islamic Banking & Finance" }
-                      ]
-                    }
-                  ].map(group => group.options)
-                )
-              ].find(opt => opt.value === filters[activeCategory])?.label}
-              <button
-                onClick={() => setFilters({ ...filters, [activeCategory]: '' })}
-                className="ml-2 hover:text-purple-900 transition-colors duration-200"
-              >
-                ×
-              </button>
-            </motion.span>
-          </motion.div>
-        )}
-
-        {/* Helper Text */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-3 text-sm text-gray-500"
-        >
-          {filters[activeCategory] 
-            ? `Showing results for selected ${activeCategory}`
-            : `Select a ${activeCategory} to filter results`}
-        </motion.p>
-      </div>
-    </motion.div>
-  </AnimatePresence>
-)}
-
-
+     {/* Filter Categories */}
+{/* Filter Categories */}
+<div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+  {['category', 'level', 'ageGroup', 'duration', 'price', 'schedule'].map((category) => (
+    <FilterCategory
+      key={category}
+      category={category}
+      isActive={openCategory === category || filters[category]}
+      selectedValue={filters[category]}
+      onOptionSelect={(value) => {
+        setFilters(prev => ({ ...prev, [category]: value }));
+        setOpenCategory(null);
+      }}
+      options={filterOptions[category] || [{
+        group: "Options",
+        options: [{ value: "none", label: "No options available" }]
+      }]}
+      openCategory={openCategory}
+      setOpenCategory={setOpenCategory}
+    />
+  ))}
+</div>
       {/* Active Filters */}
       <AnimatePresence>
         {Object.entries(filters).some(([_, value]) => value) && (
@@ -1481,7 +1404,6 @@ const SearchFilters = ({ filters, setFilters, currentUser, currentTime, resetFil
     </motion.div>
   );
 };
-
 const filterCategories = [
   { name: 'All', icon: FiGrid },
   { name: 'Popular', icon: FiTrendingUp },

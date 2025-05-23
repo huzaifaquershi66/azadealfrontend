@@ -1,8 +1,8 @@
 import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
-import { RiSearchLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine} from "react-icons/ri";
+import { Link, useNavigate } from "react-router-dom";
+import { RiSearchLine,RiArrowRightLine, RiNotificationLine, RiCloseLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine} from "react-icons/ri";
 import { FiClock, FiBook, FiAward, FiUser, FiUsers, FiBookmark, FiCheck, FiPlay, FiGlobe, FiStar, FiBarChart,FiCreditCard,FiDollarSign  } from 'react-icons/fi';
 import confetti from 'canvas-confetti';
 import io from 'socket.io-client';
@@ -23,6 +23,7 @@ const CourseDetailPage = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+    const [user, setUser] = useState(null);
 
 
    const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -221,6 +222,22 @@ const CourseDetailPage = () => {
 
     fetchCourse();
   }, [slug]);  // Re-fetch when slug changes
+  useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      }, []);
+    const getMenuItemDescription = (item) => {
+  const descriptions = {
+    Home: "Back to main page",
+    Courses: "Browse all available courses",
+    Teachers: "Meet our expert instructors",
+    Resources: "Learning materials & tools",
+    About: "Learn more about us"
+  };
+  return descriptions[item] || "";
+};
 
   if (loading) {
     return <div>Loading...</div>;  // Show loading state while data is being fetched
@@ -315,281 +332,379 @@ const CourseDetailPage = () => {
   };
   return (
     <>
-  <nav className={`fixed w-full z-50 transition-all duration-300 ${
-  isScrolled 
-    ? "bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md shadow-lg" 
-    : "bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md"
-}`}>
-  {/* Rest of your navbar code remains the same, just updating the color-related classes */}
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="flex justify-between items-center h-20">
-      {/* Logo */}
-      <div className="flex items-center">
-  <div className="relative group">
-    <div className="flex items-center space-x-3">
-      {/* Main Logo Container */}
-      <div className="relative group cursor-pointer">
-        {/* Background glow effect */}
-        <div className="absolute inset-[-4px] bg-gradient-to-r from-rose-600/50 via-orange-500/50 to-amber-500/50 rounded-xl blur-md group-hover:blur-lg transition-all duration-500"></div>
-        
-        <div className="relative">
-          {/* Main logo shape - Made wider than height */}
-          <div className="relative w-16 h-12 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 rounded-xl transform transition-all duration-500 group-hover:scale-105 shadow-lg group-hover:shadow-orange-500/50">
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-xl animate-shine"></div>
-            
-            {/* Glass effect */}
-            <div className="absolute inset-[1px] bg-gradient-to-br from-white/20 to-transparent rounded-xl backdrop-blur-sm">
-              {/* Diagonal lines pattern */}
-              <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,white_2px,white_3px)]"></div>
-            </div>
-            
-            {/* Center content with 3D effect */}
-            <div className="absolute inset-0 flex items-center justify-center transform transition-transform duration-500">
-              <span className="relative text-white text-2xl font-bold font-sans tracking-wider group-hover:scale-110">
-                {/* Text shadow for 3D effect */}
-                <span className="absolute -top-[1px] -left-[1px] text-orange-200/50">A</span>
-                <span className="relative">A</span>
-                <span className="absolute -bottom-[1px] -right-[1px] text-rose-700/50">A</span>
-              </span>
-            </div>
-
-            {/* Animated border with gradient */}
-            <div className="absolute inset-0 rounded-xl border border-white/20 overflow-hidden">
-              <div className="absolute inset-0 animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100">
-                <div className="w-full h-full rounded-xl border border-transparent border-t-white/40"></div>
+  <nav className={`fixed w-full z-50 transition-all duration-500 ${
+    isScrolled 
+      ? "bg-gradient-to-r from-indigo-900/95 via-blue-900/95 to-purple-900/95 shadow-[0_8px_32px_0_rgba(99,102,241,0.15)] backdrop-blur-xl" 
+      : "bg-transparent backdrop-blur-sm bg-gradient-to-r from-indigo-900/50 via-blue-900/50 to-purple-900/50"
+  }`}>
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+      <div className="flex justify-between items-center h-16 sm:h-20">
+        {/* Logo */}
+        <div className="flex items-center">
+          <div className="relative group">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* Main Logo Container */}
+              <div className="relative group cursor-pointer">
+                {/* Animated background rings */}
+                <div className="absolute inset-[-8px] bg-gradient-to-r from-indigo-400 via-blue-300 to-purple-400 rounded-full animate-spin-slow opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-700"></div>
+                <div className="absolute inset-[-4px] bg-gradient-to-r from-purple-400 via-blue-300 to-indigo-400 rounded-full animate-reverse-spin opacity-60 blur-sm group-hover:opacity-90 transition-opacity duration-700"></div>
+                
+                <div className="relative">
+                  {/* Main logo shape */}
+                  <div className="relative w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 via-blue-400 to-purple-500 rounded-full transform transition-all duration-500 group-hover:scale-110 hover:rotate-180">
+                    {/* Glass effect overlay */}
+                    <div className="absolute inset-[2px] bg-gradient-to-br from-white/40 to-white/20 rounded-full backdrop-blur-sm">
+                      {/* Logo content */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-white text-xl sm:text-2xl font-bold font-sans tracking-wider transform transition-transform duration-500 group-hover:scale-110">
+                          A
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              {/* Brand Text */}
+              <div className="relative group">
+                <h1 className="text-2xl sm:text-4xl font-bold">
+                  <span className="relative inline-block">
+                    <span className="relative z-10 bg-gradient-to-r from-indigo-200 via-blue-200 to-purple-200 bg-clip-text text-transparent font-sans">
+                      Azad
+                    </span>
+                  </span>
+                </h1>
+                <p className="hidden sm:block text-sm font-medium mt-1">
+                  <span className="bg-gradient-to-r from-indigo-100 via-blue-100 to-purple-100 bg-clip-text text-transparent tracking-wider">
+                    Education Platform
+                  </span>
+                </p>
               </div>
             </div>
           </div>
-
-          {/* Enhanced particles */}
-          <div className="absolute -top-1 -right-1 w-3 h-3">
-            <div className="absolute inset-0 bg-amber-400 rounded-full animate-ping opacity-75"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full animate-pulse"></div>
-          </div>
-          <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5">
-            <div className="absolute inset-0 bg-rose-400 rounded-full animate-pulse"></div>
-            <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping opacity-75 delay-300"></div>
-          </div>
-
-          {/* Sparkle effects */}
-          <div className="absolute -top-2 left-1/2 w-1 h-1 bg-white rounded-full animate-twinkle"></div>
-          <div className="absolute top-1/2 -right-2 w-1 h-1 bg-white rounded-full animate-twinkle delay-150"></div>
         </div>
-      </div>
-
-      {/* Text container with enhanced styling */}
-      <div className="relative">
-        <h1 className="text-3xl font-bold mb-0">
-          <span className="relative inline-block">
-            {/* Main text with vibrant gradient */}
-            <span className="bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 bg-clip-text text-transparent font-sans">
-              Azad
-            </span>
-            {/* Enhanced glow effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 blur-md opacity-50 bg-clip-text text-transparent animate-pulse">
-              Azad
-            </span>
-            {/* Animated underline with gradient */}
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 group-hover:w-full transition-all duration-700"></span>
-          </span>
-        </h1>
-        <p className="text-sm font-medium tracking-wide">
-          <span className="bg-gradient-to-r from-rose-200 via-orange-200 to-amber-200 bg-clip-text text-transparent">
-            Education
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-      {/* Desktop Menu - Updated hover colors */}
-      <div className="hidden md:flex items-center space-x-8">
-        {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
-          <a
-            key={item}
-            onClick={() => navigate(`/${item.toLowerCase()}`)}
-            className="text-white hover:text-emerald-200 transition-colors font-semibold text-lg"
-          >
-            {item}
-          </a>
-        ))}
-
-        {/* Search Button */}
-        <button
-          onClick={() => setShowSearch(!showSearch)}
-          className="text-white hover:text-emerald-200 transition-colors"
-        >
-          <RiSearchLine className="h-6 w-6" />
-        </button>
-
-        {/* Notification Button */}
-        <div className="relative">
-          <button className="text-white hover:text-emerald-200 transition-colors">
-            <RiNotificationLine className="h-6 w-6" />
-          </button>
-          <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-            3
-          </span>
-        </div>
-
-        {/* Get Started Button - Updated gradient */}
-        <button
-          onClick={() => setShowLoginModal(true)}
-          className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-2 rounded-full hover:from-emerald-600 hover:to-blue-600 transition-colors font-semibold shadow-lg hover:shadow-xl"
-        >
-          Get Started
-        </button>
-      </div>
-
-      {/* Mobile Menu Toggle */}
-      <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        {isMenuOpen ? <RiCloseLine className="h-6 w-6" /> : <RiMenuLine className="h-6 w-6" />}
-      </button>
-    </div>
-
-    {/* Mobile Menu - Updated gradient */}
-    <AnimatePresence>
-      {isMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-gradient-to-r from-emerald-600 to-blue-600 backdrop-blur-md border-t border-emerald-500"
-        >
-          <div className="flex flex-col space-y-4 p-4">
-            {["Courses", "Teachers", "Resources", "About"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-white hover:text-emerald-200 font-medium text-lg"
-              >
+  
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          {["Home", "Courses", "Academies", "Resources", "About"].map((item) => (
+            <a
+              key={item}
+              onClick={() => navigate(`/${item.toLowerCase()}`)}
+              className="relative group"
+            >
+              <span className="relative z-10 text-white hover:text-indigo-200 transition-colors duration-300 font-medium text-base lg:text-lg">
                 {item}
-              </a>
-            ))}
+              </span>
+              <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+            </a>
+          ))}
+  
+          {/* Enhanced Action Buttons */}
+          <div className="flex items-center space-x-4 lg:space-x-6">
+            {/* Search Button */}
             <button
-              onClick={() => setShowLoginModal(true)}
-              className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-2 rounded-full font-medium shadow-lg hover:shadow-xl"
+              onClick={() => setShowSearch(!showSearch)}
+              className="relative group p-2 hover:bg-white/5 rounded-full transition-all duration-300"
             >
-              Get Started
+              <RiSearchLine className="h-5 w-5 sm:h-6 sm:w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
             </button>
+  
+            {/* Get Started Button */}
+            {user ? (
+              <Link to="/teacherdashboard" className="flex items-center gap-2 sm:gap-3 group">
+                <div className="relative">
+                  <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-indigo-300/30 transform transition-transform duration-300 group-hover:scale-110">
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profilePicture}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+                        {user.fullName?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <span className="text-white font-medium text-sm sm:text-lg group-hover:text-indigo-200 transition-colors capitalize">
+                  {user.fullName}
+                </span>
+              </Link>
+            ) : (
+              <Link to="/signup">
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="relative group"
+                >
+                  <span className="relative block px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-full text-white font-semibold text-sm sm:text-base group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:via-blue-400 group-hover:to-purple-400 transform transition-all duration-300 group-hover:scale-105">
+                    Get Started
+                  </span>
+                </button>
+              </Link>
+            )}
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-
-  {/* Search Overlay - No color changes needed */}
-  <AnimatePresence>
-    {showSearch && (
+        </div>
+  
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden relative group p-2 hover:bg-white/5 rounded-full transition-all duration-300"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? (
+            <RiCloseLine className="h-6 w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
+          ) : (
+            <RiMenuLine className="h-6 w-6 text-white group-hover:text-indigo-200 transition-colors duration-300" />
+          )}
+        </button>
+      </div>
+  
+      {/* Mobile Menu */}
+    <AnimatePresence>
+    {isMenuOpen && (
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        className="md:hidden fixed top-16 sm:top-20 left-0 right-0 bg-gradient-to-b from-indigo-900/98 to-purple-900/98 backdrop-blur-xl border-t border-indigo-500/20 shadow-2xl"
       >
-        <div className="bg-white p-6 rounded-lg w-full max-w-2xl mx-4 shadow-2xl">
-          <div className="flex items-center">
-            <RiSearchLine className="text-gray-400 mr-3 h-6 w-6" />
-            <input
-              type="text"
-              placeholder="Search courses, teachers, or topics..."
-              className="flex-1 outline-none text-lg"
-              autoFocus
-            />
-            <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-gray-600">
-              <RiCloseLine className="h-6 w-6" />
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</nav>
-<div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        className="relative h-[85vh] w-full overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 to-purple-600/30 mix-blend-overlay z-10" />
-        <img 
-          src={thumbnail} 
-          alt={title} 
-          className="w-full h-full object-cover scale-105 animate-slow-zoom"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20">
-          <div className="container mx-auto px-6 h-full flex items-end pb-32">
-            <motion.div 
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-4xl text-white space-y-8"
-            >
-             
-             <div className="mb-28 space-y-4">
-  <div className="flex flex-wrap items-center gap-2">
-    <motion.span 
-      whileHover={{ scale: 1.05 }}
-      className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full text-sm font-semibold tracking-wide shadow-md"
-    >
-      {courseType}
-    </motion.span>
-    <motion.span 
-      whileHover={{ scale: 1.05 }}
-      className="px-4 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full text-sm font-semibold tracking-wide shadow-md"
-    >
-      {level}
-    </motion.span>
-  </div>
-
-  <h1 className="text-3xl md:text-7xl font-bold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-    {title}
-  </h1>
-
-  <p className="text-xl md:text-2xl text-gray-200 max-w-3xl leading-relaxed">
-    {description}
-  </p>
-</div>
-
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-6 -mt-48 relative z-30">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Course Overview Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="max-w-7xl mx-auto"
+        >
+          <div className="p-6 space-y-6">
+            {/* Menu Items */}
+            <div className="grid gap-4">
               {[
-                { icon: FiClock, label: "Duration", value: courseDuration
-                  , color: "from-blue-400 to-blue-600" },
-                { icon: FiBook, label: "Lessons", value: 1, color: "from-purple-400 to-purple-600" },
-                { icon: FiUsers, label: "Students", value: 0, color: "from-pink-400 to-pink-600" },
-                { icon: FiGlobe, label: "Language", value: language, color: "from-indigo-400 to-indigo-600" }
+                { name: "Home", icon: "🏠", path: "/" },
+                { name: "Courses", icon: "📚", path: "/courses" },
+                { name: "Teachers", icon: "👩‍🏫", path: "/academies" },
+                { name: "Resources", icon: "📑", path: "/resources" },
+                { name: "About", icon: "ℹ️", path: "/about" }
               ].map((item, index) => (
                 <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="bg-white rounded-3xl shadow-xl overflow-hidden group cursor-pointer"
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsMenuOpen(false); // Close menu after navigation
+                  }}
+                  className="group flex items-center space-x-4 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 cursor-pointer"
                 >
-                  <div className={`p-8 bg-gradient-to-br ${item.color} transform transition-all duration-300`}>
-                    <item.icon className="w-10 h-10 text-white mb-4" />
-                    <p className="text-sm font-medium text-white/80 uppercase tracking-wider">{item.label}</p>
-                    <p className="text-2xl font-bold text-white mt-1">{item.value}</p>
+                  <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 group-hover:from-indigo-500/30 group-hover:to-purple-500/30 backdrop-blur-sm transition-all duration-300">
+                    <span className="text-2xl">{item.icon}</span>
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium text-lg group-hover:text-indigo-200 transition-colors">
+                      {item.name}
+                    </span>
+                    <span className="text-indigo-300/60 text-sm">
+                      {getMenuItemDescription(item.name)}
+                    </span>
                   </div>
                 </motion.div>
               ))}
             </div>
+  
+            {/* Action Buttons */}
+            <div className="space-y-4 pt-4 border-t border-indigo-500/20">
+              {/* Search Bar */}
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-4 flex items-center">
+                  <RiSearchLine className="h-5 w-5 text-indigo-300/60 group-hover:text-indigo-200 transition-colors" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search courses, teachers..."
+                  className="w-full pl-12 pr-4 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 focus:bg-indigo-500/20 rounded-xl border border-indigo-500/20 hover:border-indigo-500/30 focus:border-indigo-500/40 text-white placeholder-indigo-300/60 outline-none transition-all duration-300"
+                />
+              </div>
+  
+              {/* Get Started Button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setShowLoginModal(true);
+                  setIsMenuOpen(false); // Close menu when opening login modal
+                }}
+                className="relative w-full group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center justify-center space-x-3 py-4 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-xl text-white font-semibold text-lg">
+                  <span>Get Started</span>
+                  <RiArrowRightLine className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+              </motion.button>
+  
+              {/* Additional Links */}
+              <div className="flex items-center justify-between pt-4 text-sm">
+                <div
+                  onClick={() => {
+                    navigate('/help');
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+                >
+                  Need Help?
+                </div>
+                <span className="text-indigo-500/40">•</span>
+                <div
+                  onClick={() => {
+                    navigate('/contact');
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+                >
+                  Contact Us
+                </div>
+                <span className="text-indigo-500/40">•</span>
+                <div
+                  onClick={() => {
+                    navigate('/faq');
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-indigo-300/80 hover:text-indigo-200 transition-colors cursor-pointer"
+                >
+                  FAQ
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+    </div>
+  </nav>
+<div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      {/* Hero Section */}
+      <motion.div 
+  initial={{ opacity: 0 }} 
+  animate={{ opacity: 1 }} 
+  className="relative min-h-[60vh] lg:h-[85vh] w-full overflow-hidden"
+>
+  {/* Overlay Gradient */}
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/40 to-purple-600/40 mix-blend-overlay z-10" />
+  
+  {/* Thumbnail Image with Optimized Sizing */}
+  <img 
+    src={thumbnail} 
+    alt={title} 
+    className="w-full h-full object-cover scale-100 sm:scale-105 transform transition-transform duration-[20s] animate-slow-zoom"
+    style={{
+      objectPosition: 'center 20%' // Adjust image focus point
+    }}
+  />
+  
+  {/* Content Overlay with Gradient */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent z-20">
+    <div className="container mx-auto px-4 sm:px-6 h-full flex items-end pb-16 sm:pb-20 lg:pb-32">
+      <motion.div 
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-4xl text-white space-y-6 sm:space-y-8"
+      >
+        <div className="space-y-4 sm:space-y-6">
+          {/* Tags Container */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="px-3 py-1 sm:px-4 sm:py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full text-xs sm:text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-shadow"
+            >
+              {courseType}
+            </motion.span>
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="px-3 py-1 sm:px-4 sm:py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full text-xs sm:text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-shadow"
+            >
+              {level}
+            </motion.span>
+          </div>
+
+          {/* Title */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-gray-300">
+              {title}
+            </span>
+          </h1>
+
+          {/* Description */}
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 max-w-3xl leading-relaxed opacity-90">
+            {description}
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</motion.div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-6 -mt-48  relative z-30">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column */}
+        <div className="lg:col-span-2 space-y-8">
+            {/* Course Overview Cards */}
+           <div className="container mx-auto px-4 sm:px-6">
+  {/* Create spacing between hero and cards */}
+  <div className="mt-40 sm:mt-24 md:mt-28">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {[
+        { 
+          icon: FiClock, 
+          label: "Duration", 
+          value: courseDuration, 
+          color: "from-blue-400 to-blue-600" 
+        },
+        { 
+          icon: FiBook, 
+          label: "Lessons", 
+          value: 1, 
+          color: "from-purple-400 to-purple-600" 
+        },
+        { 
+          icon: FiUsers, 
+          label: "Students", 
+          value: 0, 
+          color: "from-pink-400 to-pink-600" 
+        },
+        { 
+          icon: FiGlobe, 
+          label: "Language", 
+          value: language, 
+          color: "from-indigo-400 to-indigo-600" 
+        }
+      ].map((item, index) => (
+        <motion.div
+          key={index}
+          variants={fadeInUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          whileHover={{ y: -8, scale: 1.02 }}
+          className="bg-white rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-xl overflow-hidden group cursor-pointer transform transition-all duration-300"
+        >
+          <div className={`p-6 sm:p-8 bg-gradient-to-br ${item.color}`}>
+            <item.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-3 sm:mb-4" />
+            <p className="text-xs sm:text-sm font-medium text-white/80 uppercase tracking-wider">
+              {item.label}
+            </p>
+            <p className="text-xl sm:text-2xl font-bold text-white mt-1">
+              {item.value}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</div>
+
+    {/* </div> */}
 
             {/* Instructor Section */}
             <motion.div
