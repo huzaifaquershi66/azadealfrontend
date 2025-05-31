@@ -60,7 +60,6 @@ const categories = [
 
   // 7. Islamic & Religious Studies
   { title: "Quran & Tajweed", description: "Learn proper recitation and understanding of the Quran.", icon: <FaQuran className="text-2xl text-green-600" /> },
-  { title: "Hadith & Fiqh", description: "Understand Islamic jurisprudence and sayings of the Prophet.", icon: <FaMosque className="text-2xl text-teal-600" /> },
   { title: "Islamic Finance", description: "Learn Sharia-compliant banking and finance.", icon: <FaMoneyBillWave className="text-2xl text-green-700" /> }
 ];
 
@@ -167,7 +166,15 @@ const StatsSection = () => (
 </section>
 );
 
-
+const SelectArrow = () => (
+  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+    <div className="bg-blue-500/10 rounded-full p-1 transition-all duration-200 group-hover:bg-blue-500/20">
+      <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+);
 const CategorySection = () => (
   <section className="py-24 bg-gradient-to-br from-purple-50/90 via-white to-indigo-50/90 relative overflow-hidden">
     {/* Background Pattern */}
@@ -195,76 +202,68 @@ const CategorySection = () => (
       </motion.div>
 
       {/* Enhanced Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-        {categories.map((category, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ 
-              y: -12, 
-              scale: 1.02,
-              transition: { duration: 0.4, ease: "easeOut" }
-            }}
-            transition={{ 
-              duration: 0.5, 
-              delay: index * 0.1,
-              ease: "easeOut" 
-            }}
-            viewport={{ once: true }}
-            className="group relative"
-          >
-            {/* Card Container with Glass Effect */}
-            <div className="relative bg-white/90 backdrop-blur-xl p-8 rounded-3xl
-              shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] 
-              hover:shadow-[0_20px_50px_-15px_rgba(124,58,237,0.15)]
-              transition-all duration-500 overflow-hidden
-              border border-purple-100/50">
-              
-              {/* Gradient Hover Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 via-pink-600/5 to-indigo-600/5 
-                opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+  {categories.map((category, index) => (
+    <motion.div
+      key={index}
+      whileHover={{ 
+        y: -12, 
+        scale: 1.02,
+        transition: { duration: 0.4, ease: "easeOut" }
+      }}
+      className="group relative"
+    >
+      {/* Card Container with Glass Effect */}
+      <div className="relative bg-white/90 backdrop-blur-xl p-8 rounded-3xl
+        shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] 
+        hover:shadow-[0_20px_50px_-15px_rgba(124,58,237,0.15)]
+        transition-all duration-500 overflow-hidden
+        border border-purple-100/50">
+        
+        {/* Gradient Hover Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 via-pink-600/5 to-indigo-600/5 
+          opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-              {/* Decorative Elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/5 to-pink-500/5 
-                rounded-full -mr-16 -mt-16 transition-transform duration-500 group-hover:scale-110"></div>
-              
-              {/* Category Icon with Enhanced Animation */}
-     <div className="relative mb-12 inline-block scale-125">
-  <div className="absolute inset-0 bg-purple-600/10 rounded-2xl blur-2xl group-hover:blur-3xl 
-    transition-all duration-500 scale-75 group-hover:scale-110"></div>
-  <div className="relative transform group-hover:scale-110 group-hover:rotate-3 
-    transition-transform duration-500" style={{ fontSize: "12rem" }}>
-    {category.icon}
-  </div>
-</div>
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/5 to-pink-500/5 
+          rounded-full -mr-16 -mt-16 transition-transform duration-500 group-hover:scale-110"></div>
+        
+        {/* Category Icon with Enhanced Animation */}
+        <div className="relative mb-12 inline-block scale-125">
+          <div className="absolute inset-0 bg-purple-600/10 rounded-2xl blur-2xl group-hover:blur-3xl 
+            transition-all duration-500 scale-75 group-hover:scale-110"></div>
+          <div className="relative transform group-hover:scale-110 group-hover:rotate-3 
+            transition-transform duration-500" style={{ fontSize: "12rem" }}>
+            {category.icon}
+          </div>
+        </div>
 
-              {/* Category Content */}
-              <div className="relative">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-900 to-indigo-800 
-                  bg-clip-text text-transparent mb-4 group-hover:translate-x-1 transition-transform duration-300">
-                  {category.title}
-                </h3>
-                
-                <p className="text-gray-600 leading-relaxed group-hover:translate-x-1 
-                  transition-transform duration-300">
-                  {category.description}
-                </p>
+        {/* Category Content */}
+        <div className="relative">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-900 to-indigo-800 
+            bg-clip-text text-transparent mb-4 group-hover:translate-x-1 transition-transform duration-300">
+            {category.title}
+          </h3>
+          
+          <p className="text-gray-600 leading-relaxed group-hover:translate-x-1 
+            transition-transform duration-300">
+            {category.description}
+          </p>
 
-                {/* Hover Arrow */}
-                <div className="mt-6 flex items-center text-purple-600 font-semibold opacity-0 
-                  group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-2 
-                  transition-all duration-300">
-                  Explore More
-                  <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+          {/* Hover Arrow */}
+          <div className="mt-6 flex items-center text-purple-600 font-semibold opacity-0 
+            group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-2 
+            transition-all duration-300">
+            Explore More
+            <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+        </div>
       </div>
+    </motion.div>
+  ))}
+</div>
     </div>
 
     {/* Add CSS for Background Pattern */}
@@ -842,8 +841,70 @@ function App() {
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedProvince, setSelectedProvince] = useState("");
   const [showCities, setShowCities] = useState(false);
-  const navigate = useNavigate();
+  const [selectedTime, setSelectedTime] = useState("");
 
+  const navigate = useNavigate();
+    const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+const SearchClassesForm = ({
+  selectedSubject,
+  setSelectedSubject,
+  selectedAge,
+  setSelectedAge,
+  selectedTime,
+  setSelectedTime,
+  selectedProvince,
+  setSelectedProvince,
+  selectedCity,
+  setSelectedCity,
+  enhancedSubjects,
+  provincesWithCities
+}) => {
+  // Define onSearch function here
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Add your search logic here
+    console.log({
+      subject: selectedSubject,
+      age: selectedAge,
+      time: selectedTime,
+      province: selectedProvince,
+      city: selectedCity
+    });
+  };
+}
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  // Common styles
+  const selectClassName = `
+    w-full p-4 rounded-xl text-gray-700 border-2 border-gray-200 
+    bg-white/95 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
+    focus:border-blue-500 hover:border-blue-400 transition-all 
+    appearance-none shadow-sm group-hover:shadow-lg 
+    group-hover:bg-blue-50/50
+  `;
+
+  const labelClassName = `
+    flex items-center text-sm font-medium text-gray-700 mb-2 ml-1
+  `;
   useEffect(() => {
        const fetchApprovedUsers = async () => {
          try {
@@ -927,6 +988,8 @@ const enhancedSubjects = [
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+ 
+
 
     return (
 <nav className={`fixed w-full z-50 transition-all duration-500 ${
@@ -1274,14 +1337,14 @@ const TeachersSection = () => {
   </motion.p>
 
   {/* Search Box with enhanced design */}
-  <motion.div
+    <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
     className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto border border-white/20"
-  >
+>
 <div className="p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20">
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
     {/* Subject Select */}
     <div className="relative group">
       <label className="flex items-center text-sm font-medium text-gray-700 mb-2 ml-1">
@@ -1292,21 +1355,20 @@ const TeachersSection = () => {
       </label>
       <div className="relative">
         <select
-  value={selectedSubject}
-  onChange={(e) => setSelectedSubject(e.target.value)}
-  className="w-full p-4 rounded-xl text-gray-700 border-2 border-gray-200 bg-white/95
-         focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
-         hover:border-blue-400 transition-all appearance-none shadow-sm
-         group-hover:shadow-lg group-hover:bg-blue-50/50"
->
-  <option value="" className="text-gray-500">Choose a subject</option>
-  {Array.isArray(enhancedSubjects) && enhancedSubjects.map((subject) => (
-    <option key={subject.name} value={subject.name} className="text-gray-700">
-      {subject.name}
-    </option>
-  ))}
-</select>
-
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+          className="w-full p-4 rounded-xl text-gray-700 border-2 border-gray-200 bg-white/95
+                   focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+                   hover:border-blue-400 transition-all appearance-none shadow-sm
+                   group-hover:shadow-lg group-hover:bg-blue-50/50"
+        >
+          <option value="" className="text-gray-500">Choose a subject</option>
+          {Array.isArray(enhancedSubjects) && enhancedSubjects.map((subject) => (
+            <option key={subject.name} value={subject.name} className="text-gray-700">
+              {subject.name}
+            </option>
+          ))}
+        </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <div className="bg-blue-500/10 rounded-full p-1 transition-all duration-200 group-hover:bg-blue-500/20">
             <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1343,6 +1405,45 @@ const TeachersSection = () => {
             { value: "16+", label: "16+ years (Advanced)" }
           ].map((age) => (
             <option key={age.value} value={age.value}>{age.label}</option>
+          ))}
+        </select>
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="bg-blue-500/10 rounded-full p-1 transition-all duration-200 group-hover:bg-blue-500/20">
+            <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Time Select - Newly Added */}
+    <div className="relative group">
+      <label className="flex items-center text-sm font-medium text-gray-700 mb-2 ml-1">
+        <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Time
+      </label>
+      <div className="relative">
+        <select
+          value={selectedTime}
+          onChange={(e) => setSelectedTime(e.target.value)}
+          className="w-full p-4 rounded-xl text-gray-700 border-2 border-gray-200 bg-white/95
+                   focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+                   hover:border-blue-400 transition-all appearance-none shadow-sm
+                   group-hover:shadow-lg group-hover:bg-blue-50/50"
+        >
+          <option value="">Select time of day</option>
+          {[
+            { value: "morning", label: "Morning (6 AM - 12 PM)" },
+            { value: "afternoon", label: "Afternoon (12 PM - 4 PM)" },
+            { value: "evening", label: "Evening (4 PM - 8 PM)" },
+            { value: "night", label: "Night (8 PM - 12 AM)" }
+          ].map((time) => (
+            <option key={time.value} value={time.value}>
+              {time.label}
+            </option>
           ))}
         </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -1443,14 +1544,13 @@ const TeachersSection = () => {
     </div>
   </div>
 </div>
-
-  </motion.div>
+</motion.div>
 
   {/* Stats with enhanced design */}
   <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
     {[
-      { number: 100000, label: "Students", icon: "👨‍🎓" },
-      { number: 5000, label: "Teachers", icon: "👩‍🏫" },
+      { number: 5000, label: "Students", icon: "👨‍🎓" },
+      { number: 1000, label: "Teachers", icon: "👩‍🏫" },
       { number: 10000, label: "Classes", icon: "📚" },
       { number: 240, label: "Cities", icon: "🌍" },
     ].map((stat, index) => (

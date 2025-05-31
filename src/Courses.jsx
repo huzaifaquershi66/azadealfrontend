@@ -131,9 +131,9 @@ const filterOptions = {
       group: "Price Ranges",
       options: [
         { value: "free", label: "Free" },
-        { value: "low", label: "Low (Under $50)" },
-        { value: "medium", label: "Medium ($50-$200)" },
-        { value: "high", label: "High ($200+)" }
+        { value: "low", label: "Low (Under PKR 50)" },
+        { value: "medium", label: "Medium (PKR 50-PKR 200)" },
+        { value: "high", label: "High (PKR 200+)" }
       ]
     }
   ],
@@ -891,156 +891,176 @@ const CourseCard = () => {
     animate={{ opacity: 1, y: 0 }}
     whileHover={{ 
       y: -12,
+      scale: 1.02,
       transition: { duration: 0.3, ease: "easeOut" }
     }}
-    className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl 
-      transition-all duration-500 border border-gray-100 backdrop-blur-lg"
+    className="group relative bg-white/90 rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl 
+      transition-all duration-500 border border-gray-100/50 backdrop-blur-xl"
   >
-    {/* Course Image & Header Section - Enhanced */}
-    <div className="relative h-[300px] overflow-hidden">
-      {/* Improved gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent 
-        group-hover:from-black/95 transition-all duration-500" />
+    {/* Course Image & Header Section - Ultra Enhanced */}
+    <div className="relative h-[320px] overflow-hidden">
+      {/* Enhanced gradient overlay with animation */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent 
+        opacity-80 group-hover:opacity-90 transition-all duration-700" />
       
       <motion.img 
         src={course.thumbnail}
         alt={course.title}
-        className="w-full h-full object-cover"
-        whileHover={{ scale: 1.08 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full h-full object-cover transform scale-105"
+        whileHover={{ scale: 1.12 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
       />
 
-      {/* Enhanced Course Meta Information */}
-      <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-        {/* Improved Level Badge */}
+      {/* Floating Elements - Top */}
+      <div className="absolute top-6 left-6 right-6 flex justify-between items-center">
+        {/* Glowing Level Badge */}
         <motion.span 
           whileHover={{ scale: 1.05 }}
-          className={`px-4 py-2 rounded-full text-sm font-semibold 
-            ${getLevelBadgeColor(course.level)} backdrop-blur-md shadow-lg
-            border border-white/10`}
+          className={`px-6 py-2.5 rounded-full text-sm font-bold 
+            ${getLevelBadgeColor(course.level)} backdrop-blur-md 
+            shadow-lg border border-white/20 flex items-center gap-2`}
         >
+          <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
           {course.level}
         </motion.span>
 
-        {/* Enhanced Price Tag */}
+        {/* Glassmorphic Price Tag */}
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className="flex items-center bg-white/95 px-4 py-2 rounded-full shadow-lg
-            border border-blue-100"
+          className="flex items-center bg-white/95 px-6 py-2.5 rounded-full 
+            shadow-xl border border-blue-100/50 backdrop-blur-xl"
         >
-          <FaDollarSign className="text-blue-600 mr-1" />
-          <span className="font-bold bg-gradient-to-r from-blue-600 to-blue-800 
+          <FaDollarSign className="text-blue-600 mr-1.5" />
+          <span className="font-bold bg-gradient-to-r from-blue-600 to-indigo-600 
             bg-clip-text text-transparent">{course.price}</span>
         </motion.div>
       </div>
 
-      {/* Enhanced Course Title Section */}
-      <div className="absolute bottom-4 left-4 right-4 transform group-hover:translate-y-0 
-        transition-transform duration-300">
-        <h3 className="text-2xl font-bold text-white mb-3 leading-tight
-          group-hover:text-blue-400 transition-colors duration-300">{course.title}</h3>
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-md 
-            rounded-full px-3 py-1">
+      {/* Animated Course Title Section */}
+      <div className="absolute bottom-6 left-6 right-6 transform translate-y-4 
+        group-hover:translate-y-0 opacity-90 group-hover:opacity-100 
+        transition-all duration-500">
+        <h3 className="text-2xl font-bold text-white mb-4 leading-tight
+          group-hover:text-blue-400 transition-colors duration-300 drop-shadow-lg">
+          {course.title}
+        </h3>
+        
+        {/* Enhanced Meta Info */}
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 bg-black/30 backdrop-blur-xl 
+            rounded-full px-4 py-2 border border-white/10">
             <FaClock className="text-blue-400" />
-            <span className="text-sm text-gray-100">{course.duration}</span>
+            <span className="text-sm font-medium text-gray-100">{course.duration}</span>
           </div>
-          <div className="flex items-center space-x-1 bg-white/10 backdrop-blur-md 
-            rounded-full px-3 py-1">
+          <div className="flex items-center space-x-2 bg-black/30 backdrop-blur-xl 
+            rounded-full px-4 py-2 border border-white/10">
             <FaStar className="text-yellow-400" />
-            <span className="text-sm text-gray-100">4.8</span>
+            <span className="text-sm font-medium text-gray-100">4.8</span>
           </div>
         </div>
       </div>
     </div>
 
-    {/* Enhanced Course Content Section */}
-    <div className="p-8">
-      {/* Improved Categories */}
-      <div className="flex flex-wrap gap-2 mb-6">
+    {/* Enhanced Content Section with Glassmorphism */}
+    <div className="p-8 backdrop-blur-sm bg-white/80">
+      {/* Animated Categories */}
+      <div className="flex flex-wrap gap-3 mb-7">
         <motion.span
-          whileHover={{ scale: 1.05 }}
-          className="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 
-            text-blue-600 rounded-full text-sm font-medium border border-blue-200
-            hover:shadow-md transition-all duration-300"
+          whileHover={{ scale: 1.05, y: -2 }}
+          className="px-5 py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 
+            text-blue-600 rounded-full text-sm font-semibold border border-blue-100
+            hover:shadow-lg hover:border-blue-200 transition-all duration-300
+            flex items-center gap-2"
         >
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
           {course.category}
         </motion.span>
       </div>
 
-      {/* Enhanced Description */}
-      <p className="text-gray-600 text-base mb-6 line-clamp-2 leading-relaxed">
+      {/* Enhanced Description with Gradient */}
+      <p className="text-gray-600 text-base mb-7 line-clamp-2 leading-relaxed
+        bg-gradient-to-b from-gray-600 to-gray-500 bg-clip-text">
         {course.description}
       </p>
 
-      {/* Improved Key Features */}
+      {/* Animated Key Features */}
       <div className="space-y-4 mb-8">
         <motion.div 
-          whileHover={{ x: 4 }}
-          className="flex items-start space-x-3 group/item"
+          whileHover={{ x: 4, scale: 1.01 }}
+          className="flex items-start space-x-4 group/item p-2 rounded-xl
+            hover:bg-blue-50/50 transition-all duration-300"
         >
-          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 
-            flex items-center justify-center">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 
+            flex items-center justify-center group-hover/item:scale-110 
+            transition-transform duration-300">
             <FaCheck className="text-green-500 text-sm" />
           </div>
           <span className="text-gray-700 group-hover/item:text-gray-900 
-            transition-colors duration-300">{course.whatYouWillLearn}</span>
+            transition-colors duration-300 pt-1">{course.whatYouWillLearn}</span>
         </motion.div>
       </div>
 
-      {/* Enhanced Instructor Info */}
-      <div className="flex items-center justify-between pb-6 border-b border-gray-100">
+      {/* Glassmorphic Instructor Section */}
+      <div className="flex items-center justify-between pb-7 border-b border-gray-100">
         <motion.div 
           whileHover={{ x: 4 }}
           className="flex items-center space-x-4"
         >
           <div className="relative">
+            <div className="absolute inset-0 bg-blue-500 rounded-full blur-md opacity-20" />
             <img 
               src={"http://res.cloudinary.com/duovmhekc/image/upload/v1741728230/muslrmcbyrsfum9p8mxn.png"}
-              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg"
+              className="relative w-14 h-14 rounded-full object-cover border-2 
+                border-white shadow-lg ring-2 ring-blue-500/20"
             />
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 
-              rounded-full border-2 border-white" />
+              rounded-full border-2 border-white shadow-md" />
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900">Top Instructor</h4>
-            <p className="text-sm text-gray-500">Expert Level</p>
+            <h4 className="font-bold text-gray-900">Top Instructor</h4>
+            <p className="text-sm text-blue-600">Expert Level</p>
           </div>
         </motion.div>
       </div>
 
       {/* Enhanced Action Buttons */}
-      <div className="pt-8 flex items-center justify-between">
+      <div className="pt-8 flex items-center justify-between gap-4">
         <Link 
           to={`/courses/${course._id}`}
-          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white 
-            px-8 py-4 rounded-2xl font-bold tracking-wide
-            hover:from-blue-700 hover:to-blue-800 transition-all duration-300 
+          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white 
+            px-8 py-4 rounded-2xl font-bold tracking-wide text-center
+            hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 
             transform hover:-translate-y-1 shadow-lg hover:shadow-xl
-            text-center uppercase text-sm"
+            uppercase text-sm relative overflow-hidden group/btn"
         >
-          Enroll Now
+          <div className="absolute inset-0 bg-white/20 transform -skew-x-12 
+            translate-x-full group-hover/btn:translate-x-0 transition-transform duration-700" />
+          <span className="relative">Enroll Now</span>
         </Link>
+        
         <motion.button 
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className="ml-4 p-4 rounded-2xl border border-gray-200 hover:bg-gray-50
-            transition-colors duration-300 shadow-md hover:shadow-lg"
+          className="p-4 rounded-2xl border border-gray-200 hover:bg-blue-50
+            transition-colors duration-300 shadow-md hover:shadow-lg
+            hover:border-blue-200"
         >
-          <FaRegHeart className="text-gray-600 text-xl" />
+          <FaRegHeart className="text-blue-600 text-xl" />
         </motion.button>
       </div>
     </div>
 
-    {/* Enhanced Progress Badge */}
+    {/* Enhanced Progress Badge with Glow */}
     {course.progress && (
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-6 right-6">
         <motion.div 
           className="relative"
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="w-16 h-16 bg-white rounded-full shadow-lg p-2">
+          <div className="absolute inset-0 bg-blue-500 rounded-full blur-md opacity-20" />
+          <div className="relative w-16 h-16 bg-white rounded-full shadow-xl p-2
+            border-2 border-blue-100">
             <CircularProgressbar 
               value={course.progress} 
               text={`${course.progress}%`}
@@ -1049,6 +1069,7 @@ const CourseCard = () => {
                 textColor: '#1E40AF',
                 trailColor: '#EFF6FF',
                 pathTransitionDuration: 0.5,
+                rotation: 0.25,
               })}
             />
           </div>
@@ -1071,7 +1092,14 @@ const SearchFilters = ( ) => {
   const [showTimeMenu, setShowTimeMenu] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
+ const [user, setUser] = useState(null);
 
+        useEffect(() => {
+          const storedUser = localStorage.getItem("user");
+          if (storedUser) {
+            setUser(JSON.parse(storedUser));
+          }
+        }, []);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const currentUser = "huzaifaquershi66";
 const [filters, setFilters] = useState({
@@ -1133,51 +1161,115 @@ const resetFilters = () => {
   };
 
   // FilterCategory Component
-  const FilterCategory = ({ category, isActive, onClick, selectedValue, onOptionSelect, options, openCategory,
-  setOpenCategory }) => {
-  const showOptions = openCategory === category;
-    const categoryRef = useRef(null);
-    const isOpen = openCategory === category;
-const handleToggle = () => {
+
+const FilterCategory = ({
+  category,
+  isActive,
+  selectedValue,
+  onOptionSelect,
+  options,
+  openCategory,
+  setOpenCategory
+}) => {
+  const categoryRef = useRef(null);
+  const dropdownRef = React.useRef(null);
+
+  const isOpen = openCategory === category;
+
+
+
+const optionRefs = useRef({});
+
+useEffect(() => {
+  if (isOpen && selectedValue && optionRefs.current[selectedValue]) {
+    requestAnimationFrame(() => {
+      const dropdownElement = dropdownRef.current;
+      const selectedElement = optionRefs.current[selectedValue];
+
+      if (!dropdownElement || !selectedElement) return;
+
+      const dropdownRect = dropdownElement.getBoundingClientRect();
+      const selectedRect = selectedElement.getBoundingClientRect();
+
+      if (selectedRect.top < dropdownRect.top || selectedRect.bottom > dropdownRect.bottom) {
+        selectedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+}, [isOpen, selectedValue]);
+
+  const handleSelect = (value) => {
+    // Prevent the default scroll behavior
+    const currentScrollPosition = dropdownRef.current?.scrollTop || 0;
+    
+    onOptionSelect(value);
+    setOpenCategory(null);
+
+    // If needed, restore the scroll position after a small delay
+    if (dropdownRef.current) {
+      requestAnimationFrame(() => {
+        dropdownRef.current.scrollTop = currentScrollPosition;
+      });
+    }
+  };
+
+  const handleToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setOpenCategory(isOpen ? null : category);
   };
 
-  const handleSelect = (value) => {
-    onOptionSelect(value);
-  };
+  // const handleSelect = (value) => {
+  //   onOptionSelect(value);
+  //   setOpenCategory(null);
+  // };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+      if (isOpen && categoryRef.current && !categoryRef.current.contains(e.target)) {
         setOpenCategory(null);
       }
     };
 
-    if (isOpen) {
-      window.addEventListener('click', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
-    return () => window.removeEventListener('click', handleClickOutside);
-  }, [isOpen, setOpenCategory]);
-
-
-    return (
+  return (
     <div className="relative" ref={categoryRef}>
+      {/* Backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/5 backdrop-blur-sm z-30"
+            // initial={{ opacity: 0 }}
+            // animate={{ opacity: 1 }}
+            // exit={{ opacity: 0 }}
+            // transition={{ duration: 0.15 }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpenCategory(null);
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Filter Button */}
       <div
-        className={`p-4 rounded-2xl cursor-pointer transition-all duration-200
-          ${isActive 
+        onClick={handleToggle}
+        className={`relative p-4 rounded-2xl cursor-pointer   z-40
+          ${isActive
             ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
             : 'bg-gray-50 text-gray-600 hover:bg-gray-100'}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleToggle();
-        }}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <FiFilter className={`text-xl ${isActive ? 'text-white' : 'text-blue-500'}`} />
-            <span className="font-medium">
-              {category === 'ageGroup' ? 'Age Group' : category.charAt(0).toUpperCase() + category.slice(1)}
+            <span className="font-medium capitalize">
+              {category === 'ageGroup' ? 'Age Group' : category}
             </span>
           </div>
           {selectedValue && (
@@ -1188,37 +1280,65 @@ const handleToggle = () => {
         </div>
       </div>
 
-      {isOpen && (
-        <div
-          className="absolute bottom-full left-0 right-0 mb-2 z-50 bg-white rounded-xl shadow-xl border border-gray-100 p-3 max-h-[300px] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {options.map((groupObj, groupIndex) => (
-            <div key={groupIndex} className="mb-3 last:mb-0">
-              <div className="text-sm font-semibold text-gray-500 mb-2 px-2">
-                {groupObj.group}
-              </div>
-              {groupObj.options.map((option, index) => (
-                <div
-                  key={index}
-                  className="w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 cursor-pointer"
-                  onClick={() => handleSelect(option.value)}
-                >
-                  <div className="flex items-center justify-between">
-                    <span>{option.label}</span>
-                    {selectedValue === option.value && (
-                      <FiCheck className="text-blue-500" />
-                    )}
+      {/* Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+  ref={dropdownRef}
+
+            className="absolute top-full left-0 right-0 mt-2 bg-white/95 rounded-xl shadow-xl border border-gray-100/50 p-3 max-h-[300px] overflow-y-auto z-50"
+            // initial={{ opacity: 0, scale: 0.95 }}
+            // animate={{ opacity: 1, scale: 1 }}
+            // exit={{ opacity: 0, scale: 0.95 }}
+            // transition={{ duration: 0.2, ease: 'easeOut' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <motion.div
+              // initial={{ opacity: 0, y: 10 }}
+              // animate={{ opacity: 1, y: 0 }}
+              // transition={{ duration: 0.2 }}
+            >
+              {options.map((groupObj, groupIndex) => (
+                <div key={groupIndex} className="mb-3 last:mb-0">
+                  <div className="text-sm font-bold text-black mb-2 px-2">
+                    {groupObj.group}
                   </div>
+                  {groupObj.options.map((option, index) => (
+                    <motion.div
+                      key={index}
+                          ref={el => optionRefs.current[option.value] = el}
+
+                      whileHover={{ x: 4, backgroundColor: 'rgba(59,130,246,0.05)' }}
+                      className={`w-full text-left px-3 py-2 rounded-lg  cursor-pointer
+                        ${selectedValue === option.value
+                          ? 'bg-blue-50/80 text-blue-600'
+                          : 'text-gray-700 hover:bg-blue-50/50 hover:text-blue-600'}`}
+                      onClick={() => handleSelect(option.value)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{option.label}</span>
+                        {selectedValue === option.value && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <FiCheck className="text-blue-500" />
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               ))}
-            </div>
-          ))}
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-    );
-  };
+  );
+};
+
 
   return (
     <motion.div
@@ -1266,7 +1386,8 @@ const handleToggle = () => {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-gray-800 font-medium">{currentUser}</span>
+                  
+                  <span className="text-gray-800 font-medium"> {user?.fullName}</span>
                   <span className="text-gray-400 text-xs">Active Now</span>
                 </div>
               </motion.div>
@@ -1327,6 +1448,26 @@ const handleToggle = () => {
               <FiRefreshCw className="text-lg group-hover:rotate-180 transition-transform duration-500" />
               <span>Reset Filters</span>
             </motion.button>
+            <div className="flex justify-center mt-8">
+  <motion.button
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    onClick={() => handleApplyFilters()} // Add this function to your component
+    className="group flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 
+    rounded-xl text-white font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl 
+    hover:shadow-blue-500/30 transition-all duration-300"
+  >
+    <FiSearch className="text-lg group-hover:rotate-12 transition-transform duration-300" />
+    <span>Apply Filters</span>
+    
+    {/* Add loading indicator when filters are being applied */}
+    {/* {isApplyingFilters && (
+      <div className="ml-2 animate-spin">
+        <FiLoader className="text-lg" />
+      </div>
+    )} */}
+  </motion.button>
+</div>
           </div>
         </div>
       </div>

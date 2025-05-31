@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { RiSearchLine, RiNotificationLine, RiCloseLine,RiArrowRightLine, RiMenuLine, RiChatSmileLine,RiChatQuoteLine } from "react-icons/ri";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { FaFacebook, FaTwitter } from 'react-icons/fa';
+
 import { 
   FaGraduationCap, FaUsers, FaStar, FaCertificate, 
   FaCalendarAlt, FaEnvelope, FaMapMarkerAlt, FaLinkedinIn,FaUniversity,FaQuoteLeft,FaRegThumbsUp,FaRegComment,FaShare,
@@ -711,13 +713,13 @@ const { id } = useParams();
                       href={social.href}
                       className="relative group"
                     >
-                      <div className="absolute inset-0 bg-white/20 rounded-xl blur-lg opacity-0 
+                      {/* <div className="absolute inset-0 bg-white/20 rounded-xl blur-lg opacity-0 
                         group-hover:opacity-100 transition-opacity duration-300" />
                       <div className="relative p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 
                         backdrop-blur-xl hover:border-white/20 transition-all duration-300">
                         <social.icon className={`text-xl sm:text-2xl text-white ${social.color} 
                           transition-colors duration-300`} />
-                      </div>
+                      </div> */}
                     </motion.a>
                   ))}
                 </div>
@@ -734,9 +736,9 @@ const { id } = useParams();
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 
                     rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="relative rounded-3xl overflow-hidden border-2 border-white/10 
-                      group-hover:border-white/20 transition-all duration-300"
+                    // whileHover={{ scale: 1.02 }}
+                    // className="relative rounded-3xl overflow-hidden border-2 border-white/10 
+                    //   group-hover:border-white/20 transition-all duration-300"
                   >
                     <img
                       src={teacher.profilePicture}
@@ -744,7 +746,7 @@ const { id } = useParams();
                       className="w-full max-h-[420px] sm:h-[540px] lg:h-[640px] object-cover 
                         transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C]/80 via-transparent to-transparent" />
+                    {/* <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C]/80 via-transparent to-transparent" /> */}
                   </motion.div>
                 </div>
 
@@ -776,7 +778,7 @@ const { id } = useParams();
                 </motion.div>
 
                 {/* Play Button */}
-                <motion.button
+                {/* <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
@@ -785,7 +787,7 @@ const { id } = useParams();
                 >
                   <FaPlay className="text-2xl sm:text-3xl text-white group-hover:text-blue-400 
                     transition-colors duration-300" />
-                </motion.button>
+                </motion.button> */}
               </div>
             </motion.div>
           </div>
@@ -963,29 +965,32 @@ const { id } = useParams();
 
               {/* Enhanced Social Links */}
               <motion.div 
-                className="flex justify-center gap-4 pt-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                {[
-                  { Icon: FaLinkedin, color: 'hover:bg-blue-600' },
-                  { Icon: FaGithub, color: 'hover:bg-gray-900' },
-                  { Icon: FaEnvelope, color: 'hover:bg-red-600' }
-                ].map((social, idx) => (
-                  <motion.a
-                    key={idx}
-                    whileHover={{ y: -4, scale: 1.15 }}
-                    whileTap={{ scale: 0.95 }}
-                    href="#"
-                    className={`p-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 
-                      transition-all duration-300 shadow-lg hover:shadow-2xl backdrop-blur-sm border border-white/20
-                      ${social.color} hover:text-white`}
-                  >
-                    <social.Icon className="text-2xl" />
-                  </motion.a>
-                ))}
-              </motion.div>
+  className="flex justify-center gap-4 pt-6"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.5 }}
+>
+  {[
+    { Icon: FaFacebook, color: 'hover:bg-blue-600' },
+    { Icon: FaTwitter, color: 'hover:bg-sky-400' },
+    { Icon: FaYoutube, color: 'hover:bg-red-600' },
+    { Icon: FaLinkedin, color: 'hover:bg-blue-700' },
+    { Icon: FaGithub, color: 'hover:bg-gray-900' },
+    { Icon: FaEnvelope, color: 'hover:bg-red-600' }
+  ].map((social, idx) => (
+    <motion.a
+      key={idx}
+      whileHover={{ y: -4, scale: 1.15 }}
+      whileTap={{ scale: 0.95 }}
+      href="#"
+      className={`p-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 
+        transition-all duration-300 shadow-lg hover:shadow-2xl backdrop-blur-sm border border-white/20
+        ${social.color} hover:text-white`}
+    >
+      <social.Icon className="text-2xl" />
+    </motion.a>
+  ))}
+</motion.div>
             </div>
           </div>
         </motion.div>
@@ -1367,152 +1372,7 @@ const CoursesSection = ({ courses }) => {
       exit={{ opacity: 0, y: -20 }}
       className="grid md:grid-cols-2 gap-8"
     >
-      {courses.map((course, i) => (
-        <motion.div
-          key={i}
-          variants={cardVariants}
-          whileHover={{ y: -8 }}
-          className="group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden
-                   border border-white/20 backdrop-blur-lg"
-        >
-          {/* Background Glow Effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 
-                        group-hover:from-indigo-600/10 group-hover:to-purple-600/10 transition-all duration-500" />
-          
-          {/* Course Image Container */}
-          <div className="relative h-56 overflow-hidden">
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-            
-            {/* Course Image */}
-            <motion.img
-              src={course.image}
-              alt={course.title}
-              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-            />
-
-            {/* Category Badge */}
-            <motion.div 
-              className="absolute top-4 left-4 z-20"
-              whileHover={{ scale: 1.05 }}
-            >
-              <span className="px-4 py-2 bg-white/90 dark:bg-gray-900/90 rounded-full text-sm font-medium
-                           text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600
-                           shadow-lg backdrop-blur-sm border border-white/20">
-                {course.category}
-              </span>
-            </motion.div>
-
-            {/* Course Duration */}
-            <div className="absolute bottom-4 left-4 z-20 flex items-center space-x-2">
-              <div className="flex items-center px-3 py-1.5 bg-black/50 rounded-full backdrop-blur-sm">
-                <FaClock className="text-white/80 mr-2 text-sm" />
-                <span className="text-white/90 text-sm">{course.duration}</span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="absolute top-4 right-4 z-20 flex space-x-2">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 bg-white/90 dark:bg-gray-900/90 rounded-full shadow-lg backdrop-blur-sm
-                         text-indigo-600 hover:text-purple-600 transition-colors duration-300"
-              >
-                <FaBookmark className="text-lg" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 bg-white/90 dark:bg-gray-900/90 rounded-full shadow-lg backdrop-blur-sm
-                         text-red-500 hover:text-red-600 transition-colors duration-300"
-              >
-                <FaHeart className="text-lg" />
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Course Content */}
-          <div className="p-8 relative">
-            {/* Course Title */}
-            <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 
-                         group-hover:text-indigo-600 transition-colors duration-300">
-              {course.title}
-            </h4>
-
-            {/* Course Stats */}
-            <div className="flex items-center space-x-6 mb-6">
-              {/* Rating */}
-              <div className="flex items-center">
-                <div className="flex -space-x-1">
-                  {[...Array(5)].map((_, index) => (
-                    <FaStar 
-                      key={index}
-                      className={`text-lg ${index < Math.floor(course.rating) 
-                        ? 'text-yellow-400' 
-                        : 'text-gray-300'}`}
-                    />
-                  ))}
-                </div>
-                <span className="ml-2 text-gray-600 dark:text-gray-400 font-medium">
-                  {course.rating}
-                </span>
-              </div>
-
-              {/* Student Count */}
-              <div className="flex items-center text-gray-600 dark:text-gray-400">
-                <FaUsers className="text-indigo-600 mr-2" />
-                <span className="font-medium">{course.students} students</span>
-              </div>
-            </div>
-
-            {/* Course Preview */}
-            <div className="mb-6">
-              <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
-                {course.description}
-              </p>
-            </div>
-
-            {/* Course Features */}
-            <div className="flex items-center gap-4 mb-6">
-              {['Video Lessons', 'Assignments', '24/7 Support'].map((feature, idx) => (
-                <span 
-                  key={idx}
-                  className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 rounded-full text-sm
-                           text-indigo-600 dark:text-indigo-400 font-medium"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
-
-            {/* Action Bar */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-              {/* Price */}
-              <div className="flex flex-col">
-                <span className="text-sm text-gray-500 dark:text-gray-400">Course Fee</span>
-                <span className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 
-                               bg-clip-text text-transparent">
-                  ${course.price}
-                </span>
-              </div>
-
-              {/* Enroll Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl
-                         font-medium shadow-lg shadow-indigo-600/20 hover:shadow-xl
-                         hover:shadow-indigo-600/40 transition-all duration-300
-                         flex items-center space-x-2"
-              >
-                <FaPlayCircle className="text-lg" />
-                <span>Enroll Now</span>
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+      
     </motion.div>
   );
 };
