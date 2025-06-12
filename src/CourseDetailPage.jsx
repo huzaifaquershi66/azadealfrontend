@@ -204,6 +204,26 @@ const CourseDetailPage = () => {
         };
         
 
+    
+        const handlePaymentClick = (method) => {
+          const studentId = localStorage.getItem("user");
+
+  const instructorId = "67c85b1d9db406a98506b498"; // Replace with dynamic id if needed
+
+  fetch("https://casback-production.up.railway.app/users/enroll", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({  studentId, instructorId, paymentMethod: method }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      alert(data.message || "Enrolled!");
+      // Redirect to payment instructions or thank you page
+    })
+    .catch(() => alert("Enrollment failed"));
+};
+
+
   
   // Fetch course details based on slug
   useEffect(() => {
@@ -807,119 +827,163 @@ const CourseDetailPage = () => {
                 </div>
 
  <div className="space-y-4">
+  {/* Start Learning Button with enhanced gradient and animation */}
   <motion.button
-    whileHover={{ scale: 1.02 }}
+    whileHover={{ scale: 1.02, boxShadow: "0 10px 20px rgba(0,0,0,0.15)" }}
     whileTap={{ scale: 0.98 }}
     onClick={() => setShowPurchaseModal(true)}
-    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3"
+    className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 text-white py-6 px-8 rounded-2xl font-bold text-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3 relative overflow-hidden group"
   >
-    <FiPlay className="w-6 h-6" />
-    <span>Start Learning Now</span>
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <FiPlay className="w-7 h-7 relative z-10" />
+    <span className="relative z-10">Start Learning Now</span>
   </motion.button>
 
-  {/* Purchase Modal */}
+  {/* Enhanced Purchase Modal with better styling and animations */}
   {showPurchaseModal && (
-    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', backdropFilter: 'blur(4px)' }}>
-      <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
-      >
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Purchase Course</h2>
-          <button 
-            onClick={() => setShowPurchaseModal(false)}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50"
+      onClick={() => setShowPurchaseModal(false)}
+    >
+      <div 
+        className="absolute inset-0" 
+        style={{ 
+          backgroundColor: 'rgba(0, 0, 0, 0.4)', 
+          backdropFilter: 'blur(8px)',
+        }} 
+      />
+      
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <motion.div 
+          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ type: "spring", duration: 0.5 }}
+          className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Header */}
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Choose Payment Method
+            </h2>
+            <motion.button 
+              whileHover={{ rotate: 90 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setShowPurchaseModal(false)}
+              className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </motion.button>
+          </div>
 
-        <div className="mb-6">
-          <p className="text-gray-600 mb-4">Choose your payment method:</p>
-          <div className="grid grid-cols-2 gap-3">
+          {/* Payment Methods Grid */}
+          <div className="grid grid-cols-2 gap-4 mb-8">
             {/* Easypaisa */}
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 window.location.href = `mailto:${contact}?subject=Easypaisa%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20Easypaisa.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-green-600 hover:to-green-700 transition-all duration-300"
+              className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
-                <img 
-                  src="https://crystalpng.com/wp-content/uploads/2024/10/Easypaisa-logo.png" 
-                  alt="Easypaisa" 
-                  className="w-10 h-10 object-contain" 
-                />
+              <div className="flex flex-col items-center gap-3" onClick={() => handlePaymentClick("Easypaisa")}>
+                <div className="w-16 h-16 bg-white rounded-full p-3 shadow-md">
+                  <img 
+                    src="https://crystalpng.com/wp-content/uploads/2024/10/Easypaisa-logo.png" 
+                    alt="Easypaisa" 
+                    className="w-full h-full object-contain" 
+                  />
+                </div>
+                <span className="text-white font-semibold text-lg">Easypaisa</span>
               </div>
-              <span className="text-sm">Easypaisa</span>
-            </button>
+            </motion.button>
 
             {/* JazzCash */}
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 window.location.href = `mailto:${contact}?subject=JazzCash%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20JazzCash.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-red-600 hover:to-red-700 transition-all duration-300"
+              className="bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
-                <img 
-                  src="https://crystalpng.com/wp-content/uploads/2024/12/new-Jazzcash-logo.png" 
-                  alt="JazzCash" 
-                  className="w-10 h-10 object-contain" 
-                />
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white rounded-full p-3 shadow-md">
+                  <img 
+                    src="https://crystalpng.com/wp-content/uploads/2024/12/new-Jazzcash-logo.png" 
+                    alt="JazzCash" 
+                    className="w-full h-full object-contain" 
+                  />
+                </div>
+                <span className="text-white font-semibold text-lg">JazzCash</span>
               </div>
-              <span className="text-sm">JazzCash</span>
-            </button>
+            </motion.button>
 
             {/* NayaPay */}
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 window.location.href = `mailto:${contact}?subject=NayaPay%20Payment%20Request&body=I%20would%20like%20to%20pay%20via%20NayaPay.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-purple-600 hover:to-purple-700 transition-all duration-300"
+              className="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
-                <img 
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu0WqWND19oxUmwaDPcI0DCVnWUpo_ryX4aw&s" 
-                  alt="NayaPay" 
-                  className="w-10 h-10 object-contain" 
-                />
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white rounded-full p-3 shadow-md">
+                  <img 
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu0WqWND19oxUmwaDPcI0DCVnWUpo_ryX4aw&s" 
+                    alt="NayaPay" 
+                    className="w-full h-full object-contain" 
+                  />
+                </div>
+                <span className="text-white font-semibold text-lg">NayaPay</span>
               </div>
-              <span className="text-sm">NayaPay</span>
-            </button>
+            </motion.button>
 
             {/* Bank Transfer */}
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 window.location.href = `mailto:${contact}?subject=Bank%20Transfer%20Request&body=I%20would%20like%20to%20pay%20via%20bank%20transfer.%20Please%20provide%20the%20account%20details.`;
               }}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl font-semibold flex flex-col items-center justify-center gap-2 hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+              className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <div className="w-12 h-12 bg-white rounded-full p-2 flex items-center justify-center">
-                <FiDollarSign className="w-8 h-8 text-blue-600" />
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white rounded-full p-3 shadow-md flex items-center justify-center">
+                  <FiDollarSign className="w-10 h-10 text-blue-600" />
+                </div>
+                <span className="text-white font-semibold text-lg">Bank Transfer</span>
               </div>
-              <span className="text-sm">Bank Transfer</span>
-            </button>
+            </motion.button>
           </div>
-        </div>
-        
-        <div className="border-t border-gray-200 pt-4">
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-500">Course Price:</p>
-            <p className="text-xl font-bold text-gray-800">PKR {price}</p>
+
+          {/* Price and Cancel Section */}
+          <div className="border-t border-gray-200 pt-6">
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-gray-600 text-lg">Course Price:</p>
+              <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                PKR {price}
+              </p>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowPurchaseModal(false)}
+              className="w-full bg-gray-100 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300 text-lg"
+            >
+              Cancel
+            </motion.button>
           </div>
-          <button
-            onClick={() => setShowPurchaseModal(false)}
-            className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300"
-          >
-            Cancel
-          </button>
-        </div>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
+    </motion.div>
   )}
 </div>
                 <div className="mt-10">

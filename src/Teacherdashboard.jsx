@@ -101,7 +101,9 @@ const TeacherDashboard = () => {
   const [newMessage, setNewMessage] = useState('');
   const socketRef = useRef(null);  // To hold the socket reference
   const studentsRef = useRef(students);
- 
+  const [studentss, setStudentss] = useState([]);
+  // const [loading, setLoading] = useState(true);
+
 
  
 
@@ -228,6 +230,24 @@ const TeacherDashboard = () => {
     }
   };
   
+ useEffect(() => {
+    const instructorId = "67c85b1d9db406a98506b498"; // Replace with dynamic id if needed
+
+    const fetchEnrollments = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/users/enrollments",{params: { instructorId },
+});
+        setStudentss(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching enrolled students:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEnrollments();
+  }, []);
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -1334,7 +1354,7 @@ const [courses, setCourses] = useState([]);
           {[
             { 
               label: 'Total Students',
-              value: '2,845',
+              value: studentss.length,
               change: '+12.5%',
               icon: FiUsers,
               gradient: 'from-blue-600 to-indigo-600',
@@ -1344,7 +1364,7 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Active Students',
-              value: '2,241',
+             value: studentss.length,
               change: '+8.1%',
               icon: FiUserCheck,
               gradient: 'from-emerald-600 to-teal-600',
@@ -1354,8 +1374,8 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Course Completion',
-              value: '84%',
-              change: '+5.4%',
+              value: '0%',
+              change: '0%',
               icon: FiAward,
               gradient: 'from-violet-600 to-purple-600',
               lightBg: 'bg-violet-50',
@@ -1364,7 +1384,7 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Average Grade',
-              value: 'B+',
+              value: 'A+',
               change: '+2.2%',
               icon: FiTrendingUp,
               gradient: 'from-amber-600 to-orange-600',
@@ -1436,116 +1456,128 @@ const [courses, setCourses] = useState([]);
       </div>
 
       {/* Students Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-        {[...Array(9)].map((_, index) => (
-          <div
-            key={index}
-            className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
-          >
-            {/* Student Card Header */}
-            <div className="relative h-40">
-              {/* Background Pattern */}
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
-                <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+      
+  {studentss.map((student, index) => {
+     
+
+  // DEBUGGING BLOCK 👇
+  
+    return (
+      <div
+        key={index}
+        className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+      >
+        {/* Student Card Header */}
+        <div className="relative h-40">
+          {/* Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
+            <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+          </div>
+
+          {/* Profile Image */}
+          <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/50 to-transparent">
+            <div className="flex items-center gap-4">
+              <div className="relative group-hover:scale-110 transition-transform duration-500">
+                <img
+                  src={student?.studentId?.profilePicture || `https://i.pravatar.cc/150?img=${index + 1}`}
+                  alt={student.fullName}
+                  className="w-16 h-16 rounded-xl border-2 border-white/50 object-cover"
+                />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse" />
               </div>
 
-              {/* Student Info */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/50 to-transparent">
-                <div className="flex items-center gap-4">
-                  <div className="relative group-hover:scale-110 transition-transform duration-500">
-                    <img
-                      src={`https://i.pravatar.cc/150?img=${index + 1}`}
-                      alt="Student"
-                      className="w-16 h-16 rounded-xl border-2 border-white/50 object-cover"
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-white">
-                        Student {index + 1}
-                      </h3>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-100 border border-indigo-500/30">
-                        Pro
-                      </span>
-                    </div>
-                    <p className="text-white/80 text-sm flex items-center gap-2">
-                      <FiCode />
-                      Full Stack Development
-                    </p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all duration-300">
-                    <FiMoreVertical />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Student Card Body */}
-            <div className="p-6 space-y-6">
-              {/* Status and Level */}
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border border-green-500/30">
-                  Active Student
-                </span>
+              <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <FiStar className="text-amber-400" />
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                    Level {index + 5}
+                  <h3 className="text-lg font-bold text-white">{student?.studentId.fullName}</h3>
+                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-100 border border-indigo-500/30">
+                    {student.specialization || "Student"}
                   </span>
                 </div>
+                <p className="text-white/80 text-sm flex items-center gap-2">
+                  <FiCode />
+                  {student.studentId.qualification || "Qualification not provided"}
+                </p>
               </div>
 
-              {/* Progress Section */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Course Progress</span>
-                  <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                    {78 + index}%
-                  </span>
-                </div>
-                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-full transition-all duration-500 relative group-hover:from-indigo-500 group-hover:to-pink-500"
-                    style={{ width: `${78 + index}%` }}
-                  >
-                    <div className="absolute inset-0 bg-[length:20px_20px] animate-shimmer"
-                         style={{
-                           backgroundImage: 'linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent)'
-                         }}
-                    />
-                  </div>
-                </div>
-              </div>
+              <button className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all duration-300">
+                <FiMoreVertical />
+              </button>
+            </div>
+          </div>
+        </div>
 
-              {/* Stats Grid */}
-              <div className="grid grid-cols-3 gap-4">
-                {[
-                  { icon: FiBook, label: 'Courses', value: 12 + index },
-                  { icon: FiAward, label: 'Certificates', value: 8 + index },
-                  { icon: FiClock, label: 'Hours', value: `${120 + index}h` }
-                ].map((stat, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-300">
-                    <stat.icon className="text-lg text-indigo-500 mb-1" />
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
+        {/* Card Body */}
+        <div className="p-6 space-y-6">
+          {/* Status and Level */}
+          <div className="flex items-center justify-between">
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 dark:text-green-400 border border-green-500/30">
+              Active Student
+            </span>
+            <div className="flex items-center gap-2">
+              <FiStar className="text-amber-400" />
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Level {index + 1}
+              </span>
+            </div>
+          </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <button className="flex-1 px-4 py-2.5 rounded-xl font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25">
-                  View Profile
-                </button>
-                <button className="p-2.5 rounded-xl text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300">
-                  <FiMessageSquare className="text-lg" />
-                </button>
+          {/* Progress */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Course Progress</span>
+              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                {0 + index}%
+              </span>
+            </div>
+            <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-full transition-all duration-500 relative group-hover:from-indigo-500 group-hover:to-pink-500"
+                style={{ width: `${78 + index}%` }}
+              >
+                <div className="absolute inset-0 bg-[length:20px_20px] animate-shimmer"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent)'
+                  }}
+                />
               </div>
             </div>
           </div>
-        ))}
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { icon: FiBook, label: 'Courses', value: 1 + index },
+              { icon: FiAward, label: 'Certificates', value: 0 + index },
+              { icon: FiClock, label: 'Hours', value: `${0 + index}h` }
+            ].map((stat, i) => (
+              <div
+                key={i}
+                className="p-3 rounded-xl bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-300"
+              >
+                <stat.icon className="text-lg text-indigo-500 mb-1" />
+                <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
+                <p className="text-sm font-bold text-gray-900 dark:text-white">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <button className="flex-1 px-4 py-2.5 rounded-xl font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25">
+              View Profile
+            </button>
+            <button className="p-2.5 rounded-xl text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300">
+              <FiMessageSquare className="text-lg" />
+            </button>
+          </div>
+        </div>
       </div>
+    );
+  })}
+</div>
+
 
       {/* Enhanced Pagination */}
       <div className="flex justify-center">
