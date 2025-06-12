@@ -235,7 +235,7 @@ const TeacherDashboard = () => {
 
     const fetchEnrollments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users/enrollments",{params: { instructorId },
+        const response = await axios.get("https://casback-production.up.railway.app/users/enrollments",{params: { instructorId },
 });
         setStudentss(response.data);
         console.log(response.data)
