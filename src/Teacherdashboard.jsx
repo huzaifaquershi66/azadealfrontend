@@ -3,6 +3,8 @@ import axios from "axios"; // Upar import kar lena
 import { io } from 'socket.io-client';
 import {Link} from "react-router-dom"
 import JitsiMeeting from "./Jistsimeet.jsx"
+import dayjs from 'dayjs';
+import { FaRegCalendarAlt, FaVideo, FaTimes,FaClock, FaCheckCircle, FaRegClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 
 import { 
@@ -103,12 +105,161 @@ const TeacherDashboard = () => {
   const studentsRef = useRef(students);
   const [studentss, setStudentss] = useState([]);
   // const [loading, setLoading] = useState(true);
+    const [inputTime, setInputTime] = useState('');
+  const [scheduledMeetings, setScheduledMeetings] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('Machine Learning');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [activeMeetings, setActiveMeetings] = useState([]);
+const [isCustomTime, setIsCustomTime] = useState(false);
+const [customHour, setCustomHour] = useState('');
+const [customMinute, setCustomMinute] = useState('');
+const [customPeriod, setCustomPeriod] = useState('AM');
+   const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return new Date(year, month + 1, 0).getDate();
+  };
 
+  const getFirstDayOfMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return new Date(year, month, 1).getDay();
+  };
 
- 
+  const generateCalendarDays = () => {
+    const daysInMonth = getDaysInMonth(selectedDate);
+    const firstDay = getFirstDayOfMonth(selectedDate);
+    const days = [];
+    
+    // Add empty cells for days before first day of month
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null);
+    }
+    
+    // Add days of month
+    for (let i = 1; i <= daysInMonth; i++) {
+      days.push(i);
+    }
+    
+    return days;
+  };
 
+  const changeMonth = (increment) => {
+    const newDate = new Date(selectedDate);
+    newDate.setMonth(newDate.getMonth() + increment);
+    setSelectedDate(newDate);
+  };
+
+  // Generate time slots from 9 AM to 9 PM
+  const timeSlots = Array.from({ length: 13 }, (_, i) => {
+    const hour = i + 9;
+    return {
+      value: `${hour.toString().padStart(2, '0')}:00`,
+      label: `${hour > 12 ? hour - 12 : hour}:00 ${hour >= 12 ? 'PM' : 'AM'}`
+    };
+  });
+
+  useEffect(() => {
+    const stored = localStorage.getItem('scheduledMeetings');
+    if (stored) {
+      setScheduledMeetings(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('scheduledMeetings', JSON.stringify(scheduledMeetings));
+  }, [scheduledMeetings]);
+
+  const handleDateSelect = (day) => {
+    const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day);
+    setSelectedDate(newDate);
+    setShowCalendar(false);
+    handleDateTimeSelect(newDate);
+  };
+
+  const handleDateTimeSelect = (date = selectedDate) => {
+    if (!date || !selectedTime) return;
+    
+    const dateTime = dayjs(date)
+      .hour(parseInt(selectedTime.split(':')[0]))
+      .minute(parseInt(selectedTime.split(':')[1] || 0))
+      .format('YYYY-MM-DDTHH:mm');
+    
+    setInputTime(dateTime);
+  };
+
+  const handleSchedule = () => {
+    if (!inputTime) return;
+    const newMeeting = {
+      time: inputTime,
+      course: selectedCourse,
+      started: false,
+    };
+    setScheduledMeetings([...scheduledMeetings, newMeeting]);
+    setInputTime('');
+    setSelectedDate(new Date());
+    setSelectedTime('');
+  };
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const now = dayjs();
+    
+    setScheduledMeetings((prevMeetings) =>
+      prevMeetings.map((meeting) => {
+        const meetingTime = dayjs(meeting.time);
+        // Check if the meeting should be active (within the scheduled time)
+        const shouldBeActive = meetingTime.isSame(now, 'minute') || 
+          (meetingTime.isBefore(now) && meetingTime.add(1, 'hour').isAfter(now));
+
+        if (shouldBeActive && !meeting.started) {
+          // Meeting should start
+          return { ...meeting, started: true };
+        } else if (!shouldBeActive && meeting.started) {
+          // Meeting should end
+          return { ...meeting, started: false };
+        }
+        return meeting;
+      })
+    );
+
+    // Update active meetings
+    setActiveMeetings(scheduledMeetings.filter(meeting => {
+      const meetingTime = dayjs(meeting.time);
+      return meetingTime.isSame(now, 'minute') || 
+        (meetingTime.isBefore(now) && meetingTime.add(1, 'hour').isAfter(now));
+    }));
+
+  }, 30000); // Check every 30 seconds
+
+  return () => clearInterval(interval);
+}, [scheduledMeetings]);
+const handleEndMeeting = (meetingIndex) => {
+  setScheduledMeetings((prevMeetings) =>
+    prevMeetings.map((meeting, index) => {
+      if (index === meetingIndex) {
+        return { ...meeting, started: false, endedManually: true };
+      }
+      return meeting;
+    })
+  );
+};
+const handleCustomTimeSelect = () => {
+  if (!customHour || !customMinute) return;
   
+  let hour = parseInt(customHour);
+  if (customPeriod === 'PM' && hour !== 12) {
+    hour += 12;
+  } else if (customPeriod === 'AM' && hour === 12) {
+    hour = 0;
+  }
   
+  const timeString = `${hour.toString().padStart(2, '0')}:${customMinute}`;
+  setSelectedTime(timeString);
+  handleDateTimeSelect();
+  setIsCustomTime(false); // Close custom time selector after selection
+};
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -235,7 +386,7 @@ const TeacherDashboard = () => {
 
     const fetchEnrollments = async () => {
       try {
-        const response = await axios.get("https://casback-production.up.railway.app/users/enrollments",{params: { instructorId },
+        const response = await axios.get("http://localhost:5000/users/enrollments",{params: { instructorId },
 });
         setStudentss(response.data);
         console.log(response.data)
@@ -1622,213 +1773,380 @@ const [courses, setCourses] = useState([]);
 )}
 {currentPage === 'live-sessions' && (
   <main className="flex-1 min-h-screen ml-72 bg-[#f8faff] dark:bg-gray-900 transition-all duration-500">
-    {/* Top Banner */}
-    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight">Virtual Classroom</h1>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <span className="animate-ping absolute h-3 w-3 rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                <span className="ml-2 text-sm font-medium">Live Session</span>
-              </div>
-              <div className="text-sm font-medium">
-                <span>Session ID: AzadEducation-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold tracking-wider" id="session-timer">
-                00:00:00
-              </div>
-              <div className="text-xs font-medium text-blue-200">Duration</div>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                <span className="text-lg font-semibold">25</span>
-              </div>
-              <div className="text-sm">
-                <div className="font-medium">Students</div>
-                <div className="text-blue-200">Online</div>
-              </div>
-            </div>
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-bold">Virtual Classroom</h1>
+          <div className="mt-2">
+            Session ID: AzadEducation-{Math.random().toString(36).substr(2, 6).toUpperCase()}
           </div>
         </div>
       </div>
+
+      <div className="max-w-7xl mx-auto px-8 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+          <div className="space-y-6">
+            {/* Course Selection */}
+            <div>
+              <label className="block text-gray-700 dark:text-white font-medium mb-2">
+                Select Course
+              </label>
+              <select
+                value={selectedCourse}
+                onChange={(e) => setSelectedCourse(e.target.value)}
+                className="w-full p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 
+                          text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              >
+                <option value="Machine Learning">Machine Learning</option>
+                <option value="Deep Learning">Deep Learning</option>
+                <option value="Data Science">Data Science</option>
+              </select>
+            </div>
+
+            {/* Date Selection */}
+            <div className="relative">
+              <label className="block text-gray-700 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <FaRegCalendarAlt />
+                Select Date
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  readOnly
+                  value={dayjs(selectedDate).format('MMMM D, YYYY')}
+                  onClick={() => setShowCalendar(!showCalendar)}
+                  className="w-full p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 
+                            text-gray-800 dark:text-white cursor-pointer focus:ring-2 focus:ring-blue-500"
+                />
+
+                {showCalendar && (
+                  <div className="absolute z-10 mt-2 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+                    <div className="flex justify-between items-center mb-4">
+                      <button onClick={() => changeMonth(-1)} className="p-2">
+                        <FaChevronLeft />
+                      </button>
+                      <div className="font-semibold">
+                        {selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                      </div>
+                      <button onClick={() => changeMonth(1)} className="p-2">
+                        <FaChevronRight />
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-7 gap-1 text-center font-medium mb-2">
+                      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                        <div key={day} className="p-2">{day}</div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-1">
+                      {generateCalendarDays().map((day, index) => (
+                        <button
+                          key={index}
+                          onClick={() => day && handleDateSelect(day)}
+                          disabled={!day || (new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day) < new Date().setHours(0,0,0,0))}
+                          className={`
+                            p-2 rounded-lg
+                            ${!day ? 'invisible' : ''}
+                            ${day && new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day).setHours(0,0,0,0) === new Date(selectedDate).setHours(0,0,0,0)
+                              ? 'bg-blue-500 text-white'
+                              : 'hover:bg-blue-100 dark:hover:bg-gray-700'}
+                            ${new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day) < new Date().setHours(0,0,0,0)
+                              ? 'text-gray-400 cursor-not-allowed'
+                              : 'cursor-pointer'}
+                          `}
+                        >
+                          {day}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Time Selection */}
+           <div>
+  <label className="block text-gray-700 dark:text-white font-medium mb-2 flex items-center gap-2">
+    <FaClock className="text-gray-500" />
+    Select Time
+  </label>
+  
+  {/* Toggle between preset and custom time */}
+  <div className="flex gap-2 mb-4">
+    <button
+      onClick={() => setIsCustomTime(false)}
+      className={`px-4 py-2 rounded-lg ${
+        !isCustomTime 
+          ? 'bg-blue-500 text-white' 
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      Preset Times
+    </button>
+    <button
+      onClick={() => setIsCustomTime(true)}
+      className={`px-4 py-2 rounded-lg ${
+        isCustomTime 
+          ? 'bg-blue-500 text-white' 
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      Custom Time
+    </button>
+  </div>
+
+  {isCustomTime ? (
+    // Custom Time Selection
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-4">
+        {/* Hour Selection */}
+        <div>
+          <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+            Hour
+          </label>
+          <select
+            value={customHour}
+            onChange={(e) => setCustomHour(e.target.value)}
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          >
+            <option value="">Hour</option>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+              <option key={hour} value={hour}>
+                {hour.toString().padStart(2, '0')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Minute Selection */}
+        <div>
+          <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+            Minute
+          </label>
+          <select
+            value={customMinute}
+            onChange={(e) => setCustomMinute(e.target.value)}
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          >
+            <option value="">Minute</option>
+            {Array.from({ length: 60 }, (_, i) => i).map(minute => (
+              <option key={minute} value={minute}>
+                {minute.toString().padStart(2, '0')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* AM/PM Selection */}
+        <div>
+          <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+            AM/PM
+          </label>
+          <select
+            value={customPeriod}
+            onChange={(e) => setCustomPeriod(e.target.value)}
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          >
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+        </div>
+      </div>
+
+      <button
+        onClick={handleCustomTimeSelect}
+        disabled={!customHour || !customMinute}
+        className={`w-full p-3 rounded-lg ${
+          customHour && customMinute
+            ? 'bg-blue-500 hover:bg-blue-600 text-white'
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        } transition-colors duration-200`}
+      >
+        Set Custom Time
+      </button>
+
+      {selectedTime && (
+        <div className="mt-2 p-2 bg-blue-50 dark:bg-gray-700 rounded-lg">
+          <p className="text-blue-800 dark:text-blue-200">
+            Selected Time: {dayjs(`2000-01-01 ${selectedTime}`).format('hh:mm A')}
+          </p>
+        </div>
+      )}
     </div>
+  ) : (
+    // Preset Time Slots
+    <div className="grid grid-cols-4 gap-2">
+      {timeSlots.map((slot) => (
+        <button
+          key={slot.value}
+          onClick={() => {
+            setSelectedTime(slot.value);
+            handleDateTimeSelect();
+          }}
+          className={`p-3 rounded-lg border flex items-center justify-center gap-2 ${
+            selectedTime === slot.value
+              ? 'bg-blue-500 text-white border-blue-600'
+              : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white'
+          } hover:bg-blue-50 dark:hover:bg-gray-600 transition-all`}
+        >
+          {selectedTime === slot.value ? (
+            <FaCheckCircle className="h-4 w-4" />
+          ) : (
+            <FaRegClock className="h-4 w-4" />
+          )}
+          {slot.label}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
-    {/* Main Content */}
-    <div className="max-w-7xl mx-auto px-8 py-6">
-      {/* Control Panel */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8">
-        <div className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button 
-                onClick={() => setMeetingStarted(true)}
-                className="group relative px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="absolute inset-0 w-full h-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 filter blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></span>
-                <span className="relative flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3l14 9-14 9V3z"/>
-                  </svg>
-                  Start Teaching
-                </span>
-              </button>
-              
-              <button 
-                onClick={() => setMeetingStarted(false)}
-                className="group relative px-8 py-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-medium hover:from-red-700 hover:to-rose-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="absolute inset-0 w-full h-full rounded-xl bg-gradient-to-r from-red-600 to-rose-600 filter blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></span>
-                <span className="relative flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                  End Class
-                </span>
-              </button>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              {/* Quick Actions */}
-              <div className="flex -space-x-2">
-                <button className="relative z-30 p-3 rounded-xl bg-white dark:bg-gray-700 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300 flex items-center space-x-2">
-                  <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                  </svg>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Share Screen</span>
-                </button>
-                
-                <button className="relative z-20 p-3 rounded-xl bg-white dark:bg-gray-700 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300 flex items-center space-x-2">
-                  <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0-11V3"/>
-                  </svg>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Record</span>
-                </button>
-                
-                <button className="relative z-10 p-3 rounded-xl bg-white dark:bg-gray-700 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300 flex items-center space-x-2">
-                  <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                  </svg>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Chat</span>
-                </button>
-              </div>
-            </div>
+            {/* Schedule Button */}
+            <button
+              onClick={handleSchedule}
+              disabled={!inputTime}
+              className={`w-full p-4 rounded-lg ${
+                inputTime
+                  ? 'bg-blue-600 hover:bg-blue-700'
+                  : 'bg-gray-400 cursor-not-allowed'
+              } text-white font-medium transition-all duration-200 flex items-center justify-center gap-2`}
+            >
+              <FaRegCalendarAlt className="h-5 w-5" />
+              Schedule Meeting
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Meeting Container with Enhanced UI */}
-      <div className="grid grid-cols-4 gap-8">
-        <div className="col-span-3">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-            <div className="aspect-w-16 aspect-h-9 relative">
+        {/* Scheduled Meetings */}
+   {scheduledMeetings.length > 0 && (
+  <div className="space-y-6">
+    {scheduledMeetings.map((meeting, index) => {
+      const meetingTime = dayjs(meeting.time);
+      const now = dayjs();
+      const isActive = meetingTime.isSame(now, 'minute') || 
+        (meetingTime.isBefore(now) && meetingTime.add(1, 'hour').isAfter(now));
+      const hasStarted = meeting.started && isActive && !meeting.endedManually;
+      
+      return (
+        <div
+          key={index}
+          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-[1.02]"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                {meeting.course}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mt-2 flex items-center gap-2">
+                <FaRegCalendarAlt />
+                {dayjs(meeting.time).format('MMMM D, YYYY [at] h:mm A')}
+              </p>
+              {!hasStarted && !meeting.endedManually && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Meeting will be available at scheduled time
+                </p>
+              )}
+              {meeting.endedManually && (
+                <p className="text-sm text-red-500 mt-1">
+                  Meeting ended by host
+                </p>
+              )}
+            </div>
+            <div className={`px-4 py-2 rounded-full flex items-center gap-2 ${
+              hasStarted ? 'bg-green-100 text-green-800' : 
+              meeting.endedManually ? 'bg-red-100 text-red-800' :
+              meetingTime.isAfter(now) ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+            }`}>
+              {hasStarted ? (
+                <>
+                  <FaCheckCircle />
+                  In Progress
+                </>
+              ) : meeting.endedManually ? (
+                <>
+                  <FaRegClock />
+                  Ended by Host
+                </>
+              ) : meetingTime.isAfter(now) ? (
+                <>
+                  <FaRegClock />
+                  Scheduled
+                </>
+              ) : (
+                <>
+                  <FaRegClock />
+                  Ended
+                </>
+              )}
+            </div>
+          </div>
+
+          {hasStarted && (
+            <div className="mt-6">
+              <div className="bg-blue-50 dark:bg-gray-700 p-4 rounded-lg mb-4 flex justify-between items-center">
+                <p className="text-blue-800 dark:text-blue-200">
+                  Your meeting is now active! Join below.
+                </p>
+                <button
+                  onClick={() => handleEndMeeting(index)}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 
+                           transition-colors duration-200 flex items-center gap-2"
+                >
+                  <FaTimes className="h-4 w-4" />
+                  End Meeting
+                </button>
+              </div>
               <JitsiMeeting
-                roomName="AzadEducationLiveRoom1"
+                roomName={`AzadEducation-${meeting.course.replace(/\s+/g, '')}-${index}`}
                 configOverwrite={{
                   startWithAudioMuted: false,
-                  disableModeratorIndicator: true,
-                  startScreenSharing: false,
-                  enableEmailInStats: false,
                   prejoinPageEnabled: false,
-                  hideConferenceSubject: true,
-                  hideConferenceTimer: true,
-                  disableResponsiveTiles: true
                 }}
                 interfaceConfigOverwrite={{
                   DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                  SHOW_JITSI_WATERMARK: false,
                   TOOLBAR_BUTTONS: [
-                    'microphone', 'camera', 'desktop', 'fullscreen',
-                    'fodeviceselection', 'hangup', 'profile', 'chat',
-                    'recording', 'livestreaming', 'raisehand',
-                    'videoquality', 'filmstrip', 'feedback', 'stats',
-                    'shortcuts', 'tileview', 'videobackgroundblur',
-                    'download', 'help', 'mute-everyone'
+                    'microphone', 'camera', 'desktop', 'fullscreen', 'hangup', 'chat',
+                    'raisehand', 'videoquality', 'tileview', 'mute-everyone'
                   ],
                 }}
-                getIFrameRef={(iframeRef) => { 
+                getIFrameRef={(iframeRef) => {
                   iframeRef.style.height = '600px';
                   iframeRef.style.width = '100%';
                 }}
               />
             </div>
-          </div>
+          )}
+
+          {/* Add Rejoin Button for manually ended meetings */}
+          {meeting.endedManually && isActive && (
+            <div className="mt-4">
+              <button
+                onClick={() => {
+                  setScheduledMeetings((prevMeetings) =>
+                    prevMeetings.map((m, i) => {
+                      if (i === index) {
+                        return { ...m, started: true, endedManually: false };
+                      }
+                      return m;
+                    })
+                  );
+                }}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+                         transition-colors duration-200 flex items-center justify-center gap-2"
+              >
+                <FaVideo className="h-4 w-4" />
+                Rejoin Meeting
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* Participants Panel */}
-        <div className="col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-[600px] overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center justify-between">
-                Participants
-                <span className="bg-indigo-100 text-indigo-600 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
-                  25 Online
-                </span>
-              </h3>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {/* Teacher */}
-              <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-3 flex items-center space-x-3">
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold text-lg">
-                    HQ
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
-                </div>
-                <div>
-                  <p className="text-gray-900 dark:text-white font-medium">Huzaifa Quershi</p>
-                  <p className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">Teacher</p>
-                </div>
-              </div>
-
-              {/* Students */}
-              {Array(5).fill(null).map((_, i) => (
-                <div key={i} className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 flex items-center space-x-3">
-                  <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium">
-                      {String.fromCharCode(65 + i)}S
-                    </div>
-                    <div className="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
-                  </div>
-                  <div>
-                    <p className="text-gray-800 dark:text-gray-200 font-medium">Student {i + 1}</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Listening</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Quick Actions Footer */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="grid grid-cols-2 gap-2">
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-50 dark:bg-gray-700 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-gray-600 transition-colors duration-200">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                  </svg>
-                  <span className="text-sm font-medium">Invite</span>
-                </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-red-50 dark:bg-gray-700 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-gray-600 transition-colors duration-200">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"/>
-                  </svg>
-                  <span className="text-sm font-medium">Remove</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      );
+    })}
+  </div>
+)}
       </div>
-    </div>
-  </main>
+    </main>
 )}
 
 {currentPage === 'messenger' && (
