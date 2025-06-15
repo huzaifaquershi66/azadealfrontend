@@ -213,7 +213,7 @@ const CourseDetailPage = () => {
   fetch("https://casback-production.up.railway.app/users/enroll", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({  studentId, instructorId, paymentMethod: method }),
+    body: JSON.stringify({  studentId, instructorId, paymentMethod: method,coursePrice:10000 }),
   })
     .then((res) => res.json())
     .then((data) => {
@@ -1183,3 +1183,4 @@ const CourseDetailPage = () => {
 };
 
 export default CourseDetailPage;
+
