@@ -2866,6 +2866,4 @@ const [courses, setCourses] = useState([]);
 };
 
 export default TeacherDashboard;
-};
 
-export default TeacherDashboard;
