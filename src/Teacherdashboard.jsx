@@ -116,6 +116,17 @@ const [isCustomTime, setIsCustomTime] = useState(false);
 const [customHour, setCustomHour] = useState('');
 const [customMinute, setCustomMinute] = useState('');
 const [customPeriod, setCustomPeriod] = useState('AM');
+const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+const [processingTime, setProcessingTime] = useState('2_days');
+
+const handleWithdrawSubmit = (e) => {
+  e.preventDefault();
+  // Handle the withdrawal request submission here
+  setShowWithdrawModal(false);
+};
+// Calculate total revenue
+const totalEarnings = studentss.reduce((acc, curr) => acc + (curr.coursePrice || 0), 0);
+
    const getDaysInMonth = (date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -386,7 +397,7 @@ const handleCustomTimeSelect = () => {
 
     const fetchEnrollments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users/enrollments",{params: { instructorId },
+        const response = await axios.get("https://casback-production.up.railway.app/users/enrollments",{params: { instructorId },
 });
         setStudentss(response.data);
         console.log(response.data)
@@ -1013,119 +1024,98 @@ const [courses, setCourses] = useState([]);
       </button>
 
       {/* Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-start justify-center z-50 overflow-auto">
-    <div className="absolute top-8 w-full max-w-3xl mx-4 bg-white rounded-3xl p-8 shadow-2xl animate-fadeIn overflow-hidden">
+     {isOpen && (
+  <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-auto min-h-screen">
+    <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-[0_0_50px_-12px_rgb(0,0,0,0.25)] animate-slideIn">
+      {/* Decorative Header Background */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-2xl" />
 
-            {/* Close Button */}
-            <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl"
-              onClick={() => setIsOpen(false)}
-            >
-              ✕
-            </button>
+      {/* Close Button - Moved outside the white container */}
+      <button
+        className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white"
+        onClick={() => setIsOpen(false)}
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
 
-            <h2 className="text-3xl font-bold mb-6 text-center text-gradient bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-              Create New Course
-            </h2>
+      <div className="relative z-10 px-8 pt-16 pb-8">
+        <h2 className="text-4xl font-bold text-white text-center mb-12">
+          Create New Course
+        </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-6 max-h-[calc(100vh-240px)] overflow-y-auto custom-scrollbar">
+          <div className="bg-white rounded-xl p-8 shadow-sm space-y-6">
+            {/* Title and Category Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Course Title</label>
                 <input
                   type="text"
                   name="title"
-                  placeholder="Course Title"
+                  placeholder="Enter course title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
                   required
                 />
-
-<select
-  name="category"
-  value={formData.category}
-  onChange={handleChange}
-  className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-  required
->
-  <option value="">Select Category</option>
-
-  <optgroup label="Academic Courses (School & College)">
-    <option value="Matric & Intermediate">Matric & Intermediate (Science, Arts, Commerce)</option>
-    <option value="O-Level & A-Level">O-Level & A-Level (Cambridge & Federal Board)</option>
-    <option value="Engineering Entrance Exams">Engineering Entrance Exams (ECAT, NUST, PIEAS, GIKI)</option>
-    <option value="Medical Entrance Exams">Medical Entrance Exams (MDCAT, NUMS, AKU)</option>
-    <option value="CSS & FPSC Preparation">CSS & FPSC Preparation</option>
-    <option value="Bachelors & Masters">Bachelors & Masters (BS, MS, MBA, MPhil, PhD)</option>
-  </optgroup>
-
-  <optgroup label="Professional & Skill-Based Courses">
-    <option value="Freelancing">Freelancing (Fiverr, Upwork, PeoplePerHour)</option>
-    <option value="Graphic Designing">Graphic Designing (Photoshop, Illustrator, Canva)</option>
-    <option value="Digital Marketing">Digital Marketing (SEO, Facebook Ads, Google Ads, SMM)</option>
-    <option value="E-commerce">E-commerce (Daraz, Amazon, Shopify, eBay, Etsy)</option>
-    <option value="Web Development">Web Development (HTML, CSS, JS, React, WordPress, etc.)</option>
-    <option value="App Development">App Development (Flutter, React Native, Android, iOS)</option>
-    <option value="Cyber Security">Cyber Security & Ethical Hacking</option>
-    <option value="Data Science & AI">Data Science & AI (Python, ML, DL, ChatGPT Tools)</option>
-  </optgroup>
-
-  <optgroup label="Language & Communication Courses">
-    <option value="English Language">English Language (IELTS, TOEFL, Spoken English)</option>
-    <option value="Urdu & Pashto Writing">Urdu & Pashto Writing</option>
-    <option value="Foreign Languages">Chinese, German, French Language Courses</option>
-  </optgroup>
-
-  <optgroup label="Govt. & Competitive Exam Prep">
-    <option value="Competitive Exams">CSS, PMS, FPSC, PPSC, SPSC, KPPSC, BPSC</option>
-    <option value="Armed Forces Tests">Pak Army, Navy, Air Force Tests (ISSB, Initial Tests)</option>
-    <option value="Police & FIA Exams">Police, FIA, ASF, NAB Exam Preparation</option>
-    <option value="University Entry Tests">LUMS, IBA, FAST, GIKI Entry Tests</option>
-  </optgroup>
-
-  <optgroup label="Business & Finance">
-    <option value="Accounting & Finance">Accounting & Finance (QuickBooks, Excel, SAP)</option>
-    <option value="Trading">Stock Market & Crypto Trading</option>
-    <option value="Entrepreneurship">Entrepreneurship & Business Startup Guide</option>
-  </optgroup>
-
-  <optgroup label="Personal Development">
-    <option value="Time Management">Time Management & Productivity</option>
-    <option value="Public Speaking">Public Speaking & Communication Skills</option>
-    <option value="Leadership">Leadership & Team Management</option>
-    <option value="Career Counseling">Career Counseling & Job Interview Prep</option>
-  </optgroup>
-
-  <optgroup label="Islamic & Religious Studies">
-    <option value="Quran & Tajweed">Quran Tafseer & Tajweed</option>
-    <option value="Hadith & Fiqh">Hadith & Fiqh Courses</option>
-    <option value="Islamic Banking">Islamic Banking & Finance</option>
-  </optgroup>
-</select>
-
               </div>
 
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Category</label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none appearance-none bg-white"
+                  required
+                >
+                  <option value="">Select Category</option>
+                  {/* Keep your existing optgroup structure */}
+                </select>
+              </div>
+            </div>
+
+            {/* Description Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Description</label>
               <textarea
                 name="description"
-                placeholder="Course Description"
+                placeholder="Describe your course"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                rows="2"
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none resize-none"
+                rows="3"
                 required
               />
+            </div>
 
-<input
-                type="file"
-                name="thumbnail"
-                onChange={handleImageChange}
-                accept="image/*"
-                className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                required
-              />
-
-              {/* Thumbnail Preview */}
+            {/* Thumbnail Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Course Thumbnail</label>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-purple-500 transition-all">
+                <div className="space-y-1 text-center">
+                  <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <div className="flex text-sm text-gray-600">
+                    <label className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500">
+                      <span>Upload a file</span>
+                      <input
+                        type="file"
+                        name="thumbnail"
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        className="sr-only"
+                        required
+                      />
+                    </label>
+                    <p className="pl-1">or drag and drop</p>
+                  </div>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                </div>
+              </div>
               {thumbnailPreview && (
                 <div className="mt-4">
                   <img
@@ -1135,23 +1125,33 @@ const [courses, setCourses] = useState([]);
                   />
                 </div>
               )}
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="number"
-                  name="price"
-                  placeholder="Price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                  required
-                />
+            {/* Price and Level Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">₨</span>
+                  <input
+                    type="number"
+                    name="price"
+                    placeholder="0.00"
+                    value={formData.price}
+                    onChange={handleChange}
+                    className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
+                    required
+                  />
+                </div>
+              </div>
 
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Level</label>
                 <select
                   name="level"
                   value={formData.level}
                   onChange={handleChange}
-                  className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none appearance-none bg-white"
                   required
                 >
                   <option value="">Select Level</option>
@@ -1160,126 +1160,170 @@ const [courses, setCourses] = useState([]);
                   <option value="Advanced">Advanced</option>
                 </select>
               </div>
+            </div>
 
-              <input
-                type="text"
-                name="language"
-                placeholder="Language"
-                value={formData.language}
-                onChange={handleChange}
-                className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                required
-              />
-              <select
-  name="courseType"
-  value={formData.courseType}
-  onChange={handleChange}
-  className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-  required
->
-  <option value="">Select Course Type</option>
-  <option value="Video">Video Course</option>
-  <option value="Online">Online (Zoom)</option>
-  <option value="InPerson">In-Person</option>
-</select>
-
-{/* Conditional Fields Based on Course Type */}
-{formData.courseType === "Video" && (
-  <div>
-    <label className="block mt-4">Upload Video File:</label>
-    <input
-      type="file"
-      name="videoFile"
-      onChange={(e) =>
-        setFormData({ ...formData, videoFile: e.target.files[0] })
-      }
-      accept="video/*"
-      className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-    />
-  </div>
-)}
-
-{formData.courseType === "Online" && (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    <input
-      type="text"
-      name="classTime"
-      placeholder="Class Time (e.g. 7PM - 8PM)"
-      value={formData.classTime}
-      onChange={handleChange}
-      className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-    />
-    <input
-      type="number"
-      name="classDaysPerWeek"
-      placeholder="Classes per Week"
-      value={formData.classDaysPerWeek}
-      onChange={handleChange}
-      className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-    />
-    <input
-      type="text"
-      name="courseDuration"
-      placeholder="Course Duration (e.g. 2 months)"
-      value={formData.courseDuration}
-      onChange={handleChange}
-      className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-    />
-  </div>
-)}
-
-{formData.courseType === "InPerson" && (
-  <textarea
-    name="inPersonDetails"
-    placeholder="Please describe your location and timing preference"
-    value={formData.inPersonDetails}
-    onChange={handleChange}
-    className="w-full border-b-2 focus:border-purple-500 outline-none py-2 mt-4"
-    rows="2"
-  />
-)}
-
-
-              <textarea
-                name="whatYouWillLearn"
-                placeholder="What You Will Learn (comma separated)"
-                value={formData.whatYouWillLearn}
-                onChange={handleChange}
-                className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                rows="2"
-                required
-              />
-
-              <textarea
-                name="requirements"
-                placeholder="Requirements (comma separated)"
-                value={formData.requirements}
-                onChange={handleChange}
-                className="w-full border-b-2 focus:border-purple-500 outline-none py-2"
-                rows="2"
-                required
-              />
-
-              <div className="flex justify-end gap-4 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="px-6 py-2 border rounded-full text-gray-700 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:scale-105 transition-all"
-                >
-                  Save
-                </button>
+            {/* Language and Course Type Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Language</label>
+                <input
+                  type="text"
+                  name="language"
+                  placeholder="e.g., English, Urdu"
+                  value={formData.language}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
+                  required
+                />
               </div>
 
-            </form>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Course Type</label>
+                <select
+                  name="courseType"
+                  value={formData.courseType}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none appearance-none bg-white"
+                  required
+                >
+                  <option value="">Select Course Type</option>
+                  <option value="Video">Video Course</option>
+                  <option value="Online">Online (Zoom)</option>
+                  <option value="InPerson">In-Person</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Conditional Fields Based on Course Type */}
+            {formData.courseType === "Video" && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Upload Video</label>
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-purple-500 transition-all">
+                  <div className="space-y-1 text-center">
+                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <div className="flex text-sm text-gray-600">
+                      <label className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500">
+                        <span>Upload a video</span>
+                        <input
+                          type="file"
+                          name="videoFile"
+                          onChange={(e) => setFormData({ ...formData, videoFile: e.target.files[0] })}
+                          accept="video/*"
+                          className="sr-only"
+                        />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs text-gray-500">MP4, WebM up to 2GB</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {formData.courseType === "Online" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Class Time</label>
+                  <input
+                    type="text"
+                    name="classTime"
+                    placeholder="e.g., 7PM - 8PM"
+                    value={formData.classTime}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Classes per Week</label>
+                  <input
+                    type="number"
+                    name="classDaysPerWeek"
+                    placeholder="e.g., 3"
+                    value={formData.classDaysPerWeek}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">Course Duration</label>
+                  <input
+                    type="text"
+                    name="courseDuration"
+                    placeholder="e.g., 2 months"
+                    value={formData.courseDuration}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {formData.courseType === "InPerson" && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Location & Timing Details</label>
+                <textarea
+                  name="inPersonDetails"
+                  placeholder="Please describe your location and timing preference"
+                  value={formData.inPersonDetails}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none resize-none"
+                  rows="3"
+                />
+              </div>
+            )}
+
+            {/* What You Will Learn Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">What You Will Learn</label>
+              <textarea
+                name="whatYouWillLearn"
+                placeholder="Enter learning objectives (comma separated)"
+                value={formData.whatYouWillLearn}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none resize-none"
+                rows="3"
+                required
+              />
+            </div>
+
+            {/* Requirements Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Requirements</label>
+              <textarea
+                name="requirements"
+                placeholder="Enter course requirements (comma separated)"
+                value={formData.requirements}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none resize-none"
+                rows="3"
+                required
+              />
+            </div>
           </div>
-        </div>
-      )}
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-4 pt-6 pb-2">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="px-6 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all font-medium shadow-lg shadow-purple-500/25 hover:shadow-purple-500/35"
+            >
+              Create Course
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+)}
     </div>
 
       </div>
@@ -2450,7 +2494,7 @@ const [courses, setCourses] = useState([]);
                   className="w-8 h-8 rounded-full bg-gray-100"
                 />
                 <p className="text-gray-500 dark:text-gray-400">
-                  Welcome back, <span className="font-semibold text-emerald-600 dark:text-emerald-400">{"huzaifaquershi66"}</span>
+                  Welcome back, <span className="font-semibold text-emerald-600 dark:text-emerald-400">{""}</span>
                 </p>
               </div>
               <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700">
@@ -2468,19 +2512,24 @@ const [courses, setCourses] = useState([]);
               <FiDownload className="text-lg" />
               <span className="font-medium">Export Report</span>
             </button>
-            <button className="px-4 py-2.5 rounded-xl flex items-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5">
-              <FiDollarSign className="text-lg" />
-              <span className="font-medium">Withdraw Earnings</span>
-            </button>
+           <button 
+  onClick={() => setShowWithdrawModal(true)} 
+  className="px-4 py-2.5 rounded-xl flex items-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5"
+>
+  <FiDollarSign className="text-lg" />
+  <span className="font-medium">Withdraw Earnings</span>
+</button>
+   
           </div>
         </div>
 
         {/* Revenue Stats */}
+        {studentss.map((student)=>(
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {[
             {
               label: 'Total Earnings',
-              value: '$48,265',
+              value: `Rs ${totalEarnings}`,
               change: '+22% vs last month',
               icon: FiDollarSign,
               gradient: 'from-emerald-600 to-teal-600',
@@ -2490,8 +2539,8 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Active Students',
-              value: '284',
-              change: '+28 this month',
+              value: '1',
+              change: '+1 this month',
               icon: FiUsers,
               gradient: 'from-blue-600 to-indigo-600',
               lightBg: 'bg-blue-50',
@@ -2500,7 +2549,7 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Avg. Per Class',
-              value: '$165',
+              value: '10000',
               change: '+5% vs last month',
               icon: FiTrendingUp,
               gradient: 'from-purple-600 to-indigo-600',
@@ -2510,7 +2559,7 @@ const [courses, setCourses] = useState([]);
             },
             {
               label: 'Pending Payout',
-              value: '$2,840',
+              value: '10000',
               change: 'Processing',
               icon: FiCreditCard,
               gradient: 'from-amber-600 to-orange-600',
@@ -2542,6 +2591,7 @@ const [courses, setCourses] = useState([]);
             </div>
           ))}
         </div>
+        ))}
       </div>
 
       {/* Revenue Chart */}
@@ -2562,7 +2612,146 @@ const [courses, setCourses] = useState([]);
           {/* Add your chart component here */}
         </div>
       </div>
+{showWithdrawModal && (
+  <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+    <div className="relative w-full max-w-md bg-white rounded-2xl shadow-[0_0_50px_-12px_rgb(0,0,0,0.25)] animate-slideIn z-[9999]" style={{ margin: 'auto' }}>
+      {/* Decorative Header */}
+      <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-t-2xl" />
 
+      {/* Close Button */}
+      <button
+        onClick={() => setShowWithdrawModal(false)}
+        className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div className="relative z-10 px-6 pt-12 pb-6">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FiDollarSign className="text-3xl text-emerald-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800">Withdraw Earnings</h2>
+          <p className="text-gray-500 mt-1">Available Balance: ₨10,000</p>
+        </div>
+
+        <form onSubmit={handleWithdrawSubmit} className="space-y-5">
+          {/* Amount Input */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              How much would you like to withdraw?
+            </label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">₨</span>
+              <input
+                type="number"
+                name="amount"
+                placeholder="0.00"
+                className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none"
+                required
+                min="100"
+                max="15000"
+              />
+            </div>
+            <p className="text-xs text-gray-500">Minimum: ₨100 • Maximum: ₨15,000</p>
+          </div>
+
+          {/* Withdrawal Reason */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Reason for withdrawal
+            </label>
+            <textarea
+              name="reason"
+              placeholder="Please provide a brief reason for your withdrawal request..."
+              rows="3"
+              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none resize-none"
+              required
+            />
+          </div>
+
+          {/* Processing Time Selection */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Select processing time
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => setProcessingTime('2_days')}
+                className={`px-4 py-2 rounded-lg border ${
+                  processingTime === '2_days'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'border-gray-200 hover:border-emerald-500 hover:bg-emerald-50'
+                } transition-all text-sm font-medium`}
+              >
+                2 Days
+              </button>
+              <button
+                type="button"
+                onClick={() => setProcessingTime('3_days')}
+                className={`px-4 py-2 rounded-lg border ${
+                  processingTime === '3_days'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'border-gray-200 hover:border-emerald-500 hover:bg-emerald-50'
+                } transition-all text-sm font-medium`}
+              >
+                3 Days
+              </button>
+              <button
+                type="button"
+                onClick={() => setProcessingTime('5_days')}
+                className={`px-4 py-2 rounded-lg border ${
+                  processingTime === '5_days'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'border-gray-200 hover:border-emerald-500 hover:bg-emerald-50'
+                } transition-all text-sm font-medium`}
+              >
+                5 Days
+              </button>
+            </div>
+          </div>
+
+          {/* Important Notice */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-amber-800">Important Notice</h3>
+                <p className="text-xs text-amber-700 mt-1">
+                  Withdrawal requests are processed according to the selected time frame. Once submitted, the request cannot be cancelled.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setShowWithdrawModal(false)}
+              className="flex-1 px-4 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 transition-all font-medium shadow-lg shadow-emerald-500/25"
+            >
+              Submit Request
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+)}
       {/* Recent Transactions & Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Recent Transactions */}
@@ -2570,10 +2759,8 @@ const [courses, setCourses] = useState([]);
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Recent Transactions</h2>
           <div className="space-y-4">
             {[
-              { student: 'Alex Johnson', amount: '$120', course: 'React Advanced', date: '2025-03-13' },
-              { student: 'Sarah Wilson', amount: '$85', course: 'JavaScript Basics', date: '2025-03-12' },
-              { student: 'Michael Brown', amount: '$150', course: 'Node.js Master', date: '2025-03-11' },
-              { student: 'Emma Davis', amount: '$95', course: 'Web Design', date: '2025-03-10' }
+              { student: 'Hamzal hassan', amount: '10000', course: 'Machine learning', date: '2025-6-15' },
+            
             ].map((transaction, index) => (
               <div key={index} className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300">
                 <div className="flex items-center gap-4">
@@ -2599,9 +2786,9 @@ const [courses, setCourses] = useState([]);
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Revenue Analytics</h2>
           <div className="space-y-6">
             {[
-              { label: 'Course Revenue', value: '$32,450', percentage: 68 },
-              { label: 'Live Sessions', value: '$12,845', percentage: 25 },
-              { label: 'Consulting', value: '$2,970', percentage: 7 }
+              { label: 'Course Revenue', value: '10000', percentage: 68 },
+              { label: 'Live Sessions', value: '0', percentage: 25 },
+              { label: 'Consulting', value: '0', percentage: 7 }
             ].map((item, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between items-center">
@@ -2642,10 +2829,8 @@ const [courses, setCourses] = useState([]);
             </thead>
             <tbody>
               {[
-                { id: 'TRX-789012', date: '2025-03-13', amount: '$1,240', status: 'Completed' },
-                { id: 'TRX-789011', date: '2025-03-06', amount: '$980', status: 'Completed' },
-                { id: 'TRX-789010', date: '2025-02-28', amount: '$1,560', status: 'Completed' },
-                { id: 'TRX-789009', date: '2025-02-21', amount: '$2,180', status: 'Completed' }
+                { id: 'TRX-789012', date: '2025-06-15', amount: '10000', status: 'Completed' },
+        
               ].map((payout, index) => (
                 <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">{payout.id}</td>
@@ -2678,6 +2863,9 @@ const [courses, setCourses] = useState([]);
     </div>
       
   );
+};
+
+export default TeacherDashboard;
 };
 
 export default TeacherDashboard;
