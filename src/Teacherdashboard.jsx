@@ -4,7 +4,8 @@ import { io } from 'socket.io-client';
 import {Link} from "react-router-dom"
 import JitsiMeeting from "./Jistsimeet.jsx"
 import dayjs from 'dayjs';
-import { FaRegCalendarAlt, FaVideo, FaTimes,FaClock, FaCheckCircle, FaRegClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaCheck,FaSmile,FaPaperclip, FaPaperPlane, FaVideo, FaTimes,FaClock, FaCheckCircle, FaRegClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 
 import { 
@@ -55,6 +56,32 @@ import {
   FiActivity,
   FiStar
 } from 'react-icons/fi';
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaCamera,
+  FaBell,
+  FaPalette,
+  FaLanguage,
+  FaGlobe,
+  FaGraduationCap,
+ 
+  FaLock,
+  FaEye,
+  FaGoogle,
+  FaMicrosoft,
+  FaCalendar,
+  FaSave,
+  FaMoon,
+  FaSun,
+  FaFont,
+  FaPercent,
+  FaShieldAlt,
+  FaSync,
+  
+} from 'react-icons/fa';
+
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -118,7 +145,139 @@ const [customMinute, setCustomMinute] = useState('');
 const [customPeriod, setCustomPeriod] = useState('AM');
 const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 const [processingTime, setProcessingTime] = useState('2_days');
+  const [messagess, setMessagess] = useState([]);
+  const [newMessages, setNewMessages] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+  const fileInputRefs = useRef(null);
+  const currentUser = "Usman Wazir";
+  const currentDateTime = "2025-06-16 18:59:04";
+ const [formDatai, setFormDatai] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    emailNotifications: true,
+    inAppNotifications: true,
+    studentSubmissions: 'immediate',
+    messageAlerts: 'immediate',
+    darkMode: false,
+    fontSize: 'medium',
+    language: 'english',
+    timezone: 'UTC',
+    gradeScale: 'percentage',
+    lateSubmissionPolicy: 'accept',
+    latePenalty: 10,
+    twoFactor: false,
+    profileVisibility: 'public',
+    password: '',
+    googleClassroom: false,
+    msTeams: false,
+    calendarSync: false,
+  });
 
+  const [profileImage, setProfileImage] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleImageChangei = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmiti = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      // API call would go here
+      console.log('Form data:', formData);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      alert('Settings updated successfully!');
+    } catch (error) {
+      alert('Failed to update settings');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  //////  
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messagess]);
+
+  const handleSubmito = async (e) => {
+    e.preventDefault();
+    if (!newMessages.trim()) return;
+
+    // Add user message
+    const userMessages = {
+      id: Date.now(),
+      text: newMessages,
+      timestamp: new Date().toISOString(),
+    };
+
+    setMessagess(prev => [...prev, userMessages]);
+    setNewMessages('');
+    setIsTyping(true);
+
+    // Simulate admin response
+    setTimeout(() => {
+      const adminResponse = {
+        id: Date.now() + 1,
+        text: 'Your message has been forwarded to admin. We will reply soon.',
+        timestamp: new Date().toISOString(),
+        isSystemMessage: true
+      };
+      setMessagess(prev => [...prev, adminResponse]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const handleFileUploado = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const fileMessage = {
+        id: Date.now(),
+        text: `File attached: ${file.name}`,
+        timestamp: new Date().toISOString(),
+        file: {
+          name: file.name,
+          type: file.type
+        }
+      };
+      setMessagess(prev => [...prev, fileMessage]);
+    }
+  };
 const handleWithdrawSubmit = (e) => {
   e.preventDefault();
   // Handle the withdrawal request submission here
@@ -667,7 +826,9 @@ const [courses, setCourses] = useState([]);
            { icon: FiPlay, label: 'Live Sessions', id: 'live-sessions', gradient: 'from-pink-500 to-rose-500' },
            { icon: FiDollarSign, label: 'Revenue', id: 'revenue', gradient: 'from-amber-500 to-orange-500' },
            { icon: FiSettings, label: 'Settings', id: 'settings', gradient: 'from-gray-500 to-slate-500' },
-           { icon: FiMessageSquare, label: 'Messages', id: 'messenger', gradient: 'from-gray-500 to-slate-500' }
+           { icon: FiMessageSquare, label: 'Messages', id: 'messenger', gradient: 'from-gray-500 to-slate-500' },
+            { icon: FiMessageSquare, label: 'Message for query', id: 'help', gradient: 'from-gray-500 to-slate-500' }
+
 
          ].map(({ icon: Icon, label, id, gradient }) => (
            <button
@@ -2860,10 +3021,409 @@ const [courses, setCourses] = useState([]);
     </div>
   </main>
 )}
+
+{currentPage === 'help' && (
+  <div className="flex-1 min-h-screen ml-72 bg-[#f0f2f5] dark:bg-gray-900 transition-all duration-500">
+    <div className="max-w-5xl mx-auto p-6">
+      {/* Enhanced Header with Glass Effect */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="backdrop-blur-md bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl p-8 mb-6 border border-white/20"
+      >
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold flex items-center gap-3 text-gray-800 dark:text-white">
+              <span className="bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-lg">
+                <FaUser className="text-white h-6 w-6" />
+              </span>
+              Message Admin
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300 flex items-center gap-2">
+              <FaEnvelope className="text-blue-500" />
+              Direct communication channel with administration
+            </p>
+          </div>
+          <div className="flex flex-col items-end space-y-2">
+            <div className="flex items-center gap-2 bg-blue-500/10 dark:bg-blue-500/20 px-4 py-2 rounded-full">
+              <FaUser className="text-blue-500" />
+              <span className="text-gray-700 dark:text-gray-200 font-medium">{currentUser}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-purple-500/10 dark:bg-purple-500/20 px-4 py-2 rounded-full">
+              <FaClock className="text-purple-500" />
+              <span className="text-gray-700 dark:text-gray-200 font-medium">
+                {new Date(currentDateTime).toLocaleString()}
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Enhanced Chat Container */}
+      <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700"
+        >
+          {/* Messages Area */}
+          <div className="h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent">
+            <div className="space-y-6 p-6">
+              {messagess.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex ${message.isSystemMessage ? 'justify-start' : 'justify-end'}`}
+                >
+                  <div className="flex items-end gap-2 max-w-[70%]">
+                    {message.isSystemMessage && (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                        <FaUser className="text-white w-4 h-4" />
+                      </div>
+                    )}
+                    <div
+                      className={`rounded-2xl p-4 shadow-md ${
+                        message.isSystemMessage
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                          : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">{message.text}</p>
+                      {message.file && (
+                        <div className="mt-3 flex items-center gap-2 text-sm bg-black/10 dark:bg-white/10 p-2 rounded-lg">
+                          <FaPaperclip className="text-blue-300" />
+                          <span className="font-medium">{message.file.name}</span>
+                        </div>
+                      )}
+                      <div className="mt-2 flex items-center justify-end gap-2">
+                        <span className="text-xs opacity-75">
+                          {new Date(message.timestamp).toLocaleTimeString()}
+                        </span>
+                        {!message.isSystemMessage && (
+                          <span className="text-blue-200">
+                            <FaCheck className="w-3 h-3" />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="flex items-end gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center">
+                      <FaUser className="text-white w-4 h-4" />
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl p-4 shadow-md">
+                      <div className="flex gap-2">
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:200ms]" />
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:400ms]" />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* Message Input */}
+          <div className="border-t border-gray-100 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
+            <form onSubmit={handleSubmito} className="flex items-center gap-4">
+              <div className="flex gap-2">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                >
+                  <FaPaperclip className="w-5 h-5" />
+                </motion.button>
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-500 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+                >
+                  <FaSmile className="w-5 h-5" />
+                </motion.button>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                onChange={handleFileUploado}
+                className="hidden"
+              />
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={newMessages}
+                  onChange={(e) => setNewMessages(e.target.value)}
+                  placeholder="Type your message here..."
+                  className="w-full px-6 py-4 bg-white dark:bg-gray-900 rounded-full border-2 border-gray-100 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-500/20 transition-all outline-none text-gray-700 dark:text-gray-200"
+                />
+              </div>
+              <motion.button
+                type="submit"
+                disabled={!newMessages.trim()}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`p-4 rounded-full ${
+                  newMessages.trim()
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
+                    : 'bg-gray-200 dark:bg-gray-700'
+                } text-white shadow-lg transition-all duration-200`}
+              >
+                <FaPaperPlane className="w-5 h-5" />
+              </motion.button>
+            </form>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+)}
+  
+      {currentPage === 'settings' && (
+               <div className="flex-1 min-h-screen ml-72 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 transition-all duration-500">
+
+        <motion.div 
+          className="max-w-6xl mx-auto p-6 space-y-8"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
+          {/* Enhanced Header */}
+          <motion.div 
+            className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-lg p-8 text-white"
+            variants={fadeIn}
+          >
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold flex items-center gap-3">
+                  <FaUser className="text-white/90" />
+                  Teacher Dashboard Settings
+                </h1>
+                <p className="text-white/80">Customize your teaching experience</p>
+              </div>
+              <div className="text-sm text-white/90 space-y-1">
+                <p className="flex items-center gap-2">
+                  <FaUser /> {currentUser}
+                </p>
+                <p className="flex items-center gap-2">
+                  <FaClock /> Last Updated: {currentDateTime}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Profile Settings */}
+            <motion.div 
+              className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+              variants={fadeIn}
+            >
+              <h2 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-gray-800">
+                <FaUser className="text-blue-600" />
+                Profile Settings
+              </h2>
+
+              <div className="mb-8">
+                <div className="flex items-center gap-6">
+                  {profileImage ? (
+                    <motion.div 
+                      className="relative group"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <img
+                        src={profileImage}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-100"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setProfileImage(null)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <FaTimes size={14} />
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center">
+                      <FaUser size={40} className="text-gray-400" />
+                    </div>
+                  )}
+                  <div>
+                    <label className="block">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                      <motion.span 
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <FaCamera /> Upload Profile Picture
+                      </motion.span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <span className="flex items-center gap-2">
+                      <FaUser className="text-blue-600" /> Full Name
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <span className="flex items-center gap-2">
+                      <FaEnvelope className="text-blue-600" /> Email
+                    </span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <span className="flex items-center gap-2">
+                      <FaPhone className="text-blue-600" /> Phone
+                    </span>
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Notification Settings */}
+            <motion.div 
+              className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+              variants={fadeIn}
+            >
+              <h2 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-gray-800">
+                <FaBell className="text-blue-600" />
+                Notification Settings
+              </h2>
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-gray-700">
+                    <FaEnvelope className="text-blue-600" />
+                    Email Notifications
+                  </label>
+                  <div className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      name="emailNotifications"
+                      checked={formData.emailNotifications}
+                      onChange={handleInputChange}
+                    />
+                    <span className="toggle-slider"></span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-gray-700">
+                    <FaBell className="text-blue-600" />
+                    In-app Notifications
+                  </label>
+                  <div className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      name="inAppNotifications"
+                      checked={formData.inAppNotifications}
+                      onChange={handleInputChange}
+                    />
+                    <span className="toggle-slider"></span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <span className="flex items-center gap-2">
+                      <FaGraduationCap className="text-blue-600" />
+                      Student Submissions
+                    </span>
+                  </label>
+                  <select
+                    name="studentSubmissions"
+                    value={formData.studentSubmissions}
+                    onChange={handleInputChange}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value="immediate">Immediate</option>
+                    <option value="hourly">Hourly Digest</option>
+                    <option value="daily">Daily Digest</option>
+                  </select>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Submit Button */}
+            <motion.button
+              type="submit"
+              disabled={loading}
+              className={`w-full p-4 text-white rounded-lg font-medium text-lg flex items-center justify-center gap-3 transition-all ${
+                loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? (
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Saving Changes...
+                </div>
+              ) : (
+                <>
+                  <FaSave /> Save All Changes
+                </>
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
+        </div>
+      )}
+    
+  
     </div>
       
   );
 };
 
 export default TeacherDashboard;
-
