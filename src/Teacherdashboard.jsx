@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import {Link} from "react-router-dom"
 import JitsiMeeting from "./Jistsimeet.jsx"
 import dayjs from 'dayjs';
-import { FaRegCalendarAlt, FaCheck,FaSmile,FaPaperclip, FaPaperPlane, FaVideo, FaTimes,FaClock, FaCheckCircle, FaRegClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaRegCalendarAlt,FaUserCog,FaDesktop,FaKey, FaEdit,  FaCog,FaCheck,FaSmile,FaPaperclip, FaPaperPlane, FaVideo, FaTimes,FaClock, FaCheckCircle, FaRegClock, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 
@@ -107,6 +107,75 @@ ChartJS.register(
   Legend
 );
 
+const categories = [
+  {
+    group: "Academic Courses",
+    options: [
+      { value: "matric_inter", label: "Matric & Intermediate" },
+      { value: "o_a_level", label: "O-Level & A-Level" },
+      { value: "engineering_entrance", label: "Engineering Entrance Exams" },
+      { value: "medical_entrance", label: "Medical Entrance Exams" },
+      { value: "css_fpsc", label: "CSS & FPSC Preparation" },
+      { value: "bachelors_masters", label: "Bachelors & Masters" },
+    ],
+  },
+  {
+    group: "Professional & Skill-Based",
+    options: [
+      { value: "freelancing", label: "Freelancing" },
+      { value: "graphic_design", label: "Graphic Designing" },
+      { value: "digital_marketing", label: "Digital Marketing" },
+      { value: "ecommerce", label: "E-commerce" },
+      { value: "web_development", label: "Web Development" },
+      { value: "app_development", label: "App Development" },
+      { value: "cyber_security", label: "Cyber Security" },
+      { value: "data_science_ai", label: "Data Science & AI" },
+    ],
+  },
+  {
+    group: "Language & Communication",
+    options: [
+      { value: "english", label: "English Language" },
+      { value: "urdu_pashto", label: "Urdu & Pashto Writing" },
+      { value: "foreign_languages", label: "Foreign Languages" },
+    ],
+  },
+  {
+    group: "Government & Competitive",
+    options: [
+      { value: "govt_exams", label: "Government Exams" },
+      { value: "military_test", label: "Military Test Prep" },
+      { value: "police_agencies", label: "Police & Agencies Prep" },
+      { value: "university_tests", label: "University Entry Tests" },
+    ],
+  },
+  {
+    group: "Business & Finance",
+    options: [
+      { value: "accounting_finance", label: "Accounting & Finance" },
+      { value: "stock_crypto", label: "Stock & Crypto Trading" },
+      { value: "entrepreneurship", label: "Entrepreneurship" },
+    ],
+  },
+  {
+    group: "Personal Development",
+    options: [
+      { value: "time_management", label: "Time Management" },
+      { value: "public_speaking", label: "Public Speaking" },
+      { value: "leadership", label: "Leadership" },
+      { value: "career_counseling", label: "Career Counseling" },
+    ],
+  },
+  {
+    group: "Islamic & Religious",
+    options: [
+      { value: "quran_tajweed", label: "Quran & Tajweed" },
+      { value: "hadith_fiqh", label: "Hadith & Fiqh" },
+      { value: "islamic_finance", label: "Islamic Finance" },
+    ],
+  },
+];
+
 const TeacherDashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -120,6 +189,7 @@ const TeacherDashboard = () => {
   const [unreadMessages, setUnreadMessages] = useState({});
   const [meetingInfo, setMeetingInfo] = useState(null);
   const [activeSession, setActiveSession] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -147,6 +217,7 @@ const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 const [processingTime, setProcessingTime] = useState('2_days');
   const [messagess, setMessagess] = useState([]);
   const [newMessages, setNewMessages] = useState('');
+  const [activeTab, setActiveTab] = useState('profile')
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRefs = useRef(null);
@@ -702,15 +773,12 @@ const handleCustomTimeSelect = () => {
     totalViews: 0,
 
     recentActivities: [
-      { id: 1, student: "Alex Johnson", action: "Enrolled", course: "Advanced React Patterns", time: "2 minutes ago" },
-      { id: 2, student: "Sarah Smith", action: "Completed", course: "JavaScript Masterclass", time: "15 minutes ago" },
-      { id: 3, student: "Michael Brown", action: "Reviewed", course: "Vue.js Advanced", time: "1 hour ago" },
-      { id: 4, student: "Emily Davis", action: "Enrolled", course: "Node.js Backend", time: "2 hours ago" },
+      { id: 1, student: "hamzaalihassan", action: "Enrolled", course: "Machine Learning Course", time: "2 days ago" },
+
     ],
     topCourses: [
-      { id: 1, name: "Advanced React Patterns", students: 456, progress: 85, revenue: 12500 },
-      { id: 2, name: "JavaScript Masterclass", students: 385, progress: 72, revenue: 9800 },
-      { id: 3, name: "Vue.js Advanced", students: 245, progress: 65, revenue: 6500 },
+      { id: 1, name: "Machine Learning", students: 1, progress: 1, revenue: 10000 },
+     
     ]
   });
 
@@ -730,7 +798,7 @@ const handleCustomTimeSelect = () => {
   };
 
   const studentsData = {
-    labels: ['React', 'JavaScript', 'Vue', 'Node'],
+    labels: ['Machine Learning'],
     datasets: [
       {
         data: [456, 385, 245, 178],
@@ -1095,7 +1163,7 @@ const [courses, setCourses] = useState([]);
                 </p>
               </div>
               <span className="text-sm font-bold text-primary-500 bg-primary-100 dark:bg-primary-900/30 px-3 py-1 rounded-xl">
-                ${course.revenue.toLocaleString()}
+                RS {course.revenue.toLocaleString()}
               </span>
             </div>
             <div className="relative h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
@@ -1223,19 +1291,29 @@ const [courses, setCourses] = useState([]);
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Category</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none appearance-none bg-white"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {/* Keep your existing optgroup structure */}
-                </select>
-              </div>
+            <div className="space-y-2">
+  <label className="block text-sm font-medium text-gray-700">Category</label>
+  <select
+    name="category"
+    value={formData.category}
+    onChange={handleChange}
+    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none appearance-none bg-white"
+    required
+  >
+    <option value="">Select Category</option>
+
+    {categories.map((groupItem) => (
+      <optgroup key={groupItem.group} label={groupItem.group}>
+        {groupItem.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </optgroup>
+    ))}
+  </select>
+</div>
+
             </div>
 
             {/* Description Section */}
@@ -1465,21 +1543,19 @@ const [courses, setCourses] = useState([]);
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-4 pt-6 pb-2">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="px-6 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all font-medium"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all font-medium shadow-lg shadow-purple-500/25 hover:shadow-purple-500/35"
-            >
-              Create Course
-            </button>
-          </div>
+          <button
+        className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white"
+        onClick={() => setIsOpen(false)}
+        type="button" // Add this to prevent form submission
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* Add click handler to the backdrop for closing */}
+     
+
         </form>
       </div>
     </div>
@@ -3190,235 +3266,702 @@ const [courses, setCourses] = useState([]);
     </div>
 )}
   
-      {currentPage === 'settings' && (
-               <div className="flex-1 min-h-screen ml-72 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 transition-all duration-500">
-
+   {currentPage === 'settings' && (
+  <div className="flex-1 min-h-screen ml-72 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-blue-300 to-blue-500 dark:from-gray-900 dark:via-blue-950 dark:to-gray-900 p-6 transition-all duration-500">
+      <motion.div 
+        className="max-w-7xl mx-auto space-y-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        {/* Ultra Modern Header */}
         <motion.div 
-          className="max-w-6xl mx-auto p-6 space-y-8"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
+          className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 rounded-3xl shadow-2xl p-10 text-white backdrop-blur-lg bg-opacity-90 relative overflow-hidden"
+          variants={fadeIn}
         >
-          {/* Enhanced Header */}
-          <motion.div 
-            className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-lg p-8 text-white"
-            variants={fadeIn}
-          >
-            <div className="flex items-center justify-between">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold flex items-center gap-3">
-                  <FaUser className="text-white/90" />
-                  Teacher Dashboard Settings
-                </h1>
-                <p className="text-white/80">Customize your teaching experience</p>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2" />
+          <div className="flex items-center justify-between relative z-10">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-white/10 p-3 rounded-xl backdrop-blur">
+                  <FaCog className="text-3xl text-white/90 animate-spin-slow" />
+                </div>
+                <h1 className="text-5xl font-bold tracking-tight">Settings</h1>
               </div>
-              <div className="text-sm text-white/90 space-y-1">
-                <p className="flex items-center gap-2">
-                  <FaUser /> {currentUser}
-                </p>
-                <p className="flex items-center gap-2">
-                  <FaClock /> Last Updated: {currentDateTime}
+              <div className="space-y-2">
+                <p className="text-white/90 text-xl font-medium">Welcome back, {currentUser}</p>
+                <p className="text-white/70 text-sm flex items-center gap-2">
+                  <FaClock /> Last active: {currentDateTime}
                 </p>
               </div>
             </div>
-          </motion.div>
+            <div className="hidden lg:block">
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                <div className="w-36 h-36 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center relative">
+                  <img 
+                    src={profileImage || 'http://res.cloudinary.com/duovmhekc/image/upload/v1747507583/qalmo4oc2xdzzl2qihzi.jpg'}
+                    alt="Profile"
+                    className="w-32 h-32 rounded-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Profile Settings */}
-            <motion.div 
-              className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+        {/* Navigation Tabs */}
+        <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-4">
+          <div className="flex flex-wrap gap-3">
+            {[
+              { name: 'Profile', icon: FaUser, desc: 'Personal Information' },
+              { name: 'Account', icon: FaUserCog, desc: 'Account Settings' },
+              { name: 'Notifications', icon: FaBell, desc: 'Manage Alerts' },
+              { name: 'Email', icon: FaEnvelope, desc: 'Email Settings' },
+              { name: 'Password', icon: FaLock, desc: 'Security Settings' },
+              { name: 'Theme', icon: FaPalette, desc: 'Appearance' }
+            ].map(({ name, icon: Icon, desc }) => (
+              <button
+                key={name}
+                onClick={() => setActiveTab(name.toLowerCase())}
+                className={`flex-1 min-w-[160px] p-4 rounded-xl font-medium transition-all duration-300 ${
+                  activeTab === name.toLowerCase()
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 transform scale-105'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-700 dark:text-gray-200 hover:shadow-md'
+                }`}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <Icon className={`text-2xl ${activeTab === name.toLowerCase() ? 'text-white' : 'text-blue-600'}`} />
+                  <span className="font-semibold">{name}</span>
+                  <span className={`text-xs ${activeTab === name.toLowerCase() ? 'text-white/80' : 'text-gray-500'}`}>
+                    {desc}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content Sections */}
+        <div className="space-y-8">
+          {/* Profile Section */}
+          {activeTab === 'profile' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
               variants={fadeIn}
             >
-              <h2 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-gray-800">
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
                 <FaUser className="text-blue-600" />
-                Profile Settings
+                Profile Information
               </h2>
-
-              <div className="mb-8">
-                <div className="flex items-center gap-6">
-                  {profileImage ? (
-                    <motion.div 
-                      className="relative group"
-                      whileHover={{ scale: 1.05 }}
-                    >
+              
+              {/* Profile Picture */}
+              <div className="mb-12">
+                <div className="flex flex-col items-center gap-6">
+                  <div className="relative group">
+                    <div className="w-40 h-40 rounded-full overflow-hidden ring-4 ring-blue-500 shadow-xl group-hover:ring-blue-600 transition-all duration-300">
                       <img
-                        src={profileImage}
+                        src={profileImage || 'http://res.cloudinary.com/duovmhekc/image/upload/v1747507583/qalmo4oc2xdzzl2qihzi.jpg'}
                         alt="Profile"
-                        className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-100"
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setProfileImage(null)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <FaTimes size={14} />
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center">
-                      <FaUser size={40} className="text-gray-400" />
                     </div>
-                  )}
-                  <div>
-                    <label className="block">
+                    <label className="absolute bottom-2 right-2 bg-blue-600 p-4 rounded-full text-white shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 cursor-pointer">
+                      <FaCamera size={20} />
                       <input
                         type="file"
+                        className="hidden"
                         accept="image/*"
                         onChange={handleImageChange}
-                        className="hidden"
                       />
-                      <motion.span 
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <FaCamera /> Upload Profile Picture
-                      </motion.span>
                     </label>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{currentUser}</h3>
+                    <p className="text-gray-500 dark:text-gray-400">Member since 2023</p>
                   </div>
                 </div>
               </div>
 
+              {/* Profile Form */}
               <div className="grid gap-8 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    <span className="flex items-center gap-2">
-                      <FaUser className="text-blue-600" /> Full Name
-                    </span>
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaUser className="inline mr-2 text-blue-600" /> Full Name
                   </label>
                   <input
                     type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    required
+                    placeholder="Enter your full name"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
                   />
-                </div>
+                </motion.div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    <span className="flex items-center gap-2">
-                      <FaEnvelope className="text-blue-600" /> Email
-                    </span>
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaEnvelope className="inline mr-2 text-blue-600" /> Email Address
                   </label>
                   <input
                     type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    required
+                    placeholder="your@email.com"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
                   />
-                </div>
+                </motion.div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    <span className="flex items-center gap-2">
-                      <FaPhone className="text-blue-600" /> Phone
-                    </span>
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaPhone className="inline mr-2 text-blue-600" /> Phone Number
                   </label>
                   <input
                     type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    required
+                    placeholder="Enter your phone number"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
                   />
-                </div>
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaGlobe className="inline mr-2 text-blue-600" /> Location
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter your location"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                  />
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-3 md:col-span-2"
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaEdit className="inline mr-2 text-blue-600" /> Bio
+                  </label>
+                  <textarea
+                    placeholder="Tell us about yourself..."
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                    rows={4}
+                  />
+                </motion.div>
               </div>
             </motion.div>
+          )}
 
-            {/* Notification Settings */}
-            <motion.div 
-              className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow"
+          {/* Account Section */}
+          {activeTab === 'account' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
               variants={fadeIn}
             >
-              <h2 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-gray-800">
-                <FaBell className="text-blue-600" />
-                Notification Settings
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
+                <FaUserCog className="text-blue-600" />
+                Account Settings
               </h2>
-
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-gray-700">
-                    <FaEnvelope className="text-blue-600" />
-                    Email Notifications
+              
+              <div className="grid gap-8 md:grid-cols-2">
+                <motion.div 
+                  className="space-y-4"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaUserCog className="inline mr-2 text-blue-600" /> Account Type
                   </label>
-                  <div className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      name="emailNotifications"
-                      checked={formData.emailNotifications}
-                      onChange={handleInputChange}
-                    />
-                    <span className="toggle-slider"></span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-gray-700">
-                    <FaBell className="text-blue-600" />
-                    In-app Notifications
-                  </label>
-                  <div className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      name="inAppNotifications"
-                      checked={formData.inAppNotifications}
-                      onChange={handleInputChange}
-                    />
-                    <span className="toggle-slider"></span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    <span className="flex items-center gap-2">
-                      <FaGraduationCap className="text-blue-600" />
-                      Student Submissions
-                    </span>
-                  </label>
-                  <select
-                    name="studentSubmissions"
-                    value={formData.studentSubmissions}
-                    onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  >
-                    <option value="immediate">Immediate</option>
-                    <option value="hourly">Hourly Digest</option>
-                    <option value="daily">Daily Digest</option>
+                  <select className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300">
+                    <option>Personal Account</option>
+                    <option>Business Account</option>
+                    <option>Developer Account</option>
                   </select>
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-4"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaLanguage className="inline mr-2 text-blue-600" /> Language
+                  </label>
+                  <select className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300">
+                    <option>English (US)</option>
+                    <option>Spanish</option>
+                    <option>French</option>
+                    <option>German</option>
+                    <option>Chinese</option>
+                  </select>
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-4 md:col-span-2"
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaGlobe className="inline mr-2 text-blue-600" /> Time Zone
+                  </label>
+                  <select className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300">
+                    <option>UTC (Coordinated Universal Time)</option>
+                    <option>EST (Eastern Standard Time)</option>
+                    <option>PST (Pacific Standard Time)</option>
+                    <option>GMT (Greenwich Mean Time)</option>
+                    <option>IST (Indian Standard Time)</option>
+                  </select>
+                </motion.div>
+
+                {/* Security Settings */}
+                <div className="md:col-span-2 mt-8">
+                  <h3 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">Security Settings</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <FaShieldAlt className="text-blue-600 text-xl" />
+                        <div>
+                          <h4 className="font-medium text-gray-800 dark:text-white">Two-Factor Authentication</h4>
+                          <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input type="checkbox" className="toggle-checkbox" />
+                        <div className="toggle-switch"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
+          )}
 
-            {/* Submit Button */}
-            <motion.button
-              type="submit"
-              disabled={loading}
-              className={`w-full p-4 text-white rounded-lg font-medium text-lg flex items-center justify-center gap-3 transition-all ${
-                loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+          {/* Notifications Section */}
+          {activeTab === 'notifications' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
+              variants={fadeIn}
             >
-              {loading ? (
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Saving Changes...
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
+                <FaBell className="text-blue-600" />
+                Notification Preferences
+              </h2>
+              
+              <div className="space-y-6">
+                {[
+                  { 
+                    title: 'Email Notifications',
+                    desc: 'Receive notifications via email',
+                    icon: FaEnvelope
+                  },
+                  { 
+                    title: 'Push Notifications',
+                    desc: 'Receive push notifications on your devices',
+                    icon: FaBell
+                  },
+                  { 
+                    title: 'SMS Notifications',
+                    desc: 'Receive text messages for important updates',
+                    icon: FaPhone
+                  },
+                  { 
+                    title: 'Desktop Notifications',
+                    desc: 'Show notifications on your desktop',
+                    icon: FaDesktop
+                  }
+                ].map(({ title, desc, icon: Icon }) => (
+                  <motion.div 
+                    key={title} 
+                    className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                        <Icon className="text-blue-600 text-xl" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 dark:text-white">{title}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{desc}</p>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <input type="checkbox" className="toggle-checkbox" />
+                      <div className="toggle-switch"></div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Notification Preferences */}
+              <div className="mt-8 space-y-6">
+                <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">Notification Frequency</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <motion.div 
+                    className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="frequency" className="form-radio text-blue-600" />
+                      <span className="text-gray-800 dark:text-white">Real-time</span>
+                    </label>
+                  </motion.div>
+                  <motion.div 
+                    className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="frequency" className="form-radio text-blue-600" />
+                      <span className="text-gray-800 dark:text-white">Daily Digest</span>
+                    </label>
+                  </motion.div>
+                  <motion.div 
+                    className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="frequency" className="form-radio text-blue-600" />
+                      <span className="text-gray-800 dark:text-white">Weekly Summary</span>
+                    </label>
+                  </motion.div>
+                  <motion.div 
+                    className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="frequency" className="form-radio text-blue-600" />
+                      <span className="text-gray-800 dark:text-white">Important Only</span>
+                    </label>
+                  </motion.div>
                 </div>
-              ) : (
-                <>
-                  <FaSave /> Save All Changes
-                </>
-              )}
-            </motion.button>
-          </form>
-        </motion.div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Email Section */}
+          {activeTab === 'email' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
+              variants={fadeIn}
+            >
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
+                <FaEnvelope className="text-blue-600" />
+                Email Settings
+              </h2>
+
+              <div className="space-y-8">
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaEnvelope className="inline mr-2 text-blue-600" /> Primary Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                  />
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaEnvelope className="inline mr-2 text-blue-600" /> Recovery Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="recovery@email.com"
+                    className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                  />
+                </motion.div>
+
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Email Preferences</h3>
+                  <div className="grid gap-4">
+                    {[
+                      'Marketing Emails',
+                      'Product Updates',
+                      'Security Alerts',
+                      'Newsletter Subscription'
+                    ].map((pref) => (
+                      <motion.div 
+                        key={pref}
+                        className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <span className="text-gray-800 dark:text-white">{pref}</span>
+                        <div className="relative">
+                          <input type="checkbox" className="toggle-checkbox" />
+                          <div className="toggle-switch"></div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Password Section */}
+          {activeTab === 'password' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
+              variants={fadeIn}
+            >
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
+                <FaLock className="text-blue-600" />
+                Password Settings
+              </h2>
+
+              <div className="space-y-8">
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaKey className="inline mr-2 text-blue-600" /> Current Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter current password"
+                      className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                    />
+                    <button
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaKey className="inline mr-2 text-blue-600" /> New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                    />
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="space-y-3"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    <FaCheckCircle className="inline mr-2 text-blue-600" /> Confirm New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                    />
+                  </div>
+                </motion.div>
+
+                <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl">
+                  <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">Password Requirements:</h3>
+                  <ul className="mt-2 text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                    <li>• Minimum 8 characters</li>
+                    <li>• At least one uppercase letter</li>
+                    <li>• At least one number</li>
+                    <li>• At least one special character</li>
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Theme Section */}
+          {activeTab === 'theme' && (
+            <motion.div
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-xl p-8"
+              variants={fadeIn}
+            >
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800 dark:text-white">
+                <FaPalette className="text-blue-600" />
+                Theme Settings
+              </h2>
+                <div className="space-y-8">
+                {/* Theme Selection */}
+                <div className="grid gap-6 md:grid-cols-2">
+                  <motion.div
+                    className="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                          <FaSun className="text-2xl text-yellow-500" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Light Mode</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">Classic light theme</p>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="theme"
+                        className="form-radio h-5 w-5 text-blue-600"
+                      />
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-600 rounded-lg p-3">
+                      <div className="grid grid-cols-3 gap-2">
+                        {['#FFFFFF', '#F3F4F6', '#E5E7EB'].map((color) => (
+                          <div
+                            key={color}
+                            className="h-8 rounded"
+                            style={{ backgroundColor: color }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="p-6 bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-900 rounded-lg">
+                          <FaMoon className="text-2xl text-blue-400" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-white">Dark Mode</h3>
+                          <p className="text-sm text-gray-400">Easier on the eyes</p>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="theme"
+                        className="form-radio h-5 w-5 text-blue-600"
+                      />
+                    </div>
+                    <div className="bg-gray-900 rounded-lg p-3">
+                      <div className="grid grid-cols-3 gap-2">
+                        {['#1F2937', '#374151', '#4B5563'].map((color) => (
+                          <div
+                            key={color}
+                            className="h-8 rounded"
+                            style={{ backgroundColor: color }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="p-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 md:col-span-2"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-white/10 backdrop-blur rounded-lg">
+                          <FaDesktop className="text-2xl text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-white">System Default</h3>
+                          <p className="text-sm text-white/80">Match your system theme</p>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="theme"
+                        className="form-radio h-5 w-5 text-white border-white"
+                        defaultChecked
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Color Customization */}
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">Accent Color</h3>
+                  <div className="grid grid-cols-5 gap-4">
+                    {[
+                      { color: 'bg-blue-500', name: 'Blue' },
+                      { color: 'bg-purple-500', name: 'Purple' },
+                      { color: 'bg-green-500', name: 'Green' },
+                      { color: 'bg-red-500', name: 'Red' },
+                      { color: 'bg-yellow-500', name: 'Yellow' }
+                    ].map(({ color, name }) => (
+                      <motion.button
+                        key={name}
+                        className={`${color} w-full h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span className="sr-only">{name}</span>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Font Size */}
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">Font Size</h3>
+                  <div className="space-y-4">
+                    <input
+                      type="range"
+                      min="12"
+                      max="24"
+                      defaultValue="16"
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                    />
+                    <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                      <span>Small</span>
+                      <span>Default</span>
+                      <span>Large</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Global Save Button */}
+          <motion.button
+            type="submit"
+            className="w-full p-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium text-lg flex items-center justify-center gap-3 transition-all duration-300 shadow-xl hover:shadow-blue-500/30"
+            whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgb(59 130 246 / 0.3)" }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <FaSave className="text-xl" /> Save Changes
+          </motion.button>
         </div>
-      )}
+      </motion.div>
+    </div>
+)}
     
   
     </div>
