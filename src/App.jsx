@@ -989,7 +989,9 @@ const enhancedSubjects = [
       return () => window.removeEventListener("scroll", handleScroll);
     }, []);
  
-
+// const loggedInUser = user.find(
+//   (u) => u.email?.trim().toLowerCase() === "yasirkhan@gmail.com"
+// );
 
     return (
 <nav className={`fixed w-full z-50 transition-all duration-500 ${
@@ -1070,39 +1072,48 @@ const enhancedSubjects = [
           </button>
 
           {/* Get Started Button */}
-          {user ? (
-            <Link to="/teacherdashboard" className="flex items-center gap-2 sm:gap-3 group">
-              <div className="relative">
-                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-indigo-300/30 transform transition-transform duration-300 group-hover:scale-110">
-                  {user.profilePicture ? (
-                    <img
-                      src={user.profilePicture}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
-                      {user.fullName?.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <span className="text-white font-medium text-sm sm:text-lg group-hover:text-indigo-200 transition-colors capitalize">
-                {user.fullName}
-              </span>
-            </Link>
-          ) : (
-            <Link to="/signup">
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="relative group"
-              >
-                <span className="relative block px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-full text-white font-semibold text-sm sm:text-base group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:via-blue-400 group-hover:to-purple-400 transform transition-all duration-300 group-hover:scale-105">
-                  Get Started
-                </span>
-              </button>
-            </Link>
-          )}
+        {user ? (
+<Link
+    to={
+      user.email?.trim().toLowerCase() === "yasirkhan@gmail.com"
+        ? "/studentdashboard"
+        : "/teacherdashboard"
+    }
+    className="flex items-center gap-2 sm:gap-3 group"
+  >
+
+    <div className="relative">
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-indigo-300/30 transform transition-transform duration-300 group-hover:scale-110">
+        {user.profilePicture ? (
+          <img
+            src={user.profilePicture}
+            alt="Profile"
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
+            {user.fullName?.charAt(0).toUpperCase()}
+          </div>
+        )}
+      </div>
+    </div>
+    <span className="text-white font-medium text-sm sm:text-lg group-hover:text-indigo-200 transition-colors capitalize">
+      {user.fullName}
+    </span>
+  </Link>
+) : (
+  <Link to="/signup">
+    <button
+      onClick={() => setShowLoginModal(true)}
+      className="relative group"
+    >
+      <span className="relative block px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 rounded-full text-white font-semibold text-sm sm:text-base group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:via-blue-400 group-hover:to-purple-400 transform transition-all duration-300 group-hover:scale-105">
+        Get Started
+      </span>
+    </button>
+  </Link>
+)}
+
         </div>
       </div>
 
