@@ -11,11 +11,11 @@ import {
   CheckCircleIcon, 
   UserIcon,
   ChartBarIcon,
+  // LogoutIcon,
   ArrowRightOnRectangleIcon,
-  LogoutIcon,
   CogIcon,
   BellIcon,
-  SearchIcon
+  MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 import { FiDownload, FiSearch, FiFilter, FiActivity,FiUser, FiBookOpen, FiClock } from 'react-icons/fi';
 import { motion } from 'framer-motion';
@@ -41,7 +41,7 @@ const Header = ({ currentTime, formatDateTime, notifications, userProfile, markN
 
         {/* Enhanced Search Bar */}
         <div className="relative group">
-          <SearchIcon className="h-5 w-5 absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition-colors duration-200" />
+          <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition-colors duration-200" />
           <input 
             type="text" 
             placeholder="Search anything..."
@@ -739,7 +739,7 @@ function AdminDashboard() {
             className="flex items-center w-full p-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group"
           >
             <div className="p-2 rounded-lg mr-3 bg-red-100 group-hover:bg-red-200 transition-colors duration-200">
-              <LogoutIcon className="h-5 w-5" />
+              <ArrowRightOnRectangleIcon  className="h-5 w-5" />
             </div>
             <span className="flex-1 font-medium">Logout</span>
           </button>
