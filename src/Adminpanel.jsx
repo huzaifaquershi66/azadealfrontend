@@ -16,7 +16,7 @@ import {
   CogIcon,
   BellIcon,
   SearchIcon
-} from '@heroicons/react/24/outlin';
+} from '@heroicons/react/24/outline';
 import { FiDownload, FiSearch, FiFilter, FiActivity,FiUser, FiBookOpen, FiClock } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
