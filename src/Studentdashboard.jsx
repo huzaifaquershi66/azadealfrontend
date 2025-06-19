@@ -201,107 +201,23 @@ const currentTime = new Date().toLocaleString('en-US', {
   hour12: false
 });
   const courses = [
-  {
-    id: 1,
-    name: 'Advanced Web Development',
-    instructor: 'Dr. Sarah Smith',
-    progress: 65,
-    totalLessons: 24,
-    completedLessons: 16,
-    assignments: 8,
-    completedAssignments: 5,
-    thumbnail: 'https://img.freepik.com/free-vector/web-development-programmer-engineering-coding-website-augmented-reality-interface-screens-developer-project-engineer-programming-software-application-design-cartoon-illustration_107791-3863.jpg',
-    category: 'Development',
-    rating: 4.8,
-    students: 1234,
-    duration: '12 weeks',
-    level: 'Advanced',
-    tags: ['React', 'Node.js', 'MongoDB']
-  },
-  {
-    id: 2,
-    name: 'Machine Learning Fundamentals',
-    instructor: 'Prof. John Johnson',
-    progress: 40,
-    totalLessons: 18,
-    completedLessons: 7,
-    assignments: 6,
-    completedAssignments: 2,
-    thumbnail: 'https://img.freepik.com/free-vector/artificial-intelligence-ai-robot-circuit-brain-machine-learning-digital-brain-artificial-thinking-mind-digital-technology-analysis_127544-800.jpg',
-    category: 'AI & ML',
-    rating: 4.9,
-    students: 892,
-    duration: '16 weeks',
-    level: 'Intermediate',
-    tags: ['Python', 'TensorFlow', 'Data Science']
-  },
-  {
-    id: 3,
-    name: 'UI/UX Design Masterclass',
-    instructor: 'Lisa Anderson',
-    progress: 85,
-    totalLessons: 20,
-    completedLessons: 17,
-    assignments: 10,
-    completedAssignments: 8,
-    thumbnail: 'https://img.freepik.com/free-vector/gradient-ui-ux-background_23-2149024129.jpg',
-    category: 'Design',
-    rating: 4.7,
-    students: 1567,
-    duration: '8 weeks',
-    level: 'All Levels',
-    tags: ['Figma', 'Adobe XD', 'Design Thinking']
-  },
-  {
-    id: 4,
-    name: 'Blockchain Development',
-    instructor: 'Michael Chen',
-    progress: 25,
-    totalLessons: 22,
-    completedLessons: 5,
-    assignments: 7,
-    completedAssignments: 2,
-    thumbnail: 'https://img.freepik.com/free-vector/gradient-cryptocurrency-concept_23-2149215736.jpg',
-    category: 'Blockchain',
-    rating: 4.6,
-    students: 645,
-    duration: '14 weeks',
-    level: 'Advanced',
-    tags: ['Ethereum', 'Solidity', 'Web3']
-  },
-  {
-    id: 5,
-    name: 'Digital Marketing Strategy',
-    instructor: 'Emma Williams',
-    progress: 55,
-    totalLessons: 16,
-    completedLessons: 9,
-    assignments: 5,
-    completedAssignments: 3,
-    thumbnail: 'https://img.freepik.com/free-vector/digital-marketing-team-with-laptops-light-bulb-marketing-team-metrics-marketing-team-lead-responsibilities-concept_335657-258.jpg',
-    category: 'Marketing',
-    rating: 4.5,
-    students: 2134,
-    duration: '10 weeks',
-    level: 'Intermediate',
-    tags: ['SEO', 'Social Media', 'Analytics']
-  },
+ 
   {
     id: 6,
-    name: 'iOS App Development',
-    instructor: 'David Miller',
-    progress: 15,
+    name: 'Learn Machine Learning',
+    instructor: 'usman wazir',
+    progress: 5,
     totalLessons: 25,
-    completedLessons: 4,
-    assignments: 8,
-    completedAssignments: 1,
-    thumbnail: 'https://img.freepik.com/free-vector/app-development-illustration_52683-47931.jpg',
-    category: 'Development',
+    completedLessons: 0,
+    assignments: 0,
+    completedAssignments: 0,
+    thumbnail: 'https://res.cloudinary.com/duovmhekc/image/upload/v1746210543/gxsxcbdok1mvsjj4krrw.jpg',
+    category: 'Machine learning',
     rating: 4.9,
-    students: 876,
-    duration: '15 weeks',
+    students: 2,
+    duration: '8 weeks',
     level: 'Intermediate',
-    tags: ['Swift', 'iOS', 'XCode']
+    tags: ['ML', 'Data science', 'Python']
   }
 ];
 
@@ -309,77 +225,33 @@ const currentTime = new Date().toLocaleString('en-US', {
  const renderDashboard = () => {
   // Sample data for activities and deadlines
   const recentActivities = [
-    {
-      id: 1,
-      type: 'assignment',
-      title: 'Submitted Assignment: React Components',
-      course: 'Advanced Web Development',
-      time: '2 hours ago',
-      icon: FaFileAlt,
-      color: 'blue'
-    },
-    {
-      id: 2,
-      type: 'quiz',
-      title: 'Completed Quiz: Machine Learning Basics',
-      course: 'Machine Learning Fundamentals',
-      score: '85/100',
-      time: '5 hours ago',
-      icon: FaClipboardCheck,
-      color: 'green'
-    },
-    {
-      id: 3,
-      type: 'meeting',
-      title: 'Attended Live Session',
-      course: 'UI/UX Design Masterclass',
-      time: 'Yesterday',
-      icon: FaVideo,
-      color: 'purple'
-    },
+ 
     {
       id: 4,
-      type: 'certificate',
-      title: 'Earned Certificate',
-      course: 'Digital Marketing Strategy',
-      time: '2 days ago',
+      type: 'Course',
+      title: 'Buy course',
+      course: 'Machine learning',
+      time: 'today',
       icon: FaCertificate,
       color: 'yellow'
     }
   ];
 
   const upcomingDeadlines = [
-    {
-      id: 1,
-      title: 'Final Project Submission',
-      course: 'Advanced Web Development',
-      dueDate: '2025-05-15',
-      type: 'assignment',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      title: 'Mid-term Exam',
-      course: 'Machine Learning Fundamentals',
-      dueDate: '2025-05-20',
-      type: 'exam',
-      priority: 'high'
-    },
+    
     {
       id: 3,
-      title: 'Group Presentation',
-      course: 'UI/UX Design Masterclass',
-      dueDate: '2025-05-25',
-      type: 'presentation',
+      title: 'New Class',
+      course: 'Tommorrow 12 pm',
+      dueDate: '2025-06-21',
+      type: 'Class',
       priority: 'medium'
     }
   ];
 
   const courseProgress = [
-    { id: 1, name: 'Advanced Web Development', progress: 65 },
-    { id: 2, name: 'Machine Learning Fundamentals', progress: 40 },
-    { id: 3, name: 'UI/UX Design Masterclass', progress: 85 },
-    { id: 4, name: 'Blockchain Development', progress: 25 }
+    { id: 1, name: 'Machine learning', progress: 5 },
+  
   ];
 
   return (
@@ -401,7 +273,7 @@ const currentTime = new Date().toLocaleString('en-US', {
                 Welcome back,
               </span>
               <br />
-              <span className="text-gray-900">{currentUser}! 👋</span>
+              <span className="text-gray-900">{"yasir khan"}! 👋</span>
             </h1>
             <p className="text-gray-600 text-lg max-w-2xl">
               Track your progress, manage deadlines, and achieve your learning goals efficiently.
@@ -423,7 +295,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           {
             icon: FaBook,
             label: 'Enrolled Courses',
-            value: courses.length,
+            value: 0,
             change: '+2 this month',
             color: 'blue',
             gradient: 'from-blue-500 to-blue-600'
@@ -431,7 +303,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           {
             icon: FaChartLine,
             label: 'Average Progress',
-            value: '47%',
+            value: '4%',
             change: '↑ 12% improvement',
             color: 'emerald',
             gradient: 'from-emerald-500 to-emerald-600'
@@ -439,7 +311,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           {
             icon: FaClock,
             label: 'Learning Hours',
-            value: '26h',
+            value: '0h',
             change: 'This week',
             color: 'violet',
             gradient: 'from-violet-500 to-violet-600'
@@ -447,7 +319,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           {
             icon: FaStar,
             label: 'Achievement Points',
-            value: '850',
+            value: '100',
             change: 'Gold Level',
             color: 'amber',
             gradient: 'from-amber-500 to-amber-600'
@@ -1021,7 +893,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           </div>
           <div>
             <p className="text-sm font-medium text-white/80">Enrolled Courses</p>
-            <h3 className="text-2xl font-bold">{courses.length}</h3>
+            <h3 className="text-2xl font-bold">{1}</h3>
           </div>
         </div>
       </div>
@@ -1033,7 +905,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           </div>
           <div>
             <p className="text-sm font-medium text-white/80">Average Progress</p>
-            <h3 className="text-2xl font-bold">47%</h3>
+            <h3 className="text-2xl font-bold">4%</h3>
           </div>
         </div>
       </div>
@@ -1045,7 +917,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           </div>
           <div>
             <p className="text-sm font-medium text-white/80">Completed Courses</p>
-            <h3 className="text-2xl font-bold">2</h3>
+            <h3 className="text-2xl font-bold">0</h3>
           </div>
         </div>
       </div>
@@ -1057,7 +929,7 @@ const currentTime = new Date().toLocaleString('en-US', {
           </div>
           <div>
             <p className="text-sm font-medium text-white/80">Certificates Earned</p>
-            <h3 className="text-2xl font-bold">3</h3>
+            <h3 className="text-2xl font-bold">0</h3>
           </div>
         </div>
       </div>
@@ -1940,7 +1812,7 @@ const renderSettings = () => {
               className="h-10 w-10 rounded-full"
             />
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900 dark:text-white">huzaifa8883</h3>
+              <h3 className="font-medium text-gray-900 dark:text-white">YasirKhan</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {new Date().toLocaleTimeString()}
               </p>
@@ -2038,11 +1910,11 @@ const renderSettings = () => {
                 className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <img
-                  src="https://via.placeholder.com/32"
+                  src="http://res.cloudinary.com/duovmhekc/image/upload/v1750368414/c01n6dvc2fb4ybwqjwpx.jpg"
                   alt="Profile"
                   className="h-8 w-8 rounded-full"
                 />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">huzaifa8883</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">yasirkhan</span>
               </button>
 
               {showProfileMenu && (
