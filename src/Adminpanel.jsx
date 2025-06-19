@@ -11,11 +11,12 @@ import {
   CheckCircleIcon, 
   UserIcon,
   ChartBarIcon,
+  ArrowRightOnRectangleIcon,
   LogoutIcon,
   CogIcon,
   BellIcon,
   SearchIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outlin';
 import { FiDownload, FiSearch, FiFilter, FiActivity,FiUser, FiBookOpen, FiClock } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
