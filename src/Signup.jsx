@@ -49,33 +49,40 @@ const navigate = useNavigate()
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="absolute top-6 right-6">
-        <button 
-          onClick={() => navigate('/login')} 
-          className="bg-gray-900 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-800 transition"
+        <div className="min-h-screen bg-gradient-to-br from-fuchsia-50 via-violet-100 to-purple-100 relative overflow-hidden font-inter">
+      {/* Gorgeous animated pastel background glow */}
+      <div className="absolute -inset-20 pointer-events-none z-0">
+        <div className="w-full h-full rounded-[3rem] blur-3xl opacity-60 bg-gradient-to-br from-fuchsia-200 via-purple-100 to-violet-200 animate-gradient" />
+      </div>
+      {/* Soft grid overlay pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10 z-0"></div>
+      {/* Login Button */}
+      <div className="absolute top-8 right-10 z-10">
+        <button
+          onClick={() => navigate("/login")}
+          className="bg-gradient-to-br from-fuchsia-700 via-purple-700 to-violet-700 cursor-pointer text-white px-8 py-3 rounded-xl shadow-xl hover:shadow-fuchsia-400/40 transition text-lg font-jakarta font-semibold tracking-wide"
         >
           Login
         </button>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
+      {/* Main */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
         <AnimatePresence mode="wait">
           {!selectedRole ? (
             <motion.div
               key="role-selection"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -30 }}
               className="max-w-3xl mx-auto"
             >
-              <div className="text-center mb-16">
+              {/* Welcome */}
+              <div className="text-center mb-20">
                 <motion.h1
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-6"
+                  className="text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-purple-700 via-fuchsia-600 to-violet-700 bg-clip-text text-transparent mb-6 font-jakarta tracking-tight drop-shadow-lg"
                 >
                   Welcome to Azad Education
                 </motion.h1>
@@ -83,59 +90,65 @@ const navigate = useNavigate()
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-xl text-gray-600 max-w-2xl mx-auto"
+                  className="text-2xl text-gray-700 max-w-2xl mx-auto font-inter font-medium"
                 >
-                  Choose your path and join our growing community of learners and educators
+                  Choose your path and join our creative community of learners & educators.
                 </motion.p>
               </div>
-
-              <div className="space-y-6">
+              {/* Role Cards */}
+              <div className="space-y-8">
                 {roles.map((role, index) => (
                   <motion.div
                     key={role.type}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    transition={{ delay: 0.3 + index * 0.12 }}
+                    whileHover={{ scale: 1.025, boxShadow: "0 12px 40px 0 rgba(180, 0, 200, 0.07)" }}
+                    whileTap={{ scale: 0.99 }}
                     onClick={() => setSelectedRole(role.type)}
                     className={`
-                      group bg-white rounded-2xl border border-gray-200 p-8
-                      hover:border-transparent hover:ring-2 hover:ring-${role.color}-500/50
-                      transition-all duration-300 cursor-pointer
-                      hover:shadow-2xl hover:shadow-${role.color}-100/50
+                      group bg-white/90 rounded-3xl border border-purple-100 p-10 cursor-pointer
+                      hover:border-transparent hover:ring-4 hover:ring-${role.color}-400/30
+                      transition-all duration-300
+                      hover:shadow-2xl hover:shadow-${role.color}-200/40
                     `}
+                    style={{
+                      boxShadow:
+                        "0 4px 24px 0 rgba(127, 63, 152, 0.08), 0 1.5px 6px 0 rgba(150, 0, 200, 0.04)",
+                    }}
                   >
-                    <div className="flex items-center space-x-8">
+                    <div className="flex items-center space-x-10">
                       <div className="flex-shrink-0">
-                        <div className={`
-                          w-24 h-24 rounded-2xl bg-gradient-to-br ${role.gradient}
-                          flex items-center justify-center text-white
-                          transition-transform duration-300 transform
-                          group-hover:scale-110 shadow-lg
-                        `}>
+                        <div
+                          className={`
+                            w-24 h-24 rounded-2xl bg-gradient-to-br ${role.gradient}
+                            flex items-center justify-center text-white
+                            transition-transform duration-300 transform
+                            group-hover:scale-110 shadow-xl
+                          `}
+                        >
                           {role.icon}
                         </div>
                       </div>
                       <div className="flex-grow">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                        <h2 className="text-3xl font-jakarta font-bold text-gray-900 mb-2">
                           Get Started as a {role.title}
                         </h2>
-                        <p className="text-lg text-gray-600">
-                          {role.description}
-                        </p>
+                        <p className="text-lg text-gray-700 font-inter">{role.description}</p>
                       </div>
                       <motion.div
                         initial={{ x: -10, opacity: 0 }}
                         whileHover={{ x: 0, opacity: 1 }}
                         className="flex-shrink-0 self-center"
                       >
-                        <div className={`
-                          w-12 h-12 rounded-full bg-${role.color}-50
-                          flex items-center justify-center
-                          text-${role.color}-600
-                        `}>
-                          <FiChevronRight className="w-6 h-6" />
+                        <div
+                          className={`
+                            w-14 h-14 rounded-full bg-${role.color}-50
+                            flex items-center justify-center
+                            text-${role.color}-600
+                          `}
+                        >
+                          <FiChevronRight className="w-7 h-7" />
                         </div>
                       </motion.div>
                     </div>
@@ -146,32 +159,30 @@ const navigate = useNavigate()
           ) : (
             <motion.div
               key="form-section"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -30 }}
               className="max-w-4xl mx-auto"
             >
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden">
-                <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+              <div className="bg-white/90 rounded-3xl border border-purple-100 shadow-2xl overflow-hidden">
+                <div className="p-7 border-b border-purple-100 bg-gradient-to-r from-fuchsia-50 via-purple-50 to-violet-50">
                   <button
                     onClick={() => setSelectedRole(null)}
-                    className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900
-                      transition-colors duration-200 group"
+                    className="inline-flex items-center text-base font-medium text-purple-500 hover:text-fuchsia-600 transition-colors duration-200 font-jakarta group"
                   >
                     <FiArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
                     Back to selection
                   </button>
                 </div>
-                
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="p-8"
+                  className="p-10"
                 >
-                  {selectedRole === 'teacher' && <TeacherForm />}
-                  {selectedRole === 'academy' && <AcademyForm />}
-                  {selectedRole === 'student' && <StudentForm />}
+                  {selectedRole === "teacher" && <TeacherForm />}
+                  {selectedRole === "academy" && <AcademyForm />}
+                  {selectedRole === "student" && <StudentForm />}
                 </motion.div>
               </div>
             </motion.div>
