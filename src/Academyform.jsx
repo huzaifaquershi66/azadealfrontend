@@ -509,11 +509,11 @@ const [selectedProvince, setSelectedProvince] = useState("");
   ];
   
   const steps = [
-    { id: 1, title: "Personal Info", subtitle: "Basic Details" },
-    { id: 2, title: "Education", subtitle: "Academic Background" },
-    { id: 3, title: "Professional", subtitle: "Work Experience" },
-    { id: 4, title: "Preferences", subtitle: "Teaching Details" },
-    { id: 5, title: "Documents", subtitle: "Upload Files" }
+    { id: 1, title: "Personal Info & Education", subtitle: "Basic Details" },
+    // { id: 2, title: "Education", subtitle: "Academic Background" },
+    { id: 3, title: "Professional & Preferences", subtitle: "Work Experience" },
+    // { id: 4, title: "Preferences", subtitle: "Teaching Details" },
+    // { id: 5, title: "Documents", subtitle: "Upload Files" }
   ];
   
 
@@ -521,7 +521,18 @@ const [selectedProvince, setSelectedProvince] = useState("");
     'Mathematics', 'Physics', 'Chemistry', 'Biology', 'English',
     'Computer Science', 'History', 'Geography', 'Economics', 'Arts'
   ];
-
+ const facilityOptions = [
+    { value: "library", label: "Library" },
+    { value: "computer_lab", label: "Computer Lab" },
+    { value: "science_lab", label: "Science Lab" },
+    { value: "sports_ground", label: "Sports Ground" },
+    { value: "cafeteria", label: "Cafeteria" },
+    { value: "auditorium", label: "Auditorium" },
+    { value: "medical_room", label: "Medical Room" },
+    { value: "transport", label: "Transport Service" },
+    { value: "smart_classes", label: "Smart Classrooms" },
+    { value: "wifi", label: "Wi-Fi Campus" },
+  ];
   const teachingLevels = [
     'Primary (1-5)',
     'Middle (6-8)',
@@ -1186,71 +1197,7 @@ const DocumentsUploadStep = ({
           Include your institution's mission statement, core values, and what makes it unique
         </p>
       </motion.div>
-
-      {/* Hidden Fields */}
-      <input type="hidden" name="submissionDate" value="2025-02-14 01:58:13" />
-      <input type="hidden" name="submittedBy" value="huzaifa8883" />
-    </div>
-  </motion.div>
-)}
-        {/* Step 2 - Educational Background */}
-     {currentStep === 2 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
-    style={{
-      boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
-    }}
-  >
-    {/* Animated Gradient Overlay */}
-    <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
-    <motion.div
-      className="mb-16 text-center relative z-10"
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
-    >
-      <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-        Academic Details
-      </h3>
-      <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
-        Please provide your institution's academic information
-      </p>
-    </motion.div>
-
-    <div className="space-y-14 relative z-10">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Education System */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiBookOpen className="text-violet-500" />
-              Education System <span className="text-fuchsia-600">*</span>
-            </label>
-            <select
-              name="educationSystem"
-              required
-              value={formData.educationSystem}
-              onChange={handleInputChange}
-              className={`w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg cursor-pointer`}
-            >
-              <option value="">Select Education System</option>
-              <option value="british">British Curriculum</option>
-              <option value="american">American Curriculum</option>
-              <option value="national">National Curriculum</option>
-              <option value="international">International Baccalaureate</option>
-              <option value="mixed">Mixed Curriculum</option>
-            </select>
-          </motion.div> */}
-
-          {/* Education Levels Offered */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+        <motion.div whileHover={{ scale: 1.03 }} className="relative group">
             <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
               <FiLayers className="text-violet-500" />
               Education Levels Offered <span className="text-fuchsia-600">*</span>
@@ -1282,23 +1229,7 @@ const DocumentsUploadStep = ({
               placeholder="Select education levels offered"
             />
           </motion.div>
-          {/* Student Capacity */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiUsers className="text-violet-500" />
-              Student Capacity
-            </label>
-            <input
-              type="number"
-              name="studentCapacity"
-              value={formData.statistics.totalCapacity}
-              onChange={handleInputChange}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="Total student capacity"
-              min="1"
-            />
-          </motion.div> */}
-          {/* Programs Offered */}
+      
           <motion.div whileHover={{ scale: 1.03 }} className="relative group">
             <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
               <FiBook className="text-violet-500" />
@@ -1330,526 +1261,222 @@ const DocumentsUploadStep = ({
               placeholder="Select programs offered"
             />
           </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Accreditation Certificates & Licenses */}
-      {/* <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        whileHover={{ scale: 1.02 }}
-        className="form-group relative"
-      >
-        <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-          <FiFileText className="text-violet-500" />
-          Accreditation Certificates & Licenses
-        </label>
-        <div className="mt-2 flex justify-center px-6 py-8 border-2 border-dashed border-violet-200 rounded-xl bg-violet-50/30 hover:bg-violet-50/50 transition-colors duration-200">
-          <div className="text-center">
-            <FiUploadCloud className="mx-auto h-12 w-12 text-violet-500" />
-            <div className="mt-4">
-              <label htmlFor="accreditations" className="cursor-pointer">
-                <span className="inline-flex items-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                  Upload Documents
-                </span>
-                <input
-                  id="accreditations"
-                  name="accreditations"
-                  type="file"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => handleFileUpload(e, 'accreditationCertificates')}
-                  accept=".pdf,.jpg,.jpeg,.png"
-                />
-              </label>
-              <p className="mt-2 text-sm text-gray-500">
-                or drag and drop your documents here
-              </p>
-            </div>
-            <p className="mt-1 text-xs text-gray-400">
-              Upload all relevant accreditation certificates and licenses (PDF, PNG, JPG up to 10MB each)
-            </p>
-          </div>
-        </div>
-      </motion.div> */}
-
-      {/* Academic Achievements & Recognition */}
-      {/* <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        whileHover={{ scale: 1.02 }}
-        className="form-group relative"
-      >
-        <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-          <FiFlag className="text-violet-500" />
-          Academic Achievements & Recognition
-        </label>
-        <textarea
-          name="achievements"
-          value={formData.achievements.join('\n')}
-          onChange={(e) => handleInputChange({
-            target: {
-              name: 'achievements',
-              value: e.target.value.split('\n')
-            }
-          })}
-          className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 resize-none focus:shadow-lg"
-          rows={4}
-          placeholder="List major academic achievements and recognitions (one per line)"
-        />
-      </motion.div> */}
 
       {/* Hidden Fields */}
-      <input type="hidden" name="submissionDate" value="2025-02-14 02:03:12" />
+      <input type="hidden" name="submissionDate" value="2025-02-14 01:58:13" />
       <input type="hidden" name="submittedBy" value="huzaifa8883" />
     </div>
   </motion.div>
 )}
+        {/* Step 2 - Educational Background */}
 
         {/* Step 3 - Professional Details */}
-   {currentStep === 3 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
-    style={{
-      boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
-    }}
-  >
-    {/* Animated Gradient Overlay */}
-    <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
-    {/* Header Section */}
+   {currentStep === 2 && (
     <motion.div
-      className="mb-16 text-center relative z-10"
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
+      style={{
+        boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
+      }}
     >
-      <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-        Institutional Details
-      </h3>
-      <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
-        Share information about your institution's facilities and staff
-      </p>
-    </motion.div>
-
-    <div className="space-y-14 relative z-10">
+      {/* Animated Gradient Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
+      {/* Header Section */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
+        className="mb-16 text-center relative z-10"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Staff Information */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiUsers className="text-violet-500" />
-              Total Teaching Staff
-            </label>
-            <input
-              type="number"
-              name="staffInformation.totalTeachers"
-              required
-              value={formData.staffInformation.totalTeachers}
-              onChange={handleInputChange}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="Number of teachers"
-              min="1"
-            />
-          </motion.div>
-
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiBriefcase className="text-violet-500" />
-              Administrative Staff
-            </label>
-            <input
-              type="number"
-              name="staffInformation.totalAdminStaff"
-              required
-              value={formData.staffInformation.totalAdminStaff}
-              onChange={handleInputChange}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="Number of administrative staff"
-              min="1"
-            />
-          </motion.div> */}
-
-          {/* Facilities */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group md:col-span-2">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiLayout className="text-violet-500" />
-              Available Facilities
-            </label>
-            <Select
-              isMulti
-              name="facilities"
-              options={[
-                { value: 'library', label: 'Library' },
-                { value: 'computer_lab', label: 'Computer Lab' },
-                { value: 'science_lab', label: 'Science Lab' },
-                { value: 'sports_ground', label: 'Sports Ground' },
-                { value: 'cafeteria', label: 'Cafeteria' },
-                { value: 'auditorium', label: 'Auditorium' },
-                { value: 'medical_room', label: 'Medical Room' },
-                { value: 'transport', label: 'Transport Service' },
-                { value: 'smart_classes', label: 'Smart Classrooms' },
-                { value: 'wifi', label: 'Wi-Fi Campus' }
-              ]}
-              value={formData.facilities.map(facility => ({
-                value: facility,
-                label: facility
-                  .split('_')
-                  .map(str => str.charAt(0).toUpperCase() + str.slice(1).replace('Lab',' Lab').replace('Room',' Room').replace('Ground',' Ground'))
-                  .join(' ')
-                  .replace('Smart Classes', 'Smart Classrooms')
-                  .replace('Wifi', 'Wi-Fi Campus')
-              }))}
-              onChange={(selected) => setFormData({
-                ...formData,
-                facilities: selected ? selected.map(option => option.value) : []
-              })}
-              styles={customSelectStyles}
-              placeholder="Select available facilities..."
-            />
-          </motion.div>
-
-          {/* Operating Hours */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiClock className="text-violet-500" />
-              Operating Hours (Weekdays)
-            </label>
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                type="time"
-                name="operatingHours.weekdays.start"
-                value={formData.operatingHours.weekdays.start}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              />
-              <input
-                type="time"
-                name="operatingHours.weekdays.end"
-                value={formData.operatingHours.weekdays.end}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              />
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiCalendar className="text-violet-500" />
-              Operating Hours (Weekends)
-            </label>
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                type="time"
-                name="operatingHours.weekends.start"
-                value={formData.operatingHours.weekends.start}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              />
-              <input
-                type="time"
-                name="operatingHours.weekends.end"
-                value={formData.operatingHours.weekends.end}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              />
-            </div>
-          </motion.div>
-        </div>
+        <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
+          Institutional Details
+        </h3>
+        <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
+          Share information about your institution&apos;s facilities and staff
+        </p>
       </motion.div>
 
-      {/* Statistics */}
-      {/* <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        whileHover={{ scale: 1.02 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-      >
-        <div>
-          <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-            <FiTrendingUp className="text-violet-500" />
-            Graduation Rate (%)
-          </label>
-          <input
-            type="number"
-            name="statistics.graduationRate"
-            value={formData.statistics.graduationRate}
-            onChange={handleInputChange}
-            className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-            placeholder="e.g., 95"
-            min="0"
-            max="100"
-          />
-        </div>
+      <div className="space-y-14 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Staff Information */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiUsers className="text-violet-500" />
+                Total Teaching Staff
+              </label>
+              <input
+                type="number"
+                name="staffInformation.totalTeachers"
+                required
+                value={formData.staffInformation.totalTeachers}
+                onChange={handleInputChange}
+                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                placeholder="Number of teachers"
+                min="1"
+              />
+            </motion.div>
 
-        <div>
-          <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-            <FiUsers className="text-violet-500" />
-            Student-Teacher Ratio
-          </label>
-          <input
-            type="text"
-            name="statistics.studentTeacherRatio"
-            value={formData.statistics.studentTeacherRatio}
-            onChange={handleInputChange}
-            className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-            placeholder="e.g., 20:1"
-          />
-        </div>
+            {/* Facilities */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group md:col-span-2">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiLayout className="text-violet-500" />
+                Available Facilities
+              </label>
+              <Select
+                isMulti
+                name="facilities"
+                options={facilityOptions}
+                value={formData.facilities.map((facility) => {
+                  const found = facilityOptions.find((o) => o.value === facility);
+                  return found || { value: facility, label: facility };
+                })}
+                onChange={(selected) =>
+                  setFormData({
+                    ...formData,
+                    facilities: selected ? selected.map((option) => option.value) : [],
+                  })
+                }
+                styles={customSelectStyles}
+                placeholder="Select available facilities..."
+              />
+            </motion.div>
 
-        <div>
-          <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-            <FiTarget className="text-violet-500" />
-            Average Class Size
-          </label>
-          <input
-            type="number"
-            name="statistics.classSize"
-            value={formData.statistics.classSize}
-            onChange={handleInputChange}
-            className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-            placeholder="e.g., 25"
-            min="1"
-          />
-        </div>
-      </motion.div> */}
+            {/* Operating Hours (Weekdays) */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiClock className="text-violet-500" />
+                Operating Hours (Weekdays)
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="time"
+                  name="operatingHours.weekdays.start"
+                  value={formData.operatingHours.weekdays.start}
+                  onChange={handleInputChange}
+                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                />
+                <input
+                  type="time"
+                  name="operatingHours.weekdays.end"
+                  value={formData.operatingHours.weekdays.end}
+                  onChange={handleInputChange}
+                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                />
+              </div>
+            </motion.div>
 
-      {/* Partnerships & Affiliations */}
-      {/* <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        whileHover={{ scale: 1.02 }}
-        className="form-group relative"
-      >
-        <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-          <FiLink className="text-violet-500" />
-          Partnerships & Affiliations
-        </label>
-        <textarea
-          name="partnerships"
-          rows={4}
-          value={formData.partnerships.join('\n')}
-          onChange={(e) => setFormData({
-            ...formData,
-            partnerships: e.target.value.split('\n').filter(p => p.trim())
-          })}
-          className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 resize-none focus:shadow-lg"
-          placeholder={`List your institution's partnerships and affiliations (one per line)\nExample:\nBritish Council - Language Assessment Partner\nMicrosoft - Technology Education Partner`}
-        />
-      </motion.div> */}
-    </div>
-    {/* Hidden Fields */}
-    <input type="hidden" name="submissionDate" value="2025-02-14 02:26:13" />
-    <input type="hidden" name="submittedBy" value="huzaifa8883" />
-  </motion.div>
+            {/* Operating Hours (Weekends) */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiCalendar className="text-violet-500" />
+                Operating Hours (Weekends)
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="time"
+                  name="operatingHours.weekends.start"
+                  value={formData.operatingHours.weekends.start}
+                  onChange={handleInputChange}
+                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                />
+                <input
+                  type="time"
+                  name="operatingHours.weekends.end"
+                  value={formData.operatingHours.weekends.end}
+                  onChange={handleInputChange}
+                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                />
+              </div>
+            </motion.div>
+
+            {/* Mode of Education */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiMonitor className="text-violet-500" />
+                Mode of Education
+              </label>
+              <Select
+                isMulti
+                options={modeOptions}
+                styles={customSelectStyles}
+                value={formData.educationModes.map((mode) => {
+                  const found = modeOptions.find((o) => o.value === mode);
+                  return (
+                    found || {
+                      value: mode,
+                      label: mode === "hybrid" ? "🔄 Hybrid Learning" : mode,
+                    }
+                  );
+                })}
+                onChange={(selected) => {
+                  handleInputChange({
+                    target: {
+                      name: "educationModes",
+                      value: selected ? selected.map((item) => item.value) : [],
+                    },
+                  });
+                }}
+                placeholder="Select education modes..."
+              />
+            </motion.div>
+
+            {/* Fee Structure */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiDollarSign className="text-violet-500" />
+                Fee Structure
+              </label>
+              <div className="space-y-4">
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="feeStructure.monthlyFee"
+                    value={formData.feeStructure.monthlyFee}
+                    onChange={handleInputChange}
+                    className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                    placeholder="Monthly Fee"
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base">
+                    PKR
+                  </span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="feeStructure.admissionFee"
+                    value={formData.feeStructure.admissionFee}
+                    onChange={handleInputChange}
+                    className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                    placeholder="Admission Fee"
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base">
+                    PKR
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Documents upload step */}
+            <div className="md:col-span-2">
+              {DocumentsUploadStep && <DocumentsUploadStep handleFileUpload={handleFileUpload} />}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      {/* Hidden Fields */}
+      <input type="hidden" name="submissionDate" value="2025-02-14 02:26:13" />
+      <input type="hidden" name="submittedBy" value="huzaifa8883" />
+    </motion.div>
 )}
         {/* Step 4 - Teaching Preferences */}
-  {currentStep === 4 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
-    style={{
-      boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
-    }}
-  >
-    {/* Animated Gradient Overlay */}
-    <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
-    {/* Header Section */}
-    <motion.div
-      className="mb-16 text-center relative z-10"
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
-    >
-      <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-        Academic Programs & Policies
-      </h3>
-      <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
-        Configure your institution's academic structure and policies
-      </p>
-    </motion.div>
-
-    <div className="space-y-14 relative z-10">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Academic Sessions */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiCalendar className="text-violet-500" />
-              Academic Sessions
-            </label>
-            <Select
-              isMulti
-              options={[
-                { value: 'morning', label: '🌅 Morning (8 AM - 1 PM)' },
-                { value: 'afternoon', label: '☀️ Afternoon (1 PM - 6 PM)' },
-                { value: 'evening', label: '🌆 Evening (6 PM - 10 PM)' }
-              ]}
-              styles={customSelectStyles}
-              value={formData.academicSessions.map(session => ({
-                value: session,
-                label: session === 'morning' ? '🌅 Morning (8 AM - 1 PM)' :
-                       session === 'afternoon' ? '☀️ Afternoon (1 PM - 6 PM)' :
-                       '🌆 Evening (6 PM - 10 PM)'
-              }))}
-              onChange={(selected) => {
-                handleInputChange({
-                  target: {
-                    name: 'academicSessions',
-                    value: selected.map(item => item.value)
-                  }
-                });
-              }}
-              placeholder="Select academic sessions..."
-            />
-          </motion.div> */}
-
-          {/* Mode of Education */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiMonitor className="text-violet-500" />
-              Mode of Education
-            </label>
-            <Select
-              isMulti
-              options={[
-                { value: 'on_campus', label: '🏫 On-Campus Learning' },
-                { value: 'online', label: '💻 Online Learning' },
-              ]}
-              styles={customSelectStyles}
-              value={formData.educationModes.map(mode => ({
-                value: mode,
-                label: mode === 'on_campus' ? '🏫 On-Campus Learning' :
-                       mode === 'online' ? '💻 Online Learning' :
-                       '🔄 Hybrid Learning'
-              }))}
-              onChange={(selected) => {
-                handleInputChange({
-                  target: {
-                    name: 'educationModes',
-                    value: selected.map(item => item.value)
-                  }
-                });
-              }}
-              placeholder="Select education modes..."
-            />
-          </motion.div>
-
-          {/* Fee Structure */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiDollarSign className="text-violet-500" />
-              Fee Structure
-            </label>
-            <div className="space-y-4">
-              <div className="relative">
-                <input
-                  type="number"
-                  name="feeStructure.monthlyFee"
-                  value={formData.feeStructure.monthlyFee}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-                  placeholder="Monthly Fee"
-                />
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base">
-                  PKR
-                </span>
-              </div>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="feeStructure.admissionFee"
-                  value={formData.feeStructure.admissionFee}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-                  placeholder="Admission Fee"
-                />
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base">
-                  PKR
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Scholarship Programs */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiAward className="text-violet-500" />
-              Scholarship Programs
-            </label>
-            <Select
-              isMulti
-              options={[
-                { value: 'merit', label: '🏆 Merit-based Scholarship' },
-                { value: 'need', label: '🤝 Need-based Scholarship' },
-                { value: 'sports', label: '⚽ Sports Scholarship' },
-                { value: 'sibling', label: '👥 Sibling Discount' }
-              ]}
-              styles={customSelectStyles}
-              value={formData.scholarshipPrograms.map(program => ({
-                value: program,
-                label: program === 'merit' ? '🏆 Merit-based Scholarship' :
-                       program === 'need' ? '🤝 Need-based Scholarship' :
-                       program === 'sports' ? '⚽ Sports Scholarship' :
-                       '👥 Sibling Discount'
-              }))}
-              onChange={(selected) => {
-                handleInputChange({
-                  target: {
-                    name: 'scholarshipPrograms',
-                    value: selected.map(item => item.value)
-                  }
-                });
-              }}
-              placeholder="Select scholarship programs..."
-            />
-          </motion.div> */}
-
-          {/* Academic Policies */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group md:col-span-2">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiFileText className="text-violet-500" />
-              Academic Policies
-            </label>
-            <div className="relative transition-all duration-300">
-              <textarea
-                name="policies.academic"
-                value={formData.policies.academic}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 resize-none focus:shadow-lg"
-                placeholder="Describe your institution's academic policies, including attendance requirements, examination system, promotion criteria, etc..."
-                rows={4}
-              />
-            </div>
-            <p className="mt-2 text-sm text-gray-500 font-medium">
-              Include important policies regarding attendance, examinations, student conduct, and promotion criteria
-            </p>
-          </motion.div> */}
-        </div>
-      </motion.div>
-    </div>
-
-    {/* Hidden Fields */}
-    <input type="hidden" name="submissionDate" value="2025-02-14 02:49:43" />
-    <input type="hidden" name="submittedBy" value="huzaifa8883" />
-  </motion.div>
-)}
+ 
         {/* Step 5 - Documents Upload */}
         {currentStep === 5 && (
         <DocumentsUploadStep handleFileUpload={handleFileUpload} />
