@@ -347,11 +347,34 @@ const [selectedProvince, setSelectedProvince] = useState("");
     }
   };
 
-  const grades = [
-    'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
-    'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
-    'Class 11', 'Class 12'
-  ];
+ const grades = [
+  "Playgroup",
+  "Nursery",
+  "Prep",
+  "Class 1",
+  "Class 2",
+  "Class 3",
+  "Class 4",
+  "Class 5",
+  "Class 6",
+  "Class 7",
+  "Class 8",
+  "Matric 9th",
+  "Matric 10th",
+  "FA 1st Year",
+  "FSc 1st Year",
+  "ICOM 1st Year",
+  "ICS 1st Year",
+  "FA 2nd Year",
+  "FSc 2nd Year",
+  "ICOM 2nd Year",
+  "ICS 2nd Year",
+  "BA/BSc",
+  "BS",
+  "MA/MSc",
+  "MPhil",
+  "PhD"
+];
 
   const inputClasses = "mt-1 block w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white/70 backdrop-blur-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-200 transition-all duration-200";
   const labelClasses = "flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2";
@@ -374,18 +397,18 @@ const [selectedProvince, setSelectedProvince] = useState("");
           Please enter the verification code sent to your {verificationStep === 'phone' ? 'phone' : 'email'}
         </p>
 
-        <OtpInput
-          value={otp}
-          onChange={setOtp}
-          numInputs={6}
-          renderSeparator={<span className="w-4"></span>}
-          renderInput={(props) => (
-            <input
-              {...props}
-              className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
-            />
-          )}
-        />
+       <OtpInput
+  value={otp}
+  onChange={setOtp}
+  numInputs={6}
+  renderSeparator={<span className="w-4"></span>}
+  renderInput={(props) => (
+    <input
+      {...props}
+      className="w-14 h-14 md:w-28 md:h-16 text-center text-xl font-bold border-2 border-violet-300 rounded-lg shadow-lg bg-white focus:border-violet-600 focus:ring-2 focus:ring-violet-200 outline-none transition-all duration-150"
+    />
+  )}
+/>
 
         <div className="mt-6 space-y-4">
           <button
