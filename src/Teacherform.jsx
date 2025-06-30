@@ -319,6 +319,8 @@ const TeacherForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+       
+  const [showconfirmpassword, setShowconfirmpassword] = useState(false);
 const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [loading, setLoading] = useState(false);  // 🔹 Loading state added
@@ -326,6 +328,8 @@ const [selectedProvince, setSelectedProvince] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const togglePassword = () => setShowPassword(prev => !prev);
+   
+  const toggleconfirmpassword = () => setShowconfirmpassword(prev => !prev);
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -444,11 +448,11 @@ const [selectedProvince, setSelectedProvince] = useState("");
   ];
   
   const steps = [
-    { id: 1, title: 'Personal Information' },
-    { id: 2, title: 'Educational Background' },
-    { id: 3, title: 'Professional Details' },
-    { id: 4, title: 'Teaching Preferences' },
-    { id: 5, title: 'Documents Upload' }
+    { id: 1, title: 'Personal Information & Educational Background' },
+    
+    { id: 3, title: 'Professional Details & Teaching Preferences' },
+    // { id: 4, title: 'Teaching Preferences' },
+    // { id: 5, title: 'Documents Upload' }
   ];
 
   const subjects = [
@@ -829,7 +833,7 @@ const [selectedProvince, setSelectedProvince] = useState("");
           transition={{ delay: 0.1 }}
         >
           <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-            Personal Information
+            Personal Information and Educational Background
           </h3>
           <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
             Tell us about yourself and make your profile <span className="text-fuchsia-700 font-semibold">stand out</span>
@@ -980,20 +984,20 @@ const [selectedProvince, setSelectedProvince] = useState("");
                     Confirm Password
                   </label>
                   <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
+                    type={showconfirmpassword ? "text" : "confirm password"}
+                    name="confirmpassword"
                     required
-                    value={formData.password}
+                    value={formData.confirmpassword}
                     onChange={handleInputChange}
                     className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg pr-12"
                     placeholder="Enter your password"
                     autoComplete="off"
                   />
                   <div
-                    onClick={togglePassword}
+                    onClick={toggleconfirmpassword}
                     className="absolute right-4 top-11 cursor-pointer text-gray-400 group-hover:text-fuchsia-500 transition-colors"
                   >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                    {showconfirmpassword ? <FiEyeOff /> : <FiEye />}
                   </div>
                 </motion.div>
           {/* Contact and Personal Details */}
@@ -1104,46 +1108,7 @@ const [selectedProvince, setSelectedProvince] = useState("");
               Share your teaching philosophy and what makes you stand out as an educator
             </p>
           </motion.div>
-        </div>
-      </motion.div>
-        )}
-
-        {/* Step 2 - Educational Background */}
- {currentStep === 2 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
-    style={{
-      boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
-    }}
-  >
-    {/* Animated Gradient Overlay */}
-    <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
-    <motion.div
-      className="mb-16 text-center relative z-10"
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
-    >
-      <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-        Educational Background
-      </h3>
-      <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
-        Please provide your educational details below
-      </p>
-    </motion.div>
-    <div className="space-y-14 relative z-10">
-      {/* Main Educational Details */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Highest Qualification */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+           <motion.div whileHover={{ scale: 1.03 }} className="relative group">
             <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
               Highest Qualification <span className="text-fuchsia-600">*</span>
             </label>
@@ -1174,25 +1139,6 @@ const [selectedProvince, setSelectedProvince] = useState("");
               autoComplete="off"
             />
           </motion.div>
-          {/* Graduation Year */}
-          {/* <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              Graduation Year <span className="text-fuchsia-600">*</span>
-            </label>
-            <input
-              type="number"
-              name="graduationYear"
-              required
-              value={formData.graduationYear}
-              onChange={handleInputChange}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="YYYY"
-              min="1900"
-              max="2099"
-              autoComplete="off"
-            />
-          </motion.div> */}
-          {/* Specialization */}
           <motion.div whileHover={{ scale: 1.03 }} className="relative group">
             <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
               Specialization
@@ -1207,10 +1153,7 @@ const [selectedProvince, setSelectedProvince] = useState("");
               autoComplete="off"
             />
           </motion.div>
-        </div>
-      </motion.div>
-      {/* Certificates & Achievements */}
-      <motion.div
+           <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
@@ -1247,146 +1190,281 @@ const [selectedProvince, setSelectedProvince] = useState("");
           </div>
         </div>
       </motion.div>
-    </div>
-  </motion.div>
-)}
-
-        {/* Step 3 - Professional Details */}
-      {currentStep === 3 && (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
-    style={{
-      boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
-    }}
-  >
-    {/* Animated Gradient Overlay */}
-    <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
-    <motion.div
-      className="mb-16 text-center relative z-10"
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
-    >
-      <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
-        Professional Details
-      </h3>
-      <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
-        Share your professional experience and expertise
-      </p>
-    </motion.div>
-    <div className="space-y-14 relative z-10">
-      {/* Main Professional Details */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Years of Experience */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiBriefcase className="text-violet-500" />
-              Years of Experience
-            </label>
-            <input
-              type="number"
-              name="experience"
-              required
-              value={formData.experience}
-              onChange={handleInputChange}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="Enter years of experience"
-              min="0"
-              max="50"
-            />
-          </motion.div>
-          {/* Subjects */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiBook className="text-violet-500" />
-              Subjects
-            </label>
-            <Select
-              isMulti
-              name="subjects"
-              options={subjects.map(subject => ({ value: subject, label: subject }))}
-              value={formData.subjects.map(subject => ({ value: subject, label: subject }))}
-              onChange={(selected) => setFormData({
-                ...formData,
-                subjects: selected ? selected.map(option => option.value) : []
-              })}
-              styles={customSelectStyles}
-              placeholder="Select subjects..."
-            />
-          </motion.div>
-          {/* Teaching Levels */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiLayers className="text-violet-500" />
-              Teaching Levels
-            </label>
-            <Select
-              isMulti
-              name="teachingLevel"
-              options={teachingLevels.map(level => ({ value: level, label: level }))}
-              value={formData.teachingLevel.map(level => ({ value: level, label: level }))}
-              onChange={(selected) => setFormData({
-                ...formData,
-                teachingLevel: selected ? selected.map(option => option.value) : []
-              })}
-              styles={customSelectStyles}
-              placeholder="Select teaching levels..."
-            />
-          </motion.div>
-          {/* Previous Institutions */}
-          <motion.div whileHover={{ scale: 1.03 }} className="relative group">
-            <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-              <FiBookOpen className="text-violet-500" />
-              Previous Institutions
-            </label>
-            <input
-              type="text"
-              name="previousInstitutions"
-              value={formData.previousInstitutions.join(', ')}
-              onChange={(e) => setFormData({
-                ...formData,
-                previousInstitutions: e.target.value.split(',').map(item => item.trim())
-              })}
-              className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
-              placeholder="Enter institutions separated by commas"
-            />
-          </motion.div>
         </div>
       </motion.div>
-      {/* Professional References */}
-      {/* <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        )}
+
+        {/* Step 2 - Educational Background */}
+ 
+
+        {/* Step 3 - Professional Details */}
+      {currentStep === 2 && (
+     <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="max-w-4xl mx-auto p-10 rounded-[2.5rem] bg-white/60 backdrop-blur-2xl border border-purple-200/[.25] shadow-2xl relative overflow-hidden font-inter"
+      style={{
+        boxShadow: "0 8px 40px 0 rgba(127, 63, 152, 0.18)",
+      }}
+    >
+      {/* Animated Gradient Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-0 animate-gradient bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200 opacity-80"></div>
+      <motion.div
+        className="mb-16 text-center relative z-10"
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        whileHover={{ scale: 1.02 }}
-        className="form-group relative"
+        transition={{ delay: 0.1 }}
       >
-        <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
-          <FiUsers className="text-violet-500" />
-          Professional References
-        </label>
-        <textarea
-          name="references"
-          rows={4}
-          value={formData.references.join('\n')}
-          onChange={(e) => setFormData({
-            ...formData,
-            references: e.target.value.split('\n').filter(ref => ref.trim())
-          })}
-          className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 resize-none focus:shadow-lg"
-          placeholder={`Enter each reference on a new line\nExample:\nDr. John Doe - Professor at XYZ University\nJane Smith - Department Head at ABC College`}
-        />
-      </motion.div> */}
-    </div>
-  </motion.div>
+        <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-600 bg-clip-text text-transparent mb-3 font-jakarta tracking-tight drop-shadow-lg">
+          Professional Details & Teaching Preferences
+        </h3>
+        <p className="text-gray-700 text-xl font-medium font-inter drop-shadow-sm">
+          Share your professional experience and expertise
+        </p>
+      </motion.div>
+
+      <div className="space-y-14 relative z-10">
+        {/* Main Professional Details */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-8 bg-white/85 rounded-3xl shadow-xl border border-purple-100/60 backdrop-blur-lg"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Years of Experience */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiBriefcase className="text-violet-500" />
+                Years of Experience
+              </label>
+              <input
+                type="number"
+                name="experience"
+                required
+                value={formData.experience}
+                onChange={handleInputChange}
+                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                placeholder="Enter years of experience"
+                min="0"
+                max="50"
+              />
+            </motion.div>
+            {/* Subjects */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiBook className="text-violet-500" />
+                Subjects
+              </label>
+              <Select
+                isMulti
+                name="subjects"
+                options={subjects.map((subject) => ({ value: subject, label: subject }))}
+                value={formData.subjects.map((subject) => ({ value: subject, label: subject }))}
+                onChange={(selected) =>
+                  setFormData({
+                    ...formData,
+                    subjects: selected ? selected.map((option) => option.value) : [],
+                  })
+                }
+                styles={customSelectStyles}
+                placeholder="Select subjects..."
+              />
+            </motion.div>
+            {/* Teaching Levels */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiLayers className="text-violet-500" />
+                Teaching Levels
+              </label>
+              <Select
+                isMulti
+                name="teachingLevel"
+                options={teachingLevels.map((level) => ({ value: level, label: level }))}
+                value={formData.teachingLevel.map((level) => ({ value: level, label: level }))}
+                onChange={(selected) =>
+                  setFormData({
+                    ...formData,
+                    teachingLevel: selected ? selected.map((option) => option.value) : [],
+                  })
+                }
+                styles={customSelectStyles}
+                placeholder="Select teaching levels..."
+              />
+            </motion.div>
+            {/* Previous Institutions */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiBookOpen className="text-violet-500" />
+                Previous Institutions
+              </label>
+              <input
+                type="text"
+                name="previousInstitutions"
+                value={formData.previousInstitutions.join(", ")}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    previousInstitutions: e.target.value.split(",").map((item) => item.trim()),
+                  })
+                }
+                className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                placeholder="Enter institutions separated by commas"
+              />
+            </motion.div>
+            {/* Available Timings */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-base font-semibold text-gray-700 mb-2 font-jakarta transition-all">
+                <FiClock className="text-violet-500" />
+                Available Timings
+              </label>
+              <Select
+                isMulti
+                options={timingOptions}
+                styles={customSelectStyles}
+                value={timingOptions.filter((option) =>
+                  formData.availableTimings.includes(option.value)
+                )}
+                onChange={(selected) => {
+                  handleInputChange({
+                    target: {
+                      name: "availableTimings",
+                      value: selected ? selected.map((item) => item.value) : [],
+                    },
+                  });
+                }}
+                placeholder="Select available times..."
+              />
+            </motion.div>
+            {/* Preferred Mode */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-base font-semibold text-gray-700 mb-2 font-jakarta transition-all">
+                <FiMonitor className="text-violet-500" />
+                Preferred Mode
+              </label>
+              <Select
+                isMulti
+                options={modeOptions}
+                styles={customSelectStyles}
+                value={modeOptions.filter((option) =>
+                  formData.preferredMode.includes(option.value)
+                )}
+                onChange={(selected) => {
+                  handleInputChange({
+                    target: {
+                      name: "preferredMode",
+                      value: selected ? selected.map((item) => item.value) : [],
+                    },
+                  });
+                }}
+                placeholder="Select teaching mode..."
+              />
+            </motion.div>
+            {/* Expected Salary */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative group">
+              <label className="flex items-center gap-2 text-base font-semibold text-gray-700 mb-2 font-jakarta transition-all">
+                <FiDollarSign className="text-violet-500" />
+                Expected Salary (PKR)
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="expectedSalary"
+                  value={formData.expectedSalary}
+                  onChange={handleInputChange}
+                  className="w-full px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter shadow transition-all duration-200 focus:shadow-lg"
+                  placeholder="Enter amount in PKR"
+                />
+                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base">
+                  PKR
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Uploads and CNIC */}
+          <div className="mt-14 space-y-14">
+            {/* Uploads */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { key: "cnicFront", label: "CNIC Front" },
+                { key: "cnicBack", label: "CNIC Back" },
+                { key: "lastDegree", label: "Last Degree" },
+              ].map(({ key, label }) => (
+                <motion.div
+                  key={key}
+                  whileHover={{ scale: 1.03 }}
+                  className="relative group flex flex-col items-center bg-white/80 rounded-2xl shadow-xl border border-purple-100/60 p-6"
+                >
+                  <span className="text-lg md:text-xl font-semibold text-gray-700 font-jakarta mb-4">
+                    {label}
+                  </span>
+                  {/* Preview Area */}
+                  <div className="w-44 h-44 rounded-xl overflow-hidden ring-8 ring-violet-200/80 bg-gradient-to-br from-purple-50 to-fuchsia-50 shadow-2xl flex items-center justify-center mb-4">
+                    {formData[key] instanceof File ? (
+                      <img
+                        src={URL.createObjectURL(formData[key])}
+                        alt={label}
+                        className="w-full h-full object-cover transition duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <FiUser className="w-16 h-16 text-violet-300" />
+                      </div>
+                    )}
+                  </div>
+                  {/* Upload Button */}
+                  <div className="relative w-full">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) handleFileUpload(file, key);
+                      }}
+                      className="hidden"
+                      id={`${key}-upload`}
+                    />
+                    <motion.label
+                      htmlFor={`${key}-upload`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.96 }}
+                      className="flex justify-center items-center px-5 py-3 bg-gradient-to-br from-purple-600 via-fuchsia-600 to-violet-600 text-white rounded-xl shadow-lg cursor-pointer font-jakarta transition-all duration-200 hover:shadow-fuchsia-300/70 border-2 border-white"
+                    >
+                      <FiUploadCloud className="mr-2 w-5 h-5" />
+                      Upload {label}
+                    </motion.label>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CNIC Number Input */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col items-center mt-10"
+            >
+              <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-base font-jakarta transition-all">
+                <FiCreditCard className="text-violet-500" />
+                CNIC Number
+              </label>
+              <input
+                type="text"
+                name="cnicNumber"
+                value={formData.cnicNumber}
+                maxLength={15}
+                onChange={handleInputChange}
+                className="w-80 px-5 py-3 rounded-xl border border-purple-200 focus:border-fuchsia-400 focus:ring-4 focus:ring-fuchsia-100/60 bg-white/70 backdrop-blur-sm text-gray-900 placeholder-gray-400 font-inter text-lg shadow transition-all duration-200 focus:shadow-lg text-center"
+                placeholder="Enter your CNIC number"
+                autoComplete="off"
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
 )}
 
         {/* Step 4 - Teaching Preferences */}
