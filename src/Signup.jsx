@@ -49,10 +49,10 @@ const navigate = useNavigate()
   ];
 
   return (
-        <div className="min-h-screen bg-gradient-to-br from-fuchsia-50 via-violet-100 to-purple-100 relative overflow-hidden font-inter">
+        <div className="min-h-screen bg-white relative overflow-hidden font-inter">
       {/* Gorgeous animated pastel background glow */}
       <div className="absolute -inset-20 pointer-events-none z-0">
-        <div className="w-full h-full rounded-[3rem] blur-3xl opacity-60 bg-gradient-to-br from-fuchsia-200 via-purple-100 to-violet-200 animate-gradient" />
+        <div className="w-full h-full rounded-[3rem] blur-3xl opacity-60 bg-white animate-gradient" />
       </div>
       {/* Soft grid overlay pattern */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10 z-0"></div>
@@ -162,10 +162,10 @@ const navigate = useNavigate()
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              className="max-w-4xl mx-auto"
+              className=" mx-auto"
             >
-              <div className="bg-white/90 rounded-3xl border border-purple-100 shadow-2xl overflow-hidden">
-                <div className="p-7 border-b border-purple-100 bg-gradient-to-r from-fuchsia-50 via-purple-50 to-violet-50">
+              <div className=" rounded-3xl   overflow-hidden">
+                {/* <div className="p-7 border-b border-purple-100 bg-gradient-to-r from-fuchsia-50 via-purple-50 to-violet-50">
                   <button
                     onClick={() => setSelectedRole(null)}
                     className="inline-flex items-center text-base font-medium text-purple-500 hover:text-fuchsia-600 transition-colors duration-200 font-jakarta group"
@@ -173,7 +173,7 @@ const navigate = useNavigate()
                     <FiArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
                     Back to selection
                   </button>
-                </div>
+                </div> */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
